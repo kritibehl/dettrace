@@ -1,0 +1,3 @@
+/Users/kritibehl/dettrace/build/CMakeFiles/dettrace.dir
+/Users/kritibehl/dettrace/build/CMakeFiles/edit_cache.dir
+/Users/kritibehl/dettrace/build/CMakeFiles/rebuild_cache.dir

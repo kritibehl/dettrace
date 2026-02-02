@@ -12,4 +12,8 @@ add_executable(dettrace
   src/recorder.cpp
   src/scheduler.cpp
   src/trace_io.cpp
+  src/invariants.cpp
+  src/diff.cpp
+  src/replayer.cpp
+  src/replay_guard.cpp
 )
