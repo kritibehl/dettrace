@@ -1,0 +1,20 @@
+# Build artifacts
+build/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+*.o
+*.a
+*.so
+*.dylib
+*.exe
+
+# IDE
+.vscode/
+.idea/
+.DS_Store
+
+# Generated traces / outputs
+*.jsonl
+*.log
