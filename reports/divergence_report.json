@@ -3,17 +3,19 @@
   "trace_b": "artifacts/actual.jsonl",
   "first_divergence_event": 5,
   "expected": {
+    "seq": 5,
     "type": "TASK_DEQUEUED",
     "task": 1,
     "worker": 0,
     "queue": 0
   },
   "actual": {
+    "seq": 5,
     "type": "TASK_DEQUEUED",
     "task": 2,
     "worker": 0,
     "queue": 0
   },
   "invariant_failures": [],
-  "notes": "Injected divergence by flipping the first two dequeued tasks."
+  "notes": "Generated from trace comparison."
 }

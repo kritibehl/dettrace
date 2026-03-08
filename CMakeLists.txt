@@ -17,3 +17,15 @@ add_executable(dettrace
   src/replayer.cpp
   src/replay_guard.cpp
 )
+
+enable_testing()
+
+add_executable(test_flaky_case_1
+    tests/integration/test_flaky_case_1.cpp
+    src/event.cpp
+    src/trace_io.cpp
+)
+
+target_include_directories(test_flaky_case_1 PRIVATE include)
+
+add_test(NAME flaky_case_1 COMMAND test_flaky_case_1)
