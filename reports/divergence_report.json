@@ -1,9 +1,19 @@
 {
-  "trace_a": "",
-  "trace_b": "",
-  "first_divergence_event": null,
-  "expected": {},
-  "actual": {},
+  "trace_a": "artifacts/expected.jsonl",
+  "trace_b": "artifacts/actual.jsonl",
+  "first_divergence_event": 5,
+  "expected": {
+    "type": "TASK_DEQUEUED",
+    "task": 1,
+    "worker": 0,
+    "queue": 0
+  },
+  "actual": {
+    "type": "TASK_DEQUEUED",
+    "task": 2,
+    "worker": 0,
+    "queue": 0
+  },
   "invariant_failures": [],
-  "notes": ""
+  "notes": "Injected divergence by flipping the first two dequeued tasks."
 }

@@ -6,7 +6,22 @@
 #include "dettrace/replayer.hpp"
 #include "dettrace/replay_guard.hpp"
 
+#include <filesystem>
 #include <iostream>
+#include <optional>
+#include <vector>
+
+namespace fs = std::filesystem;
+
+static const std::string kArtifactsDir = "artifacts";
+static const std::string kExpectedTrace = "artifacts/expected.jsonl";
+static const std::string kActualTrace   = "artifacts/actual.jsonl";
+static const std::string kReplayTrace   = "artifacts/replayed.jsonl";
+static const std::string kGuardedOkTrace = "artifacts/guarded_ok.jsonl";
+
+static void ensure_artifacts_dir() {
+    fs::create_directories(kArtifactsDir);
+}
 
 static std::vector<dettrace::Event> make_expected_trace() {
     dettrace::Recorder rec;
@@ -15,8 +30,8 @@ static std::vector<dettrace::Event> make_expected_trace() {
     for (int i = 1; i <= 5; i++) sched.enqueue_task(i);
     sched.run();
 
-    dettrace::write_trace_jsonl("expected.jsonl", rec.events());
-    auto expected = dettrace::read_trace_jsonl("expected.jsonl");
+    dettrace::write_trace_jsonl(kExpectedTrace, rec.events());
+    auto expected = dettrace::read_trace_jsonl(kExpectedTrace);
     dettrace::verify_invariants_or_throw(expected);
     return expected;
 }
@@ -26,35 +41,35 @@ static void run_guarded(const std::vector<dettrace::Event>& expected, bool flip)
     dettrace::Scheduler sched(rec, /*workers=*/2);
     sched.set_flip_first_two(flip);
 
-    // enqueue same tasks
     for (int i = 1; i <= 5; i++) sched.enqueue_task(i);
 
     dettrace::ReplayGuard guard(expected);
 
-    // enqueue events are already recorded; we must also validate them
-    // so we replay-validate the enqueue portion explicitly:
-    // expected starts with 5 TASK_ENQUEUED events in our system.
-    // We validate them by "feeding" the same events into guard:
     for (int i = 1; i <= 5; i++) {
         guard.on_event(dettrace::EventType::TASK_ENQUEUED, i, std::nullopt, 0);
     }
 
-    // now validate the runtime events
     sched.run_with_guard(guard);
 
-    dettrace::write_trace_jsonl(flip ? "guarded_actual.jsonl" : "guarded_ok.jsonl", rec.events());
+    dettrace::write_trace_jsonl(flip ? kActualTrace : kGuardedOkTrace, rec.events());
+}
+
+static void write_replayed_trace(const std::vector<dettrace::Event>& expected) {
+    dettrace::write_trace_jsonl(kReplayTrace, expected);
 }
 
 int main() {
+    ensure_artifacts_dir();
+
     try {
         auto expected = make_expected_trace();
+        write_replayed_trace(expected);
+
         std::cout << "Expected trace generated + invariants PASSED ✅\n";
 
-        // Guarded replay with correct behavior
         run_guarded(expected, false);
         std::cout << "ReplayGuard PASS ✅ (system followed expected trace)\n";
 
-        // Guarded replay with divergence injected
         std::cout << "\nNow injecting divergence...\n";
         run_guarded(expected, true);
 
@@ -63,6 +78,6 @@ int main() {
 
     } catch (const std::exception& ex) {
         std::cerr << "\nReplayGuard caught divergence ✅\n" << ex.what() << "\n";
-        return 0; // for demo we return 0 even on caught divergence
+        return 0;
     }
 }
