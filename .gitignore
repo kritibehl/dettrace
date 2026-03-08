@@ -31,3 +31,6 @@ viewer/dist/
 artifacts/*.tmp
 viewer/node_modules/
 viewer/dist/
+artifacts/*.tmp
+viewer/node_modules/
+viewer/dist/
