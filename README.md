@@ -1,52 +1,49 @@
-# DetTrace — Deterministic Execution Replay & Invariant Verification (C++)
+# DetTrace
 
-DetTrace is a lightweight engine for **recording execution events**, **replaying them deterministically**, and **verifying correctness invariants** across runs. It is designed to make nondeterministic behavior reproducible, catch subtle ordering bugs, and provide minimal diffs when behavior diverges.
+DetTrace is a deterministic replay and divergence-analysis system for turning flaky concurrent failures into reproducible root-cause artifacts.
 
-> Core idea: **Even when invariants pass, behavior can still diverge.** DetTrace detects the **first divergence** deterministically and explains it.
+It is positioned as:
+- serious systems tooling
+- C++ debugging maturity
+- flaky-test stabilization platform
+- trace-driven root-cause analysis
 
----
+## What it demonstrates
 
-## Why DetTrace
+- capture execution traces from concurrent runs
+- replay executions deterministically
+- detect the first point of divergence
+- explain violated invariants
+- generate reproducible debugging artifacts
 
-Real systems fail in ways that are hard to reproduce:
-- flaky tests caused by nondeterminism
-- heisenbugs due to scheduling differences
-- “passed invariants” but different outcomes (behavioral drift)
+## Core story
 
-DetTrace provides three strong guarantees:
-1. **Deterministic traces**: record a stable event sequence
-2. **Invariant verification**: assert correctness constraints over events
-3. **Replay enforcement**: validate a live run against an expected trace and fail on the first mismatch
+A small concurrent demo exhibits a flaky failure.
 
----
+DetTrace:
+1. captures the trace
+2. replays the failure deterministically
+3. pinpoints the first divergence event
+4. explains the violated invariant
+5. emits replay and divergence reports
 
-## What it does (tight scope, high signal)
+## Planned repo layout
 
-- Records execution events: `TASK_ENQUEUED`, `TASK_DEQUEUED`, `TASK_STARTED`, `TASK_FINISHED`
-- Persists traces in **JSONL** (one JSON per line)
-- Replays traces deterministically (trace-driven replay)
-- Verifies invariants (ordering, state-machine validity, no duplicates)
-- Detects divergence and prints the **first mismatch**
-- Enforces replay correctness with **ReplayGuard** (fail-fast)
+- `trace/` — trace capture and serialization
+- `replay/` — replay engine
+- `analysis/` — divergence and invariant analysis
+- `examples/flaky_case_1/` — end-to-end flaky case walkthrough
+- `reports/` — replay summary and divergence reports
+- `viewer/` — timeline and divergence visualization
+- `tests/` — unit, integration, and regression coverage
+- `bench/` — overhead and consistency measurements
 
----
+## Definition of done
 
-## Architecture (high level)
-
-**Recorder → Trace (JSONL) → (Verifier / Diff / Replayer / ReplayGuard)**
-
-- **Recorder**: assigns monotonic seq ids and stores events
-- **Trace I/O**: writes/reads JSONL traces
-- **Invariant Verifier**: checks ordering + valid state transitions
-- **Diff**: finds first semantic mismatch between traces
-- **Replayer**: trace-driven reconstruction
-- **ReplayGuard**: validates a live event stream against expected trace (fail-fast)
-
----
-
-## Quickstart
-
-### Build
-```bash
-cmake -S . -B build
-cmake --build build -j
+DetTrace is done when someone can:
+- run one flaky example
+- capture a trace
+- replay it deterministically
+- see the first divergence
+- inspect one clean report
+- see measured overhead

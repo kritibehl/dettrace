@@ -1,10 +1,15 @@
-cat > .gitignore << 'EOF'
+# macOS
+.DS_Store
+
 # Build artifacts
 build/
 CMakeFiles/
 CMakeCache.txt
 cmake_install.cmake
 Makefile
+compile_commands.json
+
+# Compiled objects / binaries
 *.o
 *.a
 *.so
@@ -14,9 +19,15 @@ Makefile
 # IDE
 .vscode/
 .idea/
-.DS_Store
 
-# Generated traces / outputs
-*.jsonl
-*.log
-EOF
+# Generated runtime artifacts
+artifacts/*.jsonl
+artifacts/*.log
+artifacts/*.tmp
+
+# Viewer
+viewer/node_modules/
+viewer/dist/
+artifacts/*.tmp
+viewer/node_modules/
+viewer/dist/
