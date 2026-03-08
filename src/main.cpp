@@ -49,9 +49,15 @@ static void run_guarded(const std::vector<dettrace::Event>& expected, bool flip)
         guard.on_event(dettrace::EventType::TASK_ENQUEUED, i, std::nullopt, 0);
     }
 
-    sched.run_with_guard(guard);
-
-    dettrace::write_trace_jsonl(flip ? kActualTrace : kGuardedOkTrace, rec.events());
+    try {
+        sched.run_with_guard(guard);
+        dettrace::write_trace_jsonl(flip ? kActualTrace : kGuardedOkTrace, rec.events());
+    } catch (...) {
+        if (flip) {
+            dettrace::write_trace_jsonl(kActualTrace, rec.events());
+        }
+        throw;
+    }
 }
 
 static void write_replayed_trace(const std::vector<dettrace::Event>& expected) {

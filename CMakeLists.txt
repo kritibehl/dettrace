@@ -29,3 +29,4 @@ add_executable(test_flaky_case_1
 target_include_directories(test_flaky_case_1 PRIVATE include)
 
 add_test(NAME flaky_case_1 COMMAND test_flaky_case_1)
+set_tests_properties(flaky_case_1 PROPERTIES WORKING_DIRECTORY ${CMAKE_BINARY_DIR})

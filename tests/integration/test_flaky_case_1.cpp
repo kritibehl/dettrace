@@ -26,7 +26,7 @@ static int first_divergence_index(const std::vector<dettrace::Event>& a,
 }
 
 int main() {
-    const int rc = std::system("./build/dettrace > /tmp/dettrace_test_output.txt 2>&1");
+    const int rc = std::system("./dettrace > /tmp/dettrace_test_output.txt 2>&1");
     assert(rc == 0);
 
     assert(fs::exists("artifacts/expected.jsonl"));
@@ -47,10 +47,8 @@ int main() {
     assert(e.type == dettrace::EventType::TASK_DEQUEUED);
     assert(a.type == dettrace::EventType::TASK_DEQUEUED);
 
-    assert(e.task.has_value());
-    assert(a.task.has_value());
-    assert(e.task.value() == 1);
-    assert(a.task.value() == 2);
+    assert(e.task == 1);
+    assert(a.task == 2);
 
     std::cout << "PASS: flaky_case_1 divergence detected at index 5\n";
     return 0;
