@@ -100,7 +100,7 @@ python scripts/generate_divergence_report.py
 This reads `artifacts/expected.jsonl` and `artifacts/actual.jsonl`, finds the first mismatch, and writes `reports/divergence_report.json`.
 
 ---
-cat >> README.md <<'EOF'
+---
 
 ## Swift companion analyzer
 
@@ -114,13 +114,3 @@ It includes **3 passing tests** covering:
 ```bash
 cd dettrace-swift
 swift run DetTraceAnalyzer ../artifacts/expected.jsonl ../artifacts/actual.jsonl
-
-## Current maturity
-
-DetTrace is a functional showcase of deterministic replay and divergence analysis with a real flaky-case walkthrough and passing integration coverage. Some components (`analysis/`, `trace/`, `replay/`, `viewer/`) are currently scaffolded and not yet fully implemented.
-
----
-
-## License
-
-MITv
