@@ -109,4 +109,4 @@ DetTrace is a functional showcase of deterministic replay and divergence analysi
 
 ## License
 
-MIT
+MITv
