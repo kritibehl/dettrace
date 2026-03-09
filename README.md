@@ -100,6 +100,20 @@ python scripts/generate_divergence_report.py
 This reads `artifacts/expected.jsonl` and `artifacts/actual.jsonl`, finds the first mismatch, and writes `reports/divergence_report.json`.
 
 ---
+cat >> README.md <<'EOF'
+
+## Swift companion analyzer
+
+DetTrace includes a **Swift CLI companion** in `dettrace-swift/` that reads C++-generated trace artifacts concurrently using `async/await`, isolates analysis state with an `actor`, and generates structured JSON/Markdown divergence reports.
+
+It includes **3 passing tests** covering:
+- identical traces
+- known divergence at index 5
+- different length traces
+
+```bash
+cd dettrace-swift
+swift run DetTraceAnalyzer ../artifacts/expected.jsonl ../artifacts/actual.jsonl
 
 ## Current maturity
 
