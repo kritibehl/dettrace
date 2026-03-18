@@ -1,0 +1,19 @@
+[
+  {
+    "name": "Flaky Case 1 — Ordering divergence",
+    "status": "implemented",
+    "summary": "Known divergence at event index 5 where TASK_DEQUEUED expected task 1 but observed task 2.",
+    "workers": 2,
+    "events": 20,
+    "divergence_index": 5,
+    "invariant_status": "expected trace invariants passed",
+    "reports": [
+      "/reports/divergence_report.json",
+      "/reports/divergence_report_swift.json"
+    ],
+    "reproduce": [
+      "./scripts/run_demo.sh",
+      "cd dettrace-swift && swift run DetTraceAnalyzer ../artifacts/expected.jsonl ../artifacts/actual.jsonl"
+    ]
+  }
+]

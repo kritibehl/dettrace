@@ -2,11 +2,124 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>DetTrace Timeline Viewer</title>
+  <title>DetTrace Diagnostics Viewer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/viewer/styles.css" />
 </head>
 <body>
-  <h1>DetTrace Timeline Viewer</h1>
-  <p>TODO: render event timeline, thread lanes, and first-divergence highlight.</p>
+  <header class="page-header">
+    <div>
+      <h1>DetTrace Diagnostics Viewer</h1>
+      <p>Deterministic replay diagnostics for passing vs failing concurrent executions.</p>
+    </div>
+    <nav class="top-nav">
+      <a href="/viewer/index.html">Viewer</a>
+      <a href="/viewer/benchmarks.html">Benchmarks</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <section class="card">
+      <h2>Load traces</h2>
+      <div class="controls">
+        <label>
+          Passing / expected
+          <input id="expectedPath" type="text" value="/artifacts/expected.jsonl" />
+        </label>
+        <label>
+          Failing / actual
+          <input id="actualPath" type="text" value="/artifacts/actual.jsonl" />
+        </label>
+        <button id="loadBtn">Load diagnostics</button>
+      </div>
+      <p class="muted">Serve from repo root, then open <code>/viewer/index.html</code>.</p>
+    </section>
+
+    <section class="summary-grid">
+      <article class="card">
+        <h2>What changed</h2>
+        <div id="changeSummary" class="summary-body">Load traces to inspect divergence.</div>
+      </article>
+
+      <article class="card">
+        <h2>Root-cause hints</h2>
+        <ul id="rootCauseHints" class="hint-list">
+          <li>Load traces to generate rule-based hints.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h2>Invariant status</h2>
+        <div id="invariantExplorer" class="summary-body">Load traces to inspect invariant results.</div>
+      </article>
+    </section>
+
+    <section class="card">
+      <h2>Filters</h2>
+      <div class="controls">
+        <label>
+          Task
+          <input id="taskFilter" type="number" placeholder="e.g. 1" />
+        </label>
+        <label>
+          Worker
+          <input id="workerFilter" type="number" placeholder="e.g. 0" />
+        </label>
+        <button id="applyFiltersBtn">Apply filters</button>
+        <button id="clearFiltersBtn">Clear filters</button>
+      </div>
+    </section>
+
+    <section class="diff-grid">
+      <article class="card trace-card">
+        <div class="card-header-row">
+          <h2>Passing / expected trace</h2>
+          <span id="expectedMeta" class="badge">not loaded</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>seq</th>
+                <th>type</th>
+                <th>task</th>
+                <th>worker</th>
+                <th>queue</th>
+              </tr>
+            </thead>
+            <tbody id="expectedTableBody"></tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="card trace-card">
+        <div class="card-header-row">
+          <h2>Failing / actual trace</h2>
+          <span id="actualMeta" class="badge">not loaded</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>seq</th>
+                <th>type</th>
+                <th>task</th>
+                <th>worker</th>
+                <th>queue</th>
+              </tr>
+            </thead>
+            <tbody id="actualTableBody"></tbody>
+          </table>
+        </div>
+      </article>
+    </section>
+
+    <section class="card">
+      <h2>Before / after divergence</h2>
+      <div id="beforeAfter" class="before-after">Load traces to inspect the split point.</div>
+    </section>
+  </main>
+
+  <script src="/viewer/app.js"></script>
 </body>
 </html>

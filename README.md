@@ -114,3 +114,26 @@ It includes **3 passing tests** covering:
 ```bash
 cd dettrace-swift
 swift run DetTraceAnalyzer ../artifacts/expected.jsonl ../artifacts/actual.jsonl
+---
+
+## Diagnostics viewer
+
+DetTrace includes a lightweight developer-facing diagnostics UI in `viewer/` that makes execution differences easier to inspect for both systems and general SWE audiences.
+
+It provides:
+- a side-by-side diff view for passing vs failing executions
+- first-divergence highlighting
+- rule-based root-cause hints
+- invariant status exploration
+- a "what changed between runs" summary
+- a reproducible scenarios / benchmark page
+
+Run it from the repo root:
+
+```bash
+./scripts/serve_viewer.sh
+Then open:
+
+http://localhost:8000/viewer/index.html
+
+http://localhost:8000/viewer/benchmarks.html
