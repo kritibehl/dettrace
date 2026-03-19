@@ -1,0 +1,12 @@
+{
+  "baseline_first_failing_service": "profile-service",
+  "candidate_first_failing_service": "auth-service",
+  "baseline_first_failure_reason": "tcp_connect_timeout",
+  "candidate_first_failure_reason": "dns_failure",
+  "retry_delta": 2,
+  "timeout_delta": -1,
+  "network_error_delta": 2,
+  "failover_delta": 0,
+  "max_latency_delta_ms": -410,
+  "summary": "Semantic incident diff compares first failing hop, dominant failure reason, retry amplification, timeout growth, failover presence, and latency inflation between baseline and candidate runs."
+}

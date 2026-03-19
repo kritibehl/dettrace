@@ -1,0 +1,35 @@
+{
+  "baseline_event_count": 7,
+  "candidate_event_count": 7,
+  "incident_family": "retry_storm",
+  "timeout_events": 1,
+  "retry_events": 2,
+  "network_error_events": 2,
+  "failover_events": 0,
+  "annotations": ["dns_failure","transport_reset","retry_burst","downstream_unavailable","latency_inflation_between_hops","timeout_chain"],
+  "timeline_correlation": {
+    "deploy_correlated": true,
+    "failover_observed": false,
+    "max_latency_ms": 900,
+    "error_burst_count": 3,
+    "window_start_ms": 5000,
+    "window_end_ms": 6513,
+    "suspected_trigger": "recent_deploy"
+  },
+  "blast_radius": {
+    "root_service": "auth-service",
+    "directly_impacted_services": ["token-db"],
+    "upstream_services": ["edge-proxy"],
+    "retry_events": 2,
+    "timeout_events": 1,
+    "network_error_events": 2
+  },
+  "summary": "Cross-service replay reconstructed request/span causality, correlated incident timing against deploy/error markers, inferred blast radius, and highlighted timeout cascades, retry amplification, and transport-level divergence.",
+  "runbook": [
+    {"step":"check_request_and_span_lineage","guidance":"Confirm request_id/span_id chain and identify the first failing downstream hop."},
+    {"step":"correlate_with_recent_changes","guidance":"Check whether error burst timing aligns with deploy, health-change, or failover windows."},
+    {"step":"inspect_network_symptoms","guidance":"Check DNS, TCP connect, transport resets, and latency inflation between services."},
+    {"step":"assess_retry_policy","guidance":"Verify backoff, retry fan-out, and whether retries amplified an already failing dependency."},
+    {"step":"blast_radius_review","guidance":"Inspect impacted upstream callers and downstream dependencies before rollback or traffic shift."}
+  ]
+}

@@ -30,3 +30,19 @@ target_include_directories(test_flaky_case_1 PRIVATE include)
 
 add_test(NAME flaky_case_1 COMMAND test_flaky_case_1)
 set_tests_properties(flaky_case_1 PROPERTIES WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
+
+
+add_executable(dettrace_distributed
+    src/distributed_main.cpp
+    src/distributed_trace.cpp
+)
+target_include_directories(dettrace_distributed PRIVATE include)
+
+add_executable(test_distributed_trace
+    tests/integration/test_distributed_trace.cpp
+    src/distributed_trace.cpp
+)
+target_include_directories(test_distributed_trace PRIVATE include)
+add_test(NAME distributed_trace COMMAND test_distributed_trace)
+set_tests_properties(distributed_trace PROPERTIES WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
+
