@@ -2,7 +2,6 @@
 
 **Deterministic replay and distributed incident forensics for reconstructing cross-service failure timelines.**
 
-[![Tests](https://github.com/kritibehl/dettrace/actions/workflows/test.yml/badge.svg)](https://github.com/kritibehl/dettrace/actions)
 ![GitHub Repo stars](https://img.shields.io/github/stars/kritibehl/dettrace?style=social)
 
 **DetTrace tells you which service failed first and how the failure spread.**
