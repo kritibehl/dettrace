@@ -1,33 +1,43 @@
 # DetTrace
 
-> Deterministic replay + distributed incident forensics for reconstructing cross-service failure timelines.
+**Deterministic replay and distributed incident forensics for reconstructing cross-service failure timelines.**
+
+[![Tests](https://github.com/kritibehl/dettrace/actions/workflows/test.yml/badge.svg)](https://github.com/kritibehl/dettrace/actions)
+![GitHub Repo stars](https://img.shields.io/github/stars/kritibehl/dettrace?style=social)
+
+**DetTrace tells you which service failed first and how the failure spread.**
+
+It reconstructs distributed failures into replayable timelines — finding the first failing hop, explaining propagation across services, and producing semantic incident diffs that show *how* failures changed between runs.
 
 ---
 
-DetTrace reconstructs distributed failure sequences into replayable, comparable, and explainable timelines. Originally built for deterministic concurrency replay and divergence analysis, it now extends that model to distributed incident forensics: request/span causality reconstruction, timeout-chain analysis, retry amplification detection, failover edge-case replay, blast-radius inference, and semantic incident diffing.
+## 30-Second Summary
+
+- A request fails at the edge. Retries amplify load. Downstream becomes unhealthy.
+- Standard logs show *what* happened. DetTrace shows *where it started* and *how it propagated*.
+- It replays the incident deterministically, infers blast radius, and produces a semantic diff against any baseline run.
+- Output: first failing service, failure reason, retry amplification delta, blast radius, operator runbook.
+
+Originally built for deterministic concurrency replay, DetTrace now extends that model to distributed incident forensics: request/span causality reconstruction, timeout-chain analysis, retry amplification detection, blast-radius inference, and semantic incident diffing.
 
 ---
 
-## Current Scope
+## The Problem
 
-- 4 replayable distributed incident packs
-- 10+ network, transport, and recovery annotations
-- OTEL-style span ingestion into a deterministic replay model
-- semantic incident diffing across baseline and candidate runs
-- blast-radius inference across upstream and downstream services
-- 2 end-to-end test paths covering original replay and distributed incident analysis
+Distributed incidents are hard to debug because:
+
+- Symptoms appear far from the original failure
+- Retries distort the timeline and inflate blast radius
+- Multiple services emit partial, conflicting signals
+- Logs show *what* happened, but not *where the divergence truly began*
+
+> A request fails at the edge. Retries amplify load. A downstream dependency becomes unavailable.
+
+**DetTrace shows:** which service failed first, how failure propagated, and whether the candidate incident differs semantically from baseline.
 
 ---
 
-## Why DetTrace
-
-Distributed incidents are easy to observe but hard to explain.
-
-A request fails at the edge. Retries amplify load. A downstream dependency becomes unavailable. Logs across services show only fragments.
-
-DetTrace reconstructs those fragments into replayable failure timelines so you can identify the first failing hop, understand propagation across services, and compare incident regressions semantically across runs.
-
-**Questions DetTrace answers:**
+## What DetTrace Answers
 
 - Which downstream hop failed first?
 - Was this a timeout cascade or a retry storm?
@@ -37,69 +47,35 @@ DetTrace reconstructs those fragments into replayable failure timelines so you c
 
 ---
 
-## Quick Start
+## Core Workflow
 
-**Original deterministic replay demo:**
-```bash
-./scripts/run_demo.sh
+```
+trace / span ingestion
+    ↓
+event normalization
+    ↓
+timeline reconstruction
+    ↓
+first-divergence detection
+    ↓
+blast-radius + failure-pattern analysis
+    ↓
+semantic incident diff
 ```
 
-**Distributed incident replay demo:**
-```bash
-./scripts/run_distributed_demo.sh
-```
-
-The distributed demo builds the incident path, generates replay packs, writes annotated cross-service traces, ingests OTEL-style sample spans, and emits a structured incident report plus semantic diff.
-
 ---
 
-## What DetTrace Does
+## Key Capabilities
 
-### Core replay and divergence analysis
+**Deterministic Replay** — Replays event sequences to isolate ordering-sensitive failures and make divergence reproducible across runs.
 
-- Generates an expected concurrent execution trace and validates invariants against it
-- Validates execution against an expected ordering during guarded replay
-- Detects the **first point of divergence** deterministically
-- Saves divergent trace artifacts even when replay throws, preserving failure context
-- Produces a structured divergence report identifying the mismatched events
+**Distributed Incident Reconstruction** — Builds cross-service timelines from trace-like or JSONL event inputs, including an OTEL-compatible ingest path.
 
-### Distributed incident analysis
+**First-Divergence Analysis** — Detects the exact event and service where expected and actual behavior begin to meaningfully differ.
 
-- Reconstructs cross-service timelines using request IDs, span IDs, and parent-span lineage
-- Ingests OTEL-style span records into a replayable distributed event model
-- Annotates traces with network and transport symptoms
-- Replays baseline incident timelines deterministically
-- Correlates incidents with deploy and error-burst timing windows
-- Infers blast radius across upstream callers and downstream dependencies
-- Produces semantic incident diffs and operator-oriented runbook guidance
+**Blast-Radius Inference** — Identifies the root service, directly impacted downstream services, and upstream services affected by propagation.
 
----
-
-## Original Replay Example
-
-The original replay path includes a concrete flaky-case walkthrough in `examples/flaky_case_1/`.
-
-Observed first divergence at event index `5`:
-
-- Expected: `TASK_DEQUEUED task=1 worker=0 queue=0`
-- Actual: `TASK_DEQUEUED task=2 worker=0 queue=0`
-
-DetTrace catches the exact split point deterministically and preserves the divergent trace artifacts for inspection.
-
----
-
-## Failure Modes Modeled
-
-| Category | Failure Mode |
-|---|---|
-| Timeout | cascading timeouts, timeout chains |
-| Retry | retry storms, retry amplification |
-| Transport | TCP connect timeout, transport reset, cancellation propagation |
-| Network | DNS failure, latency inflation between hops |
-| Dependency | downstream unavailable, dependency failover edge cases |
-| Recovery | misordered failure recovery |
-
-These are modeled as replayable trace and event streams.
+**Semantic Incident Diff** — Compares baseline vs. candidate incidents at the failure-pattern level, not just raw line mismatch.
 
 ---
 
@@ -107,11 +83,11 @@ These are modeled as replayable trace and event streams.
 
 ```
 Client / Edge Proxy
-        |
-        v
+        │
+        ▼
    auth-service   ← first failing service
-        |
-        v
+        │
+        ▼
      token-db     ← downstream impact
 
 Observed signals:
@@ -119,15 +95,17 @@ Observed signals:
 
 Propagation:
   edge-proxy → auth-service → token-db
-                |             ^
+                │             ^
                 +-- retries --+
-                       |
+                       │
                        +-- eventual timeout
 ```
 
 ---
 
-## Example Incident Report
+## Example Outputs
+
+### Incident Report
 
 ```json
 {
@@ -135,14 +113,9 @@ Propagation:
   "timeout_events": 1,
   "retry_events": 2,
   "network_error_events": 2,
-  "failover_events": 0,
   "annotations": [
-    "dns_failure",
-    "transport_reset",
-    "retry_burst",
-    "downstream_unavailable",
-    "latency_inflation_between_hops",
-    "timeout_chain"
+    "dns_failure", "transport_reset", "retry_burst",
+    "downstream_unavailable", "latency_inflation_between_hops", "timeout_chain"
   ],
   "timeline_correlation": {
     "deploy_correlated": true,
@@ -158,11 +131,7 @@ Propagation:
 }
 ```
 
----
-
-## Semantic Incident Diff
-
-DetTrace compares baseline and candidate incidents at the service and failure-pattern level, not just raw event mismatch.
+### Semantic Incident Diff
 
 ```json
 {
@@ -177,15 +146,28 @@ DetTrace compares baseline and candidate incidents at the service and failure-pa
 }
 ```
 
-Surfaces: first failing service changes, failure-reason shifts, retry amplification deltas, timeout/network-error changes, and latency characteristic changes between runs.
+Surfaces: first-failing-service changes, failure-reason shifts, retry amplification deltas, and latency characteristic changes between runs.
+
+---
+
+## Failure Modes Modeled
+
+| Category | Failure Mode |
+|---|---|
+| Timeout | Cascading timeouts, timeout chains |
+| Retry | Retry storms, retry amplification |
+| Transport | TCP connect timeout, transport reset, cancellation propagation |
+| Network | DNS failure, latency inflation between hops |
+| Dependency | Downstream unavailable, dependency failover edge cases |
+| Recovery | Misordered failure recovery |
 
 ---
 
 ## OTEL-Style Ingestion
 
-DetTrace includes a JSONL ingest path that converts span-like records into replayable distributed events.
+DetTrace includes a JSONL ingest path that converts span-like records into replayable distributed events:
 
-| Span field | Maps to |
+| Span Field | Maps To |
 |---|---|
 | `trace_id` | `request_id` |
 | `span_id` | `span_id` |
@@ -201,7 +183,7 @@ DetTrace includes a JSONL ingest path that converts span-like records into repla
 |---|---|
 | Replay packs | `packs/cascading_timeouts.jsonl`, `packs/retry_storm.jsonl`, `packs/misordered_recovery.jsonl`, `packs/failover_edge.jsonl` |
 | Sample ingest | `samples/otel_spans.jsonl` |
-| Annotated traces | `artifacts/baseline_annotated.jsonl`, `artifacts/candidate_annotated.jsonl`, `artifacts/otel_ingested_annotated.jsonl`, `artifacts/replayed_distributed.jsonl` |
+| Annotated traces | `artifacts/baseline_annotated.jsonl`, `artifacts/candidate_annotated.jsonl` |
 | Incident report | `reports/distributed_incident_report.json` |
 | Semantic diff | `reports/distributed_semantic_diff.json` |
 
@@ -214,7 +196,7 @@ cmake -B build && cmake --build build
 cd build && ctest --output-on-failure
 ```
 
-End-to-end coverage includes: original flaky replay validation, distributed incident replay, OTEL ingestion, annotation checks, timeline correlation, blast-radius inference, and semantic diff generation.
+End-to-end coverage: original flaky replay validation · distributed incident replay · OTEL ingestion · annotation checks · timeline correlation · blast-radius inference · semantic diff generation.
 
 ---
 
@@ -247,33 +229,6 @@ A lightweight developer-facing UI in `viewer/` for inspecting execution differen
 
 ---
 
-## Repo Structure
-
-```
-analysis/          Divergence detection and invariant checking
-trace/             Trace recording and serialization
-replay/            Replay engine
-examples/
-  flaky_case_1/    Concrete ordering-divergence walkthrough
-include/dettrace/  Public headers, distributed trace model
-src/               Core implementation and distributed incident mode
-scripts/           Demo runners and report helpers
-tests/
-  unit/
-  integration/     test_flaky_case_1 + distributed incident replay
-  regression/
-bench/             Overhead benchmarks
-docs/
-viewer/            Trace viewer
-artifacts/         Generated trace files
-packs/             Replayable distributed incident packs
-reports/           Divergence and incident reports
-samples/           Sample OTEL-style JSONL span input
-dettrace-swift/    Swift companion analyzer
-```
-
----
-
 ## Operator Runbook Output
 
 DetTrace emits runbook-oriented guidance alongside replay artifacts:
@@ -286,19 +241,73 @@ DetTrace emits runbook-oriented guidance alongside replay artifacts:
 
 ---
 
-## Positioning
+## Quick Start
 
-DetTrace is **deterministic replay + distributed incident forensics**.
+```bash
+# Original deterministic replay demo
+./scripts/run_demo.sh
 
-It is not a packet sniffer, not a router-control framework, and not a full observability platform. Its value is in making distributed failure sequences replayable, comparable, and explainable.
+# Distributed incident replay demo
+./scripts/run_distributed_demo.sh
+```
+
+The distributed demo builds the incident path, generates replay packs, writes annotated cross-service traces, ingests OTEL-style sample spans, and emits a structured incident report plus semantic diff.
 
 ---
 
-## Resume Angle
+## Architecture
 
-Built a C++ distributed incident-forensics framework that ingests OTEL-style spans, reconstructs cross-service failure timelines, detects retry amplification and transport-level divergence, infers blast radius, and semantically diffs timeout, retry, and failover regressions across baseline and candidate runs.
+```
+input traces / spans
+    ↓
+normalization
+    ↓
+event model
+    ↓
+replay engine
+    ↓
+divergence detection
+    ↓
+distributed incident analysis
+    ↓
+reports / viewer / semantic diff
+```
 
 ---
+
+## Repo Structure
+
+```
+analysis/          Divergence detection and invariant checking
+trace/             Trace recording and serialization
+replay/            Replay engine
+examples/
+  flaky_case_1/    Concrete ordering-divergence walkthrough
+include/dettrace/  Public headers, distributed trace model
+src/               Core implementation and distributed incident mode
+scripts/           Demo runners and report helpers
+viewer/            Developer-facing diagnostics UI
+dettrace-swift/    Swift companion analyzer
+packs/             Replayable distributed incident packs
+reports/           Divergence and incident reports
+samples/           Sample OTEL-style JSONL span input
+artifacts/         Generated trace files
+```
+
+---
+
+## Why This Project Stands Out
+
+DetTrace goes beyond log diffing toward failure reconstruction. It demonstrates deterministic replay thinking applied to distributed systems, cross-service incident analysis with blast-radius inference, semantic comparison of failure patterns across runs, and multi-language systems work (C++ core + Swift companion) — making it especially relevant for infrastructure, runtime, and reliability-oriented teams.
+
+---
+
+## Related Projects
+
+- [Faultline](https://github.com/kritibehl/faultline) — correctness under failure
+- [KubePulse](https://github.com/kritibehl/KubePulse) — resilience validation
+- [AutoOps-Insight](https://github.com/kritibehl/autoops-insight) — operator triage
+- [FairEval-Suite](https://github.com/kritibehl/FairEval-Suite) — evaluation and release gating
 
 ## License
 
