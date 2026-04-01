@@ -1,5 +1,6 @@
 # DetTrace
 
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 > Deterministic replay and divergence analysis for isolating the first point of failure in concurrent and distributed execution traces.
 =======
@@ -30,15 +31,17 @@ DetTrace is a specialist debugging and incident-forensics tool for turning flaky
 =======
 Originally built for deterministic concurrency replay, DetTrace now extends that model to distributed incident forensics: request/span causality reconstruction, timeout-chain analysis, retry amplification detection, blast-radius inference, and semantic incident diffing.
 =======
+=======
+>>>>>>> Stashed changes
 > Deterministic replay and divergence analysis for isolating the first point of failure in concurrent and distributed execution traces.
 
 ---
 
 Distributed failures are easy to observe. They're hard to explain.
->>>>>>> f79cfd1 (Refocus README on first-failure isolation and incident forensics)
 
 A request fails at the edge. Retries amplify load. Logs show fragments — timeouts, resets, cascading errors — but none of them point to where the failure *actually started*. DetTrace answers that question.
 
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 ## The Problem
 >>>>>>> da976ff (Add Swift XCTest harness for deterministic replay and schedule-violation scenarios)
@@ -60,10 +63,11 @@ Expected:  {"seq":5,"type":"TASK_DEQUEUED","task":1,"worker":0,"queue":0}
 Actual:    {"seq":5,"type":"TASK_DEQUEUED","task":2,"worker":0,"queue":0}
 ```
 =======
+=======
+>>>>>>> Stashed changes
 It records expected execution, replays observed behavior under guard, isolates the exact event where the traces diverge, and preserves artifacts that make debugging and incident reconstruction possible.
 
 DetTrace is a specialist debugging and incident-forensics tool for turning flaky or ambiguous failures into reproducible evidence.
->>>>>>> f79cfd1 (Refocus README on first-failure isolation and incident forensics)
 
 **First divergence isolated at event index `5`.**
 
@@ -71,6 +75,7 @@ Not just *that* the run failed — but *where* the execution first stopped match
 
 ---
 
+<<<<<<< Updated upstream
 ## Without DetTrace vs With DetTrace
 
 <<<<<<< HEAD
@@ -111,6 +116,10 @@ Builds the project, generates an expected trace, runs a divergent execution, iso
 ./scripts/run_distributed_demo.sh
 ```
 =======
+=======
+## What DetTrace Does
+
+>>>>>>> Stashed changes
 - Detects the **first point of divergence** deterministically across concurrent and distributed traces
 - Reconstructs cross-service failure timelines from span lineage and request IDs
 - Ingests OTEL-style span records into a replayable distributed event model
@@ -175,12 +184,12 @@ Generates replayable incident packs, ingests OTEL-style sample spans, annotates 
 | Network | DNS failure, latency inflation between hops |
 | Dependency | Downstream unavailable, dependency failover edge cases |
 | Recovery | Misordered failure recovery |
->>>>>>> f79cfd1 (Refocus README on first-failure isolation and incident forensics)
 
 Generates replayable incident packs, ingests OTEL-style sample spans, annotates network and transport symptoms, writes an incident report, and generates a semantic diff between baseline and candidate runs.
 
 ---
 
+<<<<<<< Updated upstream
 ## Failure Modes Modeled
 
 | Category | Failure Mode |
@@ -194,11 +203,14 @@ Generates replayable incident packs, ingests OTEL-style sample spans, annotates 
 
 ---
 
+=======
+>>>>>>> Stashed changes
 ## Example Incident Report
 
 ```json
 {
   "incident_family": "retry_storm",
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -208,6 +220,8 @@ Generates replayable incident packs, ingests OTEL-style sample spans, annotates 
 =======
 >>>>>>> f79cfd1 (Refocus README on first-failure isolation and incident forensics)
 >>>>>>> da976ff (Add Swift XCTest harness for deterministic replay and schedule-violation scenarios)
+=======
+>>>>>>> Stashed changes
   "annotations": [
     "dns_failure", "transport_reset", "retry_burst",
     "downstream_unavailable", "latency_inflation_between_hops", "timeout_chain"
@@ -226,6 +240,7 @@ Generates replayable incident packs, ingests OTEL-style sample spans, annotates 
 }
 ```
 
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 ## Example Semantic Diff
 =======
@@ -235,6 +250,9 @@ Generates replayable incident packs, ingests OTEL-style sample spans, annotates 
 ## Example Semantic Diff
 >>>>>>> f79cfd1 (Refocus README on first-failure isolation and incident forensics)
 >>>>>>> da976ff (Add Swift XCTest harness for deterministic replay and schedule-violation scenarios)
+=======
+## Example Semantic Diff
+>>>>>>> Stashed changes
 
 ```json
 {
@@ -248,6 +266,7 @@ Generates replayable incident packs, ingests OTEL-style sample spans, annotates 
 }
 ```
 
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 This helps distinguish root-cause shifts from downstream symptom changes across runs.
 =======
@@ -270,11 +289,15 @@ Surfaces: first-failing-service changes, failure-reason shifts, retry amplificat
 This helps distinguish root-cause shifts from downstream symptom changes across runs.
 >>>>>>> f79cfd1 (Refocus README on first-failure isolation and incident forensics)
 >>>>>>> da976ff (Add Swift XCTest harness for deterministic replay and schedule-violation scenarios)
+=======
+This helps distinguish root-cause shifts from downstream symptom changes across runs.
+>>>>>>> Stashed changes
 
 ---
 
 ## OTEL-Style Ingestion
 
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 DetTrace includes a JSONL ingest path that maps span records into its replay model:
 =======
@@ -284,6 +307,9 @@ DetTrace includes a JSONL ingest path that converts span-like records into repla
 DetTrace includes a JSONL ingest path that maps span records into its replay model:
 >>>>>>> f79cfd1 (Refocus README on first-failure isolation and incident forensics)
 >>>>>>> da976ff (Add Swift XCTest harness for deterministic replay and schedule-violation scenarios)
+=======
+DetTrace includes a JSONL ingest path that maps span records into its replay model:
+>>>>>>> Stashed changes
 
 | Span field | Maps to |
 |---|---|
@@ -299,6 +325,7 @@ DetTrace includes a JSONL ingest path that maps span records into its replay mod
 
 | Artifact | Description |
 |---|---|
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -309,6 +336,8 @@ DetTrace includes a JSONL ingest path that maps span records into its replay mod
 | Semantic diff | `reports/distributed_semantic_diff.json` |
 =======
 >>>>>>> da976ff (Add Swift XCTest harness for deterministic replay and schedule-violation scenarios)
+=======
+>>>>>>> Stashed changes
 | `artifacts/expected.jsonl` | Expected execution trace |
 | `artifacts/actual.jsonl` | Observed execution trace |
 | `artifacts/replayed.jsonl` | Replayed trace |
@@ -316,10 +345,13 @@ DetTrace includes a JSONL ingest path that maps span records into its replay mod
 | `packs/*.jsonl` | Replayable distributed incident packs |
 | `reports/distributed_incident_report.json` | Operator-style incident report |
 | `reports/distributed_semantic_diff.json` | Semantic diff across runs |
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 =======
 >>>>>>> f79cfd1 (Refocus README on first-failure isolation and incident forensics)
 >>>>>>> da976ff (Add Swift XCTest harness for deterministic replay and schedule-violation scenarios)
+=======
+>>>>>>> Stashed changes
 
 ---
 
@@ -330,6 +362,7 @@ cmake -B build && cmake --build build
 cd build && ctest --output-on-failure
 ```
 
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 End-to-end coverage includes original flaky replay, distributed incident replay, OTEL ingestion, annotation checks, timeline correlation, blast-radius inference, and semantic diff generation.
 =======
@@ -339,6 +372,9 @@ End-to-end coverage: original flaky replay validation · distributed incident re
 End-to-end coverage includes original flaky replay, distributed incident replay, OTEL ingestion, annotation checks, timeline correlation, blast-radius inference, and semantic diff generation.
 >>>>>>> f79cfd1 (Refocus README on first-failure isolation and incident forensics)
 >>>>>>> da976ff (Add Swift XCTest harness for deterministic replay and schedule-violation scenarios)
+=======
+End-to-end coverage includes original flaky replay, distributed incident replay, OTEL ingestion, annotation checks, timeline correlation, blast-radius inference, and semantic diff generation.
+>>>>>>> Stashed changes
 
 ---
 
@@ -372,9 +408,6 @@ Features side-by-side diff for passing vs failing executions, first-divergence h
 
 ---
 
-<<<<<<< HEAD
-## Operator Runbook Output
-=======
 ## Repo Structure
 
 ```
@@ -402,7 +435,6 @@ dettrace-swift/    Swift companion analyzer
 ---
 
 ## Operator Runbook
->>>>>>> f79cfd1 (Refocus README on first-failure isolation and incident forensics)
 
 DetTrace emits runbook guidance alongside replay artifacts:
 
@@ -414,6 +446,7 @@ DetTrace emits runbook guidance alongside replay artifacts:
 
 ---
 
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 ## Quick Start
 
@@ -500,6 +533,8 @@ DetTrace emits runbook guidance alongside replay artifacts:
 =======
 >>>>>>> f79cfd1 (Refocus README on first-failure isolation and incident forensics)
 >>>>>>> da976ff (Add Swift XCTest harness for deterministic replay and schedule-violation scenarios)
+=======
+>>>>>>> Stashed changes
 ## License
 
 MIT
