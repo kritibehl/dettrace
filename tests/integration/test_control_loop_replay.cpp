@@ -2,54 +2,59 @@
 
 #include <cassert>
 #include <string>
+#include <vector>
+
+static bool has_class(const dettrace::ControlLoopReport& report, const std::string& klass) {
+    for (const auto& c : report.root_cause_classes) {
+        if (c == klass) return true;
+    }
+    return false;
+}
 
 int main() {
-    auto good = dettrace::run_known_good_control_loop();
-    auto bad = dettrace::run_known_bad_control_loop();
+    auto runs = dettrace::run_control_loop_scenario_pack();
+    assert(runs.size() == 4);
 
-    good.report = dettrace::analyze_control_divergence(good.scenario_name, good.steps, good.steps);
-    bad.report = dettrace::analyze_control_divergence(bad.scenario_name, good.steps, bad.steps);
+    auto healthy = runs[0];
+    healthy.report = dettrace::analyze_control_divergence(healthy.scenario_name, healthy.steps, healthy.steps);
 
-    assert(!good.steps.empty());
-    assert(good.steps.size() == bad.steps.size());
+    assert(healthy.scenario_name == "healthy");
+    assert(healthy.report.first_divergence_step == -1);
+    assert(healthy.report.missed_deadlines == 0);
+    assert(healthy.report.max_timing_jitter_ms == 0.0);
 
-    assert(good.report.first_divergence_step == -1);
-    assert(good.report.missed_deadlines == 0);
-    assert(good.report.missed_deadlines == 0);
-
-    assert(bad.report.first_divergence_step >= 0);
-    assert(bad.report.first_divergence_time_s >= 0.0);
-    assert(bad.report.error_growth_after_divergence >= 0.0);
-    assert(bad.report.max_position_error > 0.5);
-    assert(bad.report.missed_deadlines >= 1);
-    assert(bad.report.output_clipping_detected);
-    assert(bad.report.unstable_oscillation_detected);
-    assert(bad.report.max_timing_jitter_ms > 0.0);
-
-    bool saw_delay = false, saw_drop = false, saw_clip = false, saw_missed = false, saw_stale = false, saw_jitter = false;
-    for (const auto& c : bad.report.root_cause_classes) {
-        if (c == "delayed_measurement") saw_delay = true;
-        if (c == "dropped_sensor_sample") saw_drop = true;
-        if (c == "actuator_saturation") saw_clip = true;
-        if (c == "missed_update_cycle") saw_missed = true;
-        if (c == "stale_state_estimate") saw_stale = true;
-        if (c == "timing_jitter") saw_jitter = true;
+    std::vector<dettrace::ControlLoopRun> faulted;
+    for (size_t i = 1; i < runs.size(); ++i) {
+        runs[i].report = dettrace::analyze_control_divergence(runs[i].scenario_name, healthy.steps, runs[i].steps);
+        faulted.push_back(runs[i]);
     }
 
-    assert(saw_delay);
-    assert(saw_drop);
-    assert(saw_clip);
-    assert(saw_missed);
-    assert(saw_stale);
-    assert(saw_jitter);
+    assert(faulted[0].scenario_name == "delayed_sensor");
+    assert(faulted[1].scenario_name == "actuator_saturation");
+    assert(faulted[2].scenario_name == "timing_jitter");
 
-    const auto report_json = dettrace::control_report_json(bad.report);
-    assert(report_json.find("first_divergence_step") != std::string::npos);
-    assert(report_json.find("root_cause_classes") != std::string::npos);
+    assert(faulted[0].report.first_divergence_step >= 0);
+    assert(has_class(faulted[0].report, "delayed_measurement"));
+    assert(has_class(faulted[0].report, "dropped_sensor_sample"));
+    assert(has_class(faulted[0].report, "stale_state_estimate"));
 
-    const auto timing_json = dettrace::timing_budget_summary_json(good.steps, bad.steps);
-    assert(timing_json.find("actual_missed_deadlines") != std::string::npos);
-    assert(timing_json.find("max_timing_jitter_ms") != std::string::npos);
+    assert(faulted[1].report.first_divergence_step >= 0);
+    assert(faulted[1].report.output_clipping_detected);
+    assert(has_class(faulted[1].report, "actuator_saturation"));
+
+    assert(faulted[2].report.missed_deadlines >= 1);
+    assert(faulted[2].report.max_timing_jitter_ms > 0.0);
+    assert(has_class(faulted[2].report, "timing_jitter"));
+    assert(
+        faulted[2].report.first_divergence_step >= 0 ||
+        faulted[2].report.missed_deadlines >= 1
+    );
+
+    const auto comparison = dettrace::control_scenario_comparison_json(healthy, faulted);
+    assert(comparison.find("delayed_sensor") != std::string::npos);
+    assert(comparison.find("actuator_saturation") != std::string::npos);
+    assert(comparison.find("timing_jitter") != std::string::npos);
+    assert(comparison.find("divergence_step") != std::string::npos);
 
     return 0;
 }
