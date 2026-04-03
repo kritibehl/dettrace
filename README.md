@@ -534,6 +534,71 @@ DetTrace emits runbook-oriented guidance alongside replay artifacts:
 
 ---
 
+
+## Debugging Tool for Engineers
+
+DetTrace is a replay-based debugging tool for engineers working on concurrent, distributed, and control-loop systems.
+
+It is designed to make hard failures reproducible, comparable, and diagnosable through:
+- deterministic replay
+- first-divergence isolation
+- semantic comparison across runs
+- timing-aware diagnostics
+- replay artifacts that preserve root-cause evidence
+
+### Canonical visual artifact
+
+DetTrace generates a visual control-loop artifact showing:
+
+- expected trajectory
+- actual trajectory
+- divergence point
+
+Key artifact:
+- `reports/control_loop_canonical_summary.svg`
+
+### Diagnostics summary
+
+DetTrace generates compact diagnostics summaries such as:
+
+- First divergence: step `38`
+- Root cause: `delayed_measurement`
+- Error growth after divergence: `0.903344`
+- Deadline misses: `5`
+- Instability detected: `true`
+
+Key artifact:
+- `reports/control_loop_diagnostics_summary.json`
+
+### Scenario comparison table
+
+DetTrace compares healthy and faulted runs through scenario packs.
+
+| Scenario | Stable? | Divergence | Cause |
+|---|---|---|---|
+| healthy | yes | none | - |
+| delayed_sensor | no | step 38 | delayed measurement / dropped sample |
+| actuator_saturation | no | step 53 | actuator saturation |
+| timing_jitter | no | timing-budget failure | timing jitter / missed deadlines |
+
+Key artifact:
+- `reports/control_loop_comparison_sheet.json`
+
+### What this is
+
+- control-loop debugging tool
+- replay-based analysis system
+- first-divergence isolation tool
+- timing-aware diagnostics workflow
+
+### What this is not
+
+- avionics firmware
+- flight control system
+- full GNC stack
+- safety-critical flight software claim
+
+
 ## Positioning
 
 DetTrace is a specialist debugging and incident-forensics tool for making hard failures reproducible, inspectable, and explainable.
