@@ -46,3 +46,19 @@ target_include_directories(test_distributed_trace PRIVATE include)
 add_test(NAME distributed_trace COMMAND test_distributed_trace)
 set_tests_properties(distributed_trace PROPERTIES WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
 
+
+
+add_executable(dettrace_control_loop
+    src/control_loop_main.cpp
+    src/control_loop.cpp
+)
+target_include_directories(dettrace_control_loop PRIVATE include)
+
+add_executable(test_control_loop_replay
+    tests/integration/test_control_loop_replay.cpp
+    src/control_loop.cpp
+)
+target_include_directories(test_control_loop_replay PRIVATE include)
+add_test(NAME control_loop_replay COMMAND test_control_loop_replay)
+set_tests_properties(control_loop_replay PROPERTIES WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
+
