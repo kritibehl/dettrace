@@ -41,6 +41,59 @@ It does that by combining:
 
 ---
 
+
+## Control Loop Replay & Divergence Pack
+
+DetTrace includes a replay-based control-loop debugging module for closed-loop behavior analysis under sensor, actuator, and timing faults.
+
+It now supports a control-loop scenario pack with:
+- `healthy`
+- `delayed_sensor`
+- `actuator_saturation`
+- `timing_jitter`
+
+### What it simulates
+
+- 2D waypoint tracking
+- plant state over time
+- controller output over time
+- expected vs actual trajectory
+- delayed measurements
+- dropped sensor samples
+- stale state estimates
+- actuator saturation
+- missed update cycles
+- timing jitter
+
+### What it detects
+
+- first divergence step
+- first divergence timestamp
+- error growth after divergence
+- missed deadline count
+- controller output clipping
+- unstable oscillation
+- root-cause classification
+
+### Proof artifacts
+
+- `reports/control_debug_summary.svg`
+- `reports/control_scenario_comparison.json`
+- `artifacts/control_delayed_sensor_trajectory.svg`
+- `artifacts/control_actuator_saturation_trajectory.svg`
+- `artifacts/control_timing_jitter_trajectory.svg`
+- per-scenario divergence reports and timing-budget summaries
+
+### Current scenario results
+
+- `delayed_sensor` diverges at step `38` / `3.9s`
+- `actuator_saturation` diverges at step `53` / `5.4s`
+- `timing_jitter` produces `5` missed deadlines without positional divergence
+- all faulted scenarios surface replay-based diagnostics and root-cause classes
+
+This makes the control-loop path a visible proof artifact for replay-based closed-loop debugging rather than a hidden simulation.
+
+
 ## Current Scope
 
 - Deterministic replay for concurrent execution traces
