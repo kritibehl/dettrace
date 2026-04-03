@@ -609,4 +609,17 @@ It is not a packet sniffer, not a router-control framework, and not a full obser
 
 ## License
 
-MIT
+MIT\n\n
+## What I build
+
+I build systems that:
+
+1. execute correctly under failure  
+   **Faultline** — crash-safe execution, replayable races, and correctness under partial failure
+
+2. detect unsafe system behavior  
+   **KubePulse** — resilience validation, timing-aware diagnostics, and unsafe-state detection under faults
+
+3. diagnose failures precisely  
+   **DetTrace** — deterministic replay, first-divergence isolation, and replay-based debugging for concurrent, distributed, and control-loop systems
+\n
