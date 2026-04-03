@@ -1,0 +1,13 @@
+{
+  "first_divergence_step": 45,
+  "first_divergence_time_s": 4.5,
+  "expected_error_at_divergence": 1.16427,
+  "actual_error_at_divergence": 1.64437,
+  "error_growth_after_divergence": 0.0150328,
+  "max_position_error": 1.6594,
+  "missed_deadlines": 2,
+  "output_clipping_detected": true,
+  "state_estimate_drift_detected": false,
+  "unstable_oscillation_detected": true,
+  "root_cause_classes": ["actuator_saturation","controller_output_clipping","delayed_measurement","dropped_sensor_sample","missed_update_cycle","unstable_oscillation"]
+}
