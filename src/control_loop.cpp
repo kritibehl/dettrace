@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cmath>
 #include <fstream>
+#include <map>
 #include <set>
 #include <sstream>
 #include <stdexcept>
@@ -50,17 +51,36 @@ std::string json_bool(bool v) { return v ? "true" : "false"; }
 double svg_x(double x) { return 60.0 + x * 90.0; }
 double svg_y(double y) { return 320.0 - y * 90.0; }
 
-std::string polyline_points(const std::vector<ControlLoopStep>& steps, bool use_actual_position) {
+std::string color_for_index(size_t idx) {
+    static const char* colors[] = {"#16a34a", "#dc2626", "#ea580c", "#7c3aed", "#0891b2"};
+    return colors[idx % 5];
+}
+
+std::string polyline_points(const std::vector<ControlLoopStep>& steps, bool use_waypoint) {
     std::ostringstream oss;
     for (size_t i = 0; i < steps.size(); ++i) {
-        const auto& p = use_actual_position ? steps[i].position : steps[i].waypoint;
+        const auto& p = use_waypoint ? steps[i].waypoint : steps[i].position;
         if (i) oss << " ";
         oss << svg_x(p.x) << "," << svg_y(p.y);
     }
     return oss.str();
 }
 
-ControlLoopRun run_loop(const std::string& scenario_name, bool inject_faults) {
+struct ScenarioFlags {
+    bool delayed_sensor = false;
+    bool actuator_saturation = false;
+    bool timing_jitter = false;
+};
+
+ScenarioFlags flags_for(const std::string& name) {
+    ScenarioFlags f;
+    if (name == "delayed_sensor") f.delayed_sensor = true;
+    if (name == "actuator_saturation") f.actuator_saturation = true;
+    if (name == "timing_jitter") f.timing_jitter = true;
+    return f;
+}
+
+ControlLoopRun run_loop(const std::string& scenario_name, const ScenarioFlags& flags) {
     ControlLoopRun run;
     run.scenario_name = scenario_name;
     run.steps.reserve(kSteps);
@@ -82,7 +102,7 @@ ControlLoopRun run_loop(const std::string& scenario_name, bool inject_faults) {
         s.waypoint = waypoint_for_step(step, waypoints);
         s.loop_budget_ms = 100.0;
 
-        if (inject_faults) {
+        if (flags.timing_jitter) {
             if (step == 16 || step == 29 || step == 41) {
                 dt = 0.13;
                 elapsed_ms = 123.0;
@@ -103,7 +123,7 @@ ControlLoopRun run_loop(const std::string& scenario_name, bool inject_faults) {
         s.velocity = vel;
 
         Vec2 measured = pos;
-        if (inject_faults) {
+        if (flags.delayed_sensor) {
             if (step == 18 || step == 37) {
                 s.dropped_sensor_sample = true;
                 measured = prev_measured;
@@ -117,7 +137,7 @@ ControlLoopRun run_loop(const std::string& scenario_name, bool inject_faults) {
         s.measured_position = measured;
         prev_measured = measured;
 
-        if (inject_faults && step >= 26 && step <= 39) {
+        if (flags.delayed_sensor && step >= 26 && step <= 39) {
             s.stale_state_estimate = true;
             estimate = add(scale(estimate, 0.98), scale(prev_measured, 0.02));
         } else {
@@ -129,14 +149,14 @@ ControlLoopRun run_loop(const std::string& scenario_name, bool inject_faults) {
         Vec2 accel_cmd = add(scale(error, kKp), scale(vel, -kKd));
 
         bool clipped = false;
-        if (inject_faults && (step >= 28 && step <= 45)) {
+        if (flags.actuator_saturation && (step >= 28 && step <= 45)) {
             accel_cmd = clamp_vec(accel_cmd, 0.55, clipped);
         } else {
             accel_cmd = clamp_vec(accel_cmd, kMaxAccel, clipped);
         }
         s.actuator_saturated = clipped;
 
-        if (inject_faults && (step == 33 || step == 34)) {
+        if (flags.timing_jitter && (step == 33 || step == 34)) {
             s.missed_update_cycle = true;
             accel_cmd = {0.0, 0.0};
         }
@@ -167,12 +187,18 @@ std::vector<Vec2> default_waypoints() {
     };
 }
 
-ControlLoopRun run_known_good_control_loop() {
-    return run_loop("known_good", false);
+ControlLoopRun run_control_loop_scenario(const std::string& scenario_name) {
+    if (scenario_name == "healthy") return run_loop("healthy", {});
+    return run_loop(scenario_name, flags_for(scenario_name));
 }
 
-ControlLoopRun run_known_bad_control_loop() {
-    return run_loop("known_bad_fault_injected", true);
+std::vector<ControlLoopRun> run_control_loop_scenario_pack() {
+    return {
+        run_control_loop_scenario("healthy"),
+        run_control_loop_scenario("delayed_sensor"),
+        run_control_loop_scenario("actuator_saturation"),
+        run_control_loop_scenario("timing_jitter")
+    };
 }
 
 void write_control_trace_jsonl(const std::string& path, const std::vector<ControlLoopStep>& steps) {
@@ -203,7 +229,8 @@ void write_control_trace_jsonl(const std::string& path, const std::vector<Contro
     }
 }
 
-void write_control_trajectory_csv(const std::string& path, const std::vector<ControlLoopStep>& expected,
+void write_control_trajectory_csv(const std::string& path,
+                                  const std::vector<ControlLoopStep>& expected,
                                   const std::vector<ControlLoopStep>& actual) {
     std::ofstream out(path);
     if (!out) throw std::runtime_error("failed to open " + path);
@@ -224,8 +251,10 @@ void write_control_trajectory_csv(const std::string& path, const std::vector<Con
     }
 }
 
-void write_control_trajectory_svg(const std::string& path, const std::vector<ControlLoopStep>& expected,
-                                  const std::vector<ControlLoopStep>& actual) {
+void write_control_trajectory_svg(const std::string& path,
+                                  const std::vector<ControlLoopStep>& expected,
+                                  const std::vector<ControlLoopStep>& actual,
+                                  const std::string& title) {
     std::ofstream out(path);
     if (!out) throw std::runtime_error("failed to open " + path);
 
@@ -233,13 +262,13 @@ void write_control_trajectory_svg(const std::string& path, const std::vector<Con
     out << "<rect width=\"100%\" height=\"100%\" fill=\"white\"/>\n";
     out << "<line x1=\"40\" y1=\"320\" x2=\"480\" y2=\"320\" stroke=\"black\" stroke-width=\"1\"/>\n";
     out << "<line x1=\"60\" y1=\"20\" x2=\"60\" y2=\"320\" stroke=\"black\" stroke-width=\"1\"/>\n";
-    out << "<text x=\"70\" y=\"30\" font-size=\"14\">Expected vs Actual Trajectory</text>\n";
-    out << "<polyline fill=\"none\" stroke=\"#2563eb\" stroke-width=\"2\" points=\"" << polyline_points(expected, false) << "\"/>\n";
-    out << "<polyline fill=\"none\" stroke=\"#16a34a\" stroke-width=\"2\" points=\"" << polyline_points(expected, true) << "\"/>\n";
+    out << "<text x=\"70\" y=\"30\" font-size=\"14\">" << title << "</text>\n";
+    out << "<polyline fill=\"none\" stroke=\"#2563eb\" stroke-width=\"2\" points=\"" << polyline_points(expected, true) << "\"/>\n";
+    out << "<polyline fill=\"none\" stroke=\"#16a34a\" stroke-width=\"2\" points=\"" << polyline_points(actual, false) << "\"/>\n";
     out << "<polyline fill=\"none\" stroke=\"#dc2626\" stroke-width=\"2\" points=\"" << polyline_points(actual, true) << "\"/>\n";
     out << "<text x=\"300\" y=\"40\" font-size=\"12\" fill=\"#2563eb\">Waypoint Path</text>\n";
     out << "<text x=\"300\" y=\"58\" font-size=\"12\" fill=\"#16a34a\">Expected Trajectory</text>\n";
-    out << "<text x=\"300\" y=\"76\" font-size=\"12\" fill=\"#dc2626\">Fault-Injected Trajectory</text>\n";
+    out << "<text x=\"300\" y=\"76\" font-size=\"12\" fill=\"#dc2626\">Actual Trajectory</text>\n";
     out << "</svg>\n";
 }
 
@@ -364,6 +393,103 @@ std::string timing_budget_summary_json(const std::vector<ControlLoopStep>& expec
         << "  \"max_timing_jitter_ms\": " << max_jitter_ms << "\n"
         << "}\n";
     return oss.str();
+}
+
+std::string control_scenario_comparison_json(const ControlLoopRun& expected,
+                                             const std::vector<ControlLoopRun>& scenarios) {
+    std::ostringstream oss;
+    oss << "{\n"
+        << "  \"reference_scenario\": \"" << expected.scenario_name << "\",\n"
+        << "  \"scenarios\": [\n";
+
+    for (size_t i = 0; i < scenarios.size(); ++i) {
+        const auto& s = scenarios[i];
+        const auto& r = s.report;
+        oss << "    {\n"
+            << "      \"scenario_name\": \"" << r.scenario_name << "\",\n"
+            << "      \"divergence_step\": " << r.first_divergence_step << ",\n"
+            << "      \"divergence_time_s\": " << r.first_divergence_time_s << ",\n"
+            << "      \"error_growth_after_divergence\": " << r.error_growth_after_divergence << ",\n"
+            << "      \"missed_deadlines\": " << r.missed_deadlines << ",\n"
+            << "      \"oscillation_detected\": " << (r.unstable_oscillation_detected ? "true" : "false") << ",\n"
+            << "      \"root_cause_classes\": [";
+        for (size_t j = 0; j < r.root_cause_classes.size(); ++j) {
+            if (j) oss << ",";
+            oss << "\"" << r.root_cause_classes[j] << "\"";
+        }
+        oss << "]\n"
+            << "    }";
+        if (i + 1 < scenarios.size()) oss << ",";
+        oss << "\n";
+    }
+
+    oss << "  ]\n}\n";
+    return oss.str();
+}
+
+void write_control_debug_summary_svg(const std::string& path,
+                                     const ControlLoopRun& expected,
+                                     const std::vector<ControlLoopRun>& scenarios) {
+    std::ofstream out(path);
+    if (!out) throw std::runtime_error("failed to open " + path);
+
+    out << "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"980\" height=\"620\" viewBox=\"0 0 980 620\">\n";
+    out << "<rect width=\"100%\" height=\"100%\" fill=\"white\"/>\n";
+    out << "<text x=\"30\" y=\"36\" font-size=\"22\" font-family=\"Arial\">Control Loop Replay & Divergence Summary</text>\n";
+
+    out << "<line x1=\"40\" y1=\"360\" x2=\"470\" y2=\"360\" stroke=\"black\" stroke-width=\"1\"/>\n";
+    out << "<line x1=\"60\" y1=\"80\" x2=\"60\" y2=\"360\" stroke=\"black\" stroke-width=\"1\"/>\n";
+    out << "<text x=\"70\" y=\"95\" font-size=\"14\">Expected vs Actual Trajectories</text>\n";
+
+    out << "<polyline fill=\"none\" stroke=\"#2563eb\" stroke-width=\"2\" points=\"" << polyline_points(expected.steps, true) << "\"/>\n";
+    out << "<polyline fill=\"none\" stroke=\"#16a34a\" stroke-width=\"2\" points=\"" << polyline_points(expected.steps, false) << "\"/>\n";
+
+    for (size_t i = 0; i < scenarios.size(); ++i) {
+        const auto& s = scenarios[i];
+        out << "<polyline fill=\"none\" stroke=\"" << color_for_index(i + 1) << "\" stroke-width=\"2\" points=\"" << polyline_points(s.steps, false) << "\"/>\n";
+    }
+
+    out << "<text x=\"285\" y=\"108\" font-size=\"12\" fill=\"#2563eb\">Waypoint Path</text>\n";
+    out << "<text x=\"285\" y=\"126\" font-size=\"12\" fill=\"#16a34a\">Healthy Trajectory</text>\n";
+
+    double y = 160.0;
+    for (size_t i = 0; i < scenarios.size(); ++i) {
+        out << "<text x=\"285\" y=\"" << y << "\" font-size=\"12\" fill=\"" << color_for_index(i + 1) << "\">"
+            << scenarios[i].scenario_name << "</text>\n";
+        y += 18.0;
+    }
+
+    out << "<text x=\"530\" y=\"95\" font-size=\"16\">Scenario Comparison</text>\n";
+    out << "<text x=\"530\" y=\"122\" font-size=\"12\">scenario</text>\n";
+    out << "<text x=\"655\" y=\"122\" font-size=\"12\">div step</text>\n";
+    out << "<text x=\"730\" y=\"122\" font-size=\"12\">time(s)</text>\n";
+    out << "<text x=\"800\" y=\"122\" font-size=\"12\">missed dl</text>\n";
+    out << "<text x=\"885\" y=\"122\" font-size=\"12\">root cause</text>\n";
+
+    double row_y = 150.0;
+    for (size_t i = 0; i < scenarios.size(); ++i) {
+        const auto& r = scenarios[i].report;
+        std::ostringstream roots;
+        for (size_t j = 0; j < r.root_cause_classes.size(); ++j) {
+            if (j) roots << ",";
+            roots << r.root_cause_classes[j];
+        }
+        out << "<text x=\"530\" y=\"" << row_y << "\" font-size=\"11\" fill=\"" << color_for_index(i + 1) << "\">" << r.scenario_name << "</text>\n";
+        out << "<text x=\"660\" y=\"" << row_y << "\" font-size=\"11\">" << r.first_divergence_step << "</text>\n";
+        out << "<text x=\"732\" y=\"" << row_y << "\" font-size=\"11\">" << r.first_divergence_time_s << "</text>\n";
+        out << "<text x=\"815\" y=\"" << row_y << "\" font-size=\"11\">" << r.missed_deadlines << "</text>\n";
+        out << "<text x=\"885\" y=\"" << row_y << "\" font-size=\"11\">" << roots.str() << "</text>\n";
+        row_y += 26.0;
+    }
+
+    out << "<text x=\"530\" y=\"320\" font-size=\"16\">Visual Proof Artifact</text>\n";
+    out << "<text x=\"530\" y=\"346\" font-size=\"12\">- expected trajectory vs actual trajectory</text>\n";
+    out << "<text x=\"530\" y=\"366\" font-size=\"12\">- first divergence timestamp</text>\n";
+    out << "<text x=\"530\" y=\"386\" font-size=\"12\">- timing-budget misses</text>\n";
+    out << "<text x=\"530\" y=\"406\" font-size=\"12\">- root cause class</text>\n";
+    out << "<text x=\"530\" y=\"426\" font-size=\"12\">- replay-based closed-loop debugging proof</text>\n";
+
+    out << "</svg>\n";
 }
 
 }  // namespace dettrace

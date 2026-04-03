@@ -64,19 +64,29 @@ struct ControlLoopRun {
 
 std::vector<Vec2> default_waypoints();
 
-ControlLoopRun run_known_good_control_loop();
-ControlLoopRun run_known_bad_control_loop();
+ControlLoopRun run_control_loop_scenario(const std::string& scenario_name);
+std::vector<ControlLoopRun> run_control_loop_scenario_pack();
 
 void write_control_trace_jsonl(const std::string& path, const std::vector<ControlLoopStep>& steps);
-void write_control_trajectory_csv(const std::string& path, const std::vector<ControlLoopStep>& expected,
+void write_control_trajectory_csv(const std::string& path,
+                                  const std::vector<ControlLoopStep>& expected,
                                   const std::vector<ControlLoopStep>& actual);
-void write_control_trajectory_svg(const std::string& path, const std::vector<ControlLoopStep>& expected,
-                                  const std::vector<ControlLoopStep>& actual);
-std::string timing_budget_summary_json(const std::vector<ControlLoopStep>& expected,
-                                       const std::vector<ControlLoopStep>& actual);
+void write_control_trajectory_svg(const std::string& path,
+                                  const std::vector<ControlLoopStep>& expected,
+                                  const std::vector<ControlLoopStep>& actual,
+                                  const std::string& title);
+void write_control_debug_summary_svg(const std::string& path,
+                                     const ControlLoopRun& expected,
+                                     const std::vector<ControlLoopRun>& scenarios);
+
 ControlLoopReport analyze_control_divergence(const std::string& scenario_name,
                                              const std::vector<ControlLoopStep>& expected,
                                              const std::vector<ControlLoopStep>& actual);
+
 std::string control_report_json(const ControlLoopReport& report);
+std::string timing_budget_summary_json(const std::vector<ControlLoopStep>& expected,
+                                       const std::vector<ControlLoopStep>& actual);
+std::string control_scenario_comparison_json(const ControlLoopRun& expected,
+                                             const std::vector<ControlLoopRun>& scenarios);
 
 }  // namespace dettrace

@@ -1,0 +1,32 @@
+{
+  "reference_scenario": "healthy",
+  "scenarios": [
+    {
+      "scenario_name": "delayed_sensor",
+      "divergence_step": 38,
+      "divergence_time_s": 3.9,
+      "error_growth_after_divergence": 0.903344,
+      "missed_deadlines": 0,
+      "oscillation_detected": true,
+      "root_cause_classes": ["actuator_saturation","controller_output_clipping","delayed_measurement","dropped_sensor_sample","stale_state_estimate","state_estimate_drift","unstable_oscillation"]
+    },
+    {
+      "scenario_name": "actuator_saturation",
+      "divergence_step": 53,
+      "divergence_time_s": 5.4,
+      "error_growth_after_divergence": 0.575266,
+      "missed_deadlines": 0,
+      "oscillation_detected": true,
+      "root_cause_classes": ["actuator_saturation","controller_output_clipping","unstable_oscillation"]
+    },
+    {
+      "scenario_name": "timing_jitter",
+      "divergence_step": -1,
+      "divergence_time_s": -1,
+      "error_growth_after_divergence": 0,
+      "missed_deadlines": 5,
+      "oscillation_detected": true,
+      "root_cause_classes": ["actuator_saturation","controller_output_clipping","missed_update_cycle","timing_jitter","unstable_oscillation"]
+    }
+  ]
+}

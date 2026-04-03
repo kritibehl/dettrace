@@ -1,0 +1,7 @@
+{
+  "expected_missed_deadlines": 0,
+  "actual_missed_deadlines": 5,
+  "max_actual_loop_elapsed_ms": 123,
+  "avg_actual_loop_elapsed_ms": 63.6875,
+  "max_timing_jitter_ms": 30
+}

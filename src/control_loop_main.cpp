@@ -3,6 +3,7 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <vector>
 
 namespace fs = std::filesystem;
 
@@ -15,30 +16,41 @@ int main() {
     fs::create_directories("artifacts");
     fs::create_directories("reports");
 
-    auto good = dettrace::run_known_good_control_loop();
-    auto bad = dettrace::run_known_bad_control_loop();
+    auto runs = dettrace::run_control_loop_scenario_pack();
+    auto expected = runs.front();
+    expected.report = dettrace::analyze_control_divergence(expected.scenario_name, expected.steps, expected.steps);
 
-    good.report = dettrace::analyze_control_divergence(good.scenario_name, good.steps, good.steps);
-    bad.report = dettrace::analyze_control_divergence(bad.scenario_name, good.steps, bad.steps);
+    std::vector<dettrace::ControlLoopRun> faulted;
+    for (size_t i = 1; i < runs.size(); ++i) {
+        runs[i].report = dettrace::analyze_control_divergence(runs[i].scenario_name, expected.steps, runs[i].steps);
+        faulted.push_back(runs[i]);
+    }
 
-    dettrace::write_control_trace_jsonl("artifacts/control_known_good.jsonl", good.steps);
-    dettrace::write_control_trace_jsonl("artifacts/control_known_bad.jsonl", bad.steps);
+    dettrace::write_control_trace_jsonl("artifacts/control_healthy.jsonl", expected.steps);
+    write_file("reports/control_healthy_report.json", dettrace::control_report_json(expected.report));
 
-    dettrace::write_control_trajectory_csv("artifacts/control_trajectory.csv", good.steps, bad.steps);
-    dettrace::write_control_trajectory_svg("artifacts/control_trajectory.svg", good.steps, bad.steps);
+    for (const auto& run : faulted) {
+        dettrace::write_control_trace_jsonl("artifacts/control_" + run.scenario_name + ".jsonl", run.steps);
+        dettrace::write_control_trajectory_csv("artifacts/control_" + run.scenario_name + "_trajectory.csv", expected.steps, run.steps);
+        dettrace::write_control_trajectory_svg("artifacts/control_" + run.scenario_name + "_trajectory.svg", expected.steps, run.steps, run.scenario_name + " trajectory");
+        write_file("reports/control_" + run.scenario_name + "_report.json", dettrace::control_report_json(run.report));
+        write_file("reports/control_" + run.scenario_name + "_timing_budget.json",
+                   dettrace::timing_budget_summary_json(expected.steps, run.steps));
+    }
 
-    write_file("reports/control_loop_known_good_report.json", dettrace::control_report_json(good.report));
-    write_file("reports/control_loop_known_bad_report.json", dettrace::control_report_json(bad.report));
-    write_file("reports/control_timing_budget_summary.json", dettrace::timing_budget_summary_json(good.steps, bad.steps));
+    write_file("reports/control_scenario_comparison.json",
+               dettrace::control_scenario_comparison_json(expected, faulted));
+    dettrace::write_control_debug_summary_svg("reports/control_debug_summary.svg", expected, faulted);
 
-    std::cout << "Control loop replay demo complete\n";
-    std::cout << "Generated:\n";
-    std::cout << "  artifacts/control_known_good.jsonl\n";
-    std::cout << "  artifacts/control_known_bad.jsonl\n";
-    std::cout << "  artifacts/control_trajectory.csv\n";
-    std::cout << "  artifacts/control_trajectory.svg\n";
-    std::cout << "  reports/control_loop_known_good_report.json\n";
-    std::cout << "  reports/control_loop_known_bad_report.json\n";
-    std::cout << "  reports/control_timing_budget_summary.json\n";
+    std::cout << "Control loop replay scenario pack complete\n";
+    std::cout << "Generated summary artifacts:\n";
+    std::cout << "  reports/control_debug_summary.svg\n";
+    std::cout << "  reports/control_scenario_comparison.json\n";
+    std::cout << "Scenario reports:\n";
+    for (const auto& run : faulted) {
+        std::cout << "  reports/control_" << run.scenario_name << "_report.json\n";
+        std::cout << "  reports/control_" << run.scenario_name << "_timing_budget.json\n";
+        std::cout << "  artifacts/control_" << run.scenario_name << "_trajectory.svg\n";
+    }
     return 0;
 }

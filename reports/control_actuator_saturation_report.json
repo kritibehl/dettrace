@@ -1,0 +1,17 @@
+{
+  "scenario_name": "actuator_saturation",
+  "first_divergence_step": 53,
+  "first_divergence_time_s": 5.4,
+  "expected_error_at_divergence": 0.348841,
+  "actual_error_at_divergence": 1.10387,
+  "error_growth_after_divergence": 0.575266,
+  "max_position_error": 1.67913,
+  "missed_deadlines": 0,
+  "output_clipping_detected": true,
+  "state_estimate_drift_detected": false,
+  "unstable_oscillation_detected": true,
+  "max_loop_elapsed_ms": 65,
+  "avg_loop_elapsed_ms": 59.9375,
+  "max_timing_jitter_ms": 0,
+  "root_cause_classes": ["actuator_saturation","controller_output_clipping","unstable_oscillation"]
+}

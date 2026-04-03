@@ -1,0 +1,17 @@
+{
+  "scenario_name": "timing_jitter",
+  "first_divergence_step": -1,
+  "first_divergence_time_s": -1,
+  "expected_error_at_divergence": 0,
+  "actual_error_at_divergence": 0,
+  "error_growth_after_divergence": 0,
+  "max_position_error": 2.06055,
+  "missed_deadlines": 5,
+  "output_clipping_detected": true,
+  "state_estimate_drift_detected": false,
+  "unstable_oscillation_detected": true,
+  "max_loop_elapsed_ms": 123,
+  "avg_loop_elapsed_ms": 63.6875,
+  "max_timing_jitter_ms": 30,
+  "root_cause_classes": ["actuator_saturation","controller_output_clipping","missed_update_cycle","timing_jitter","unstable_oscillation"]
+}

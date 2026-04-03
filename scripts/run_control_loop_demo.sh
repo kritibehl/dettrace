@@ -11,17 +11,13 @@ cmake --build build
 ./build/dettrace_control_loop
 
 echo
-echo "=== Known-good control report ==="
-cat reports/control_loop_known_good_report.json
+echo "=== Scenario comparison ==="
+cat reports/control_scenario_comparison.json
 
 echo
-echo "=== Known-bad control report ==="
-cat reports/control_loop_known_bad_report.json
+echo "=== Visual proof artifact ==="
+ls -1 reports/control_debug_summary.svg
 
 echo
-echo "=== Timing budget summary ==="
-cat reports/control_timing_budget_summary.json
-
-echo
-echo "=== Trajectory artifacts ==="
-ls -1 artifacts/control_known_good.jsonl artifacts/control_known_bad.jsonl artifacts/control_trajectory.csv artifacts/control_trajectory.svg
+echo "=== Per-scenario reports ==="
+ls -1 reports/control_*_report.json reports/control_*_timing_budget.json 2>/dev/null || true
