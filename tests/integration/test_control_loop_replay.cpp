@@ -56,5 +56,10 @@ int main() {
     assert(comparison.find("timing_jitter") != std::string::npos);
     assert(comparison.find("divergence_step") != std::string::npos);
 
+    const auto compact = dettrace::control_loop_diagnostics_summary_json(faulted);
+    assert(compact.find("first_divergence_timestamp_s") != std::string::npos);
+    assert(compact.find("deadline_misses") != std::string::npos);
+    assert(compact.find("instability_detected") != std::string::npos);
+
     return 0;
 }

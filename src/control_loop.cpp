@@ -492,4 +492,127 @@ void write_control_debug_summary_svg(const std::string& path,
     out << "</svg>\n";
 }
 
+
+
+
+std::string control_loop_diagnostics_summary_json(const std::vector<ControlLoopRun>& scenarios) {
+    std::ostringstream oss;
+    oss << "{\n"
+        << "  \"scenarios\": [\n";
+
+    for (size_t i = 0; i < scenarios.size(); ++i) {
+        const auto& r = scenarios[i].report;
+        oss << "    {\n"
+            << "      \"scenario_name\": \"" << r.scenario_name << "\",\n"
+            << "      \"first_divergence_timestamp_s\": " << r.first_divergence_time_s << ",\n"
+            << "      \"root_cause_classes\": [";
+        for (size_t j = 0; j < r.root_cause_classes.size(); ++j) {
+            if (j) oss << ",";
+            oss << "\"" << r.root_cause_classes[j] << "\"";
+        }
+        oss << "],\n"
+            << "      \"error_growth_after_divergence\": " << r.error_growth_after_divergence << ",\n"
+            << "      \"deadline_misses\": " << r.missed_deadlines << ",\n"
+            << "      \"instability_detected\": " << (r.unstable_oscillation_detected ? "true" : "false") << "\n"
+            << "    }";
+        if (i + 1 < scenarios.size()) oss << ",";
+        oss << "\n";
+    }
+
+    oss << "  ]\n}\n";
+    return oss.str();
+}
+
+void write_control_loop_canonical_summary_svg(const std::string& path,
+                                              const ControlLoopRun& healthy,
+                                              const std::vector<ControlLoopRun>& scenarios) {
+    std::ofstream out(path);
+    if (!out) throw std::runtime_error("failed to open " + path);
+
+    const ControlLoopRun* delayed = nullptr;
+    for (const auto& s : scenarios) {
+        if (s.scenario_name == "delayed_sensor") delayed = &s;
+    }
+
+    auto first_div_pt = [&](const ControlLoopRun* run) -> Vec2 {
+        if (!run || run->report.first_divergence_step < 0 ||
+            run->report.first_divergence_step >= static_cast<int>(run->steps.size())) {
+            return {-1.0, -1.0};
+        }
+        return run->steps[run->report.first_divergence_step].position;
+    };
+
+    const auto delayed_pt = first_div_pt(delayed);
+
+    out << "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"1100\" height=\"700\" viewBox=\"0 0 1100 700\">\n";
+    out << "<rect width=\"100%\" height=\"100%\" fill=\"white\"/>\n";
+    out << "<text x=\"30\" y=\"36\" font-size=\"24\" font-family=\"Arial\">Control-Loop Replay Canonical Summary</text>\n";
+    out << "<text x=\"30\" y=\"68\" font-size=\"14\">Expected trajectory, actual trajectories, first divergence point, timing-budget misses, and compact diagnostics.</text>\n";
+
+    out << "<line x1=\"50\" y1=\"430\" x2=\"520\" y2=\"430\" stroke=\"black\" stroke-width=\"1\"/>\n";
+    out << "<line x1=\"70\" y1=\"90\" x2=\"70\" y2=\"430\" stroke=\"black\" stroke-width=\"1\"/>\n";
+    out << "<text x=\"82\" y=\"108\" font-size=\"15\">Expected vs Actual Trajectories</text>\n";
+
+    out << "<polyline fill=\"none\" stroke=\"#2563eb\" stroke-width=\"2.5\" points=\"" << polyline_points(healthy.steps, true) << "\"/>\n";
+    out << "<polyline fill=\"none\" stroke=\"#16a34a\" stroke-width=\"2.5\" points=\"" << polyline_points(healthy.steps, false) << "\"/>\n";
+
+    for (size_t i = 0; i < scenarios.size(); ++i) {
+        out << "<polyline fill=\"none\" stroke=\"" << color_for_index(i + 1) << "\" stroke-width=\"2.2\" points=\"" << polyline_points(scenarios[i].steps, false) << "\"/>\n";
+    }
+
+    if (delayed_pt.x >= 0.0) {
+        out << "<circle cx=\"" << svg_x(delayed_pt.x) << "\" cy=\"" << svg_y(delayed_pt.y) << "\" r=\"5\" fill=\"#dc2626\"/>\n";
+        out << "<text x=\"" << (svg_x(delayed_pt.x) + 8) << "\" y=\"" << (svg_y(delayed_pt.y) - 8) << "\" font-size=\"11\" fill=\"#dc2626\">first divergence</text>\n";
+    }
+
+    out << "<text x=\"320\" y=\"120\" font-size=\"12\" fill=\"#2563eb\">Waypoint Path</text>\n";
+    out << "<text x=\"320\" y=\"138\" font-size=\"12\" fill=\"#16a34a\">Healthy Trajectory</text>\n";
+
+    double legend_y = 156.0;
+    for (size_t i = 0; i < scenarios.size(); ++i) {
+        out << "<text x=\"320\" y=\"" << legend_y << "\" font-size=\"12\" fill=\"" << color_for_index(i + 1) << "\">" << scenarios[i].scenario_name << "</text>\n";
+        legend_y += 18.0;
+    }
+
+    out << "<text x=\"580\" y=\"110\" font-size=\"18\">Scenario Comparison Sheet</text>\n";
+    out << "<text x=\"580\" y=\"140\" font-size=\"12\">scenario</text>\n";
+    out << "<text x=\"710\" y=\"140\" font-size=\"12\">div step</text>\n";
+    out << "<text x=\"775\" y=\"140\" font-size=\"12\">t(s)</text>\n";
+    out << "<text x=\"835\" y=\"140\" font-size=\"12\">deadline misses</text>\n";
+    out << "<text x=\"945\" y=\"140\" font-size=\"12\">unstable?</text>\n";
+
+    double row_y = 170.0;
+    for (size_t i = 0; i < scenarios.size(); ++i) {
+        const auto& r = scenarios[i].report;
+        out << "<text x=\"580\" y=\"" << row_y << "\" font-size=\"12\" fill=\"" << color_for_index(i + 1) << "\">" << r.scenario_name << "</text>\n";
+        out << "<text x=\"715\" y=\"" << row_y << "\" font-size=\"12\">" << r.first_divergence_step << "</text>\n";
+        out << "<text x=\"775\" y=\"" << row_y << "\" font-size=\"12\">" << r.first_divergence_time_s << "</text>\n";
+        out << "<text x=\"855\" y=\"" << row_y << "\" font-size=\"12\">" << r.missed_deadlines << "</text>\n";
+        out << "<text x=\"950\" y=\"" << row_y << "\" font-size=\"12\">" << (r.unstable_oscillation_detected ? "yes" : "no") << "</text>\n";
+        row_y += 26.0;
+    }
+
+    out << "<text x=\"580\" y=\"320\" font-size=\"18\">Compact Diagnostics Summary</text>\n";
+    double diag_y = 350.0;
+    for (size_t i = 0; i < scenarios.size(); ++i) {
+        const auto& r = scenarios[i].report;
+        std::ostringstream roots;
+        for (size_t j = 0; j < r.root_cause_classes.size(); ++j) {
+            if (j) roots << ", ";
+            roots << r.root_cause_classes[j];
+        }
+        out << "<text x=\"580\" y=\"" << diag_y << "\" font-size=\"12\" fill=\"" << color_for_index(i + 1) << "\">"
+            << r.scenario_name << ": first_div_t=" << r.first_divergence_time_s
+            << "s, error_growth=" << r.error_growth_after_divergence
+            << ", deadline_misses=" << r.missed_deadlines
+            << ", unstable=" << (r.unstable_oscillation_detected ? "yes" : "no")
+            << "</text>\n";
+        diag_y += 18.0;
+        out << "<text x=\"595\" y=\"" << diag_y << "\" font-size=\"11\">root cause: " << roots.str() << "</text>\n";
+        diag_y += 26.0;
+    }
+
+    out << "</svg>\n";
+}
+
 }  // namespace dettrace
