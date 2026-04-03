@@ -78,6 +78,9 @@ void write_control_trajectory_svg(const std::string& path,
 void write_control_debug_summary_svg(const std::string& path,
                                      const ControlLoopRun& expected,
                                      const std::vector<ControlLoopRun>& scenarios);
+void write_control_loop_canonical_summary_svg(const std::string& path,
+                                              const ControlLoopRun& healthy,
+                                              const std::vector<ControlLoopRun>& scenarios);
 
 ControlLoopReport analyze_control_divergence(const std::string& scenario_name,
                                              const std::vector<ControlLoopStep>& expected,
@@ -88,5 +91,6 @@ std::string timing_budget_summary_json(const std::vector<ControlLoopStep>& expec
                                        const std::vector<ControlLoopStep>& actual);
 std::string control_scenario_comparison_json(const ControlLoopRun& expected,
                                              const std::vector<ControlLoopRun>& scenarios);
+std::string control_loop_diagnostics_summary_json(const std::vector<ControlLoopRun>& scenarios);
 
 }  // namespace dettrace

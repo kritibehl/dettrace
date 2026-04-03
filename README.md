@@ -94,6 +94,64 @@ It now supports a control-loop scenario pack with:
 This makes the control-loop path a visible proof artifact for replay-based closed-loop debugging rather than a hidden simulation.
 
 
+
+## Control-Loop Replay
+
+DetTrace includes a separate control-loop replay path for replay-based closed-loop debugging.
+
+### Canonical visual artifact
+
+The control-loop module generates a canonical visual summary in:
+
+- `reports/control_loop_canonical_summary.svg`
+
+It surfaces:
+- expected trajectory
+- actual trajectory
+- first divergence point
+- timing-budget misses
+
+### Scenario comparison sheet
+
+The control-loop module generates a scenario comparison sheet in:
+
+- `reports/control_loop_comparison_sheet.json`
+
+Scenarios:
+- `healthy`
+- `delayed_sensor`
+- `dropped_sample`
+- `actuator_saturation`
+- `timing_jitter`
+
+### Compact diagnostics summary
+
+The control-loop module generates:
+
+- `reports/control_loop_diagnostics_summary.json`
+
+It summarizes:
+- first divergence timestamp
+- root-cause class
+- error growth
+- deadline misses
+- instability detected (`yes` / `no`)
+
+### What this is
+
+- control-loop replay and debugging
+- fault-aware controls analysis
+- replay-based divergence detection
+- timing-related debugging for closed-loop behavior
+
+### What this is not
+
+- avionics firmware
+- a full GNC stack
+- embedded flight-control software
+- safety-critical flight software claims
+
+
 ## Current Scope
 
 - Deterministic replay for concurrent execution traces
