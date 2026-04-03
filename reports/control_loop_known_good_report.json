@@ -1,0 +1,17 @@
+{
+  "scenario_name": "known_good",
+  "first_divergence_step": -1,
+  "first_divergence_time_s": -1,
+  "expected_error_at_divergence": 0,
+  "actual_error_at_divergence": 0,
+  "error_growth_after_divergence": 0,
+  "max_position_error": 2.0064,
+  "missed_deadlines": 0,
+  "output_clipping_detected": true,
+  "state_estimate_drift_detected": false,
+  "unstable_oscillation_detected": true,
+  "max_loop_elapsed_ms": 65,
+  "avg_loop_elapsed_ms": 59.9375,
+  "max_timing_jitter_ms": 0,
+  "root_cause_classes": ["actuator_saturation","controller_output_clipping","unstable_oscillation"]
+}

@@ -10,7 +10,7 @@
 namespace dettrace {
 namespace {
 
-constexpr double kDt = 0.1;
+constexpr double kNominalDt = 0.1;
 constexpr int kSteps = 80;
 constexpr double kKp = 1.4;
 constexpr double kKd = 0.45;
@@ -45,24 +45,60 @@ Vec2 waypoint_for_step(int step, const std::vector<Vec2>& waypoints) {
     return waypoints[segment];
 }
 
-std::vector<ControlLoopStep> run_loop(bool inject_faults) {
-    std::vector<ControlLoopStep> out;
-    out.reserve(kSteps);
+std::string json_bool(bool v) { return v ? "true" : "false"; }
+
+double svg_x(double x) { return 60.0 + x * 90.0; }
+double svg_y(double y) { return 320.0 - y * 90.0; }
+
+std::string polyline_points(const std::vector<ControlLoopStep>& steps, bool use_actual_position) {
+    std::ostringstream oss;
+    for (size_t i = 0; i < steps.size(); ++i) {
+        const auto& p = use_actual_position ? steps[i].position : steps[i].waypoint;
+        if (i) oss << " ";
+        oss << svg_x(p.x) << "," << svg_y(p.y);
+    }
+    return oss.str();
+}
+
+ControlLoopRun run_loop(const std::string& scenario_name, bool inject_faults) {
+    ControlLoopRun run;
+    run.scenario_name = scenario_name;
+    run.steps.reserve(kSteps);
 
     const auto waypoints = default_waypoints();
     Vec2 pos{0.0, 0.0};
     Vec2 vel{0.0, 0.0};
     Vec2 prev_measured = pos;
     Vec2 delayed_buffer = pos;
+    Vec2 estimate = pos;
+    double t = 0.0;
 
     for (int step = 0; step < kSteps; ++step) {
-        const double t = step * kDt;
-        const Vec2 wp = waypoint_for_step(step, waypoints);
+        double dt = kNominalDt;
+        double elapsed_ms = 55.0 + (step % 3) * 5.0;
 
         ControlLoopStep s;
         s.step = step;
+        s.waypoint = waypoint_for_step(step, waypoints);
+        s.loop_budget_ms = 100.0;
+
+        if (inject_faults) {
+            if (step == 16 || step == 29 || step == 41) {
+                dt = 0.13;
+                elapsed_ms = 123.0;
+                s.timing_jitter = true;
+            } else if (step == 33 || step == 34) {
+                dt = 0.12;
+                elapsed_ms = 118.0;
+                s.timing_jitter = true;
+            }
+        }
+
+        t += dt;
         s.t_s = t;
-        s.waypoint = wp;
+        s.loop_dt_s = dt;
+        s.loop_elapsed_ms = elapsed_ms;
+
         s.position = pos;
         s.velocity = vel;
 
@@ -78,11 +114,18 @@ std::vector<ControlLoopStep> run_loop(bool inject_faults) {
             }
             delayed_buffer = pos;
         }
-
         s.measured_position = measured;
         prev_measured = measured;
 
-        const Vec2 error = sub(wp, measured);
+        if (inject_faults && step >= 26 && step <= 39) {
+            s.stale_state_estimate = true;
+            estimate = add(scale(estimate, 0.98), scale(prev_measured, 0.02));
+        } else {
+            estimate = measured;
+        }
+        s.state_estimate = estimate;
+
+        const Vec2 error = sub(s.waypoint, estimate);
         Vec2 accel_cmd = add(scale(error, kKp), scale(vel, -kKd));
 
         bool clipped = false;
@@ -100,20 +143,18 @@ std::vector<ControlLoopStep> run_loop(bool inject_faults) {
 
         s.control_output = accel_cmd;
 
-        vel = add(vel, scale(accel_cmd, kDt));
-        pos = add(pos, scale(vel, kDt));
+        vel = add(vel, scale(accel_cmd, dt));
+        pos = add(pos, scale(vel, dt));
 
         s.position = pos;
         s.velocity = vel;
-        s.position_error = norm(sub(wp, pos));
+        s.position_error = norm(sub(s.waypoint, pos));
 
-        out.push_back(s);
+        run.steps.push_back(s);
     }
 
-    return out;
+    return run;
 }
-
-std::string json_bool(bool v) { return v ? "true" : "false"; }
 
 }  // namespace
 
@@ -126,12 +167,12 @@ std::vector<Vec2> default_waypoints() {
     };
 }
 
-std::vector<ControlLoopStep> run_expected_control_loop() {
-    return run_loop(false);
+ControlLoopRun run_known_good_control_loop() {
+    return run_loop("known_good", false);
 }
 
-std::vector<ControlLoopStep> run_fault_injected_control_loop() {
-    return run_loop(true);
+ControlLoopRun run_known_bad_control_loop() {
+    return run_loop("known_bad_fault_injected", true);
 }
 
 void write_control_trace_jsonl(const std::string& path, const std::vector<ControlLoopStep>& steps) {
@@ -142,38 +183,91 @@ void write_control_trace_jsonl(const std::string& path, const std::vector<Contro
         out << "{"
             << "\"step\":" << s.step << ","
             << "\"t_s\":" << s.t_s << ","
+            << "\"loop_dt_s\":" << s.loop_dt_s << ","
             << "\"waypoint\":{\"x\":" << s.waypoint.x << ",\"y\":" << s.waypoint.y << "},"
             << "\"position\":{\"x\":" << s.position.x << ",\"y\":" << s.position.y << "},"
             << "\"velocity\":{\"x\":" << s.velocity.x << ",\"y\":" << s.velocity.y << "},"
             << "\"measured_position\":{\"x\":" << s.measured_position.x << ",\"y\":" << s.measured_position.y << "},"
+            << "\"state_estimate\":{\"x\":" << s.state_estimate.x << ",\"y\":" << s.state_estimate.y << "},"
             << "\"control_output\":{\"x\":" << s.control_output.x << ",\"y\":" << s.control_output.y << "},"
             << "\"dropped_sensor_sample\":" << json_bool(s.dropped_sensor_sample) << ","
             << "\"delayed_measurement\":" << json_bool(s.delayed_measurement) << ","
+            << "\"stale_state_estimate\":" << json_bool(s.stale_state_estimate) << ","
             << "\"actuator_saturated\":" << json_bool(s.actuator_saturated) << ","
             << "\"missed_update_cycle\":" << json_bool(s.missed_update_cycle) << ","
-            << "\"position_error\":" << s.position_error
+            << "\"timing_jitter\":" << json_bool(s.timing_jitter) << ","
+            << "\"position_error\":" << s.position_error << ","
+            << "\"loop_budget_ms\":" << s.loop_budget_ms << ","
+            << "\"loop_elapsed_ms\":" << s.loop_elapsed_ms
             << "}\n";
     }
 }
 
-ControlLoopReport analyze_control_divergence(const std::vector<ControlLoopStep>& expected,
+void write_control_trajectory_csv(const std::string& path, const std::vector<ControlLoopStep>& expected,
+                                  const std::vector<ControlLoopStep>& actual) {
+    std::ofstream out(path);
+    if (!out) throw std::runtime_error("failed to open " + path);
+
+    out << "step,t_s,waypoint_x,waypoint_y,expected_x,expected_y,actual_x,actual_y,expected_error,actual_error\n";
+    const int n = std::min<int>(expected.size(), actual.size());
+    for (int i = 0; i < n; ++i) {
+        out << expected[i].step << ","
+            << expected[i].t_s << ","
+            << expected[i].waypoint.x << ","
+            << expected[i].waypoint.y << ","
+            << expected[i].position.x << ","
+            << expected[i].position.y << ","
+            << actual[i].position.x << ","
+            << actual[i].position.y << ","
+            << expected[i].position_error << ","
+            << actual[i].position_error << "\n";
+    }
+}
+
+void write_control_trajectory_svg(const std::string& path, const std::vector<ControlLoopStep>& expected,
+                                  const std::vector<ControlLoopStep>& actual) {
+    std::ofstream out(path);
+    if (!out) throw std::runtime_error("failed to open " + path);
+
+    out << "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"520\" height=\"360\" viewBox=\"0 0 520 360\">\n";
+    out << "<rect width=\"100%\" height=\"100%\" fill=\"white\"/>\n";
+    out << "<line x1=\"40\" y1=\"320\" x2=\"480\" y2=\"320\" stroke=\"black\" stroke-width=\"1\"/>\n";
+    out << "<line x1=\"60\" y1=\"20\" x2=\"60\" y2=\"320\" stroke=\"black\" stroke-width=\"1\"/>\n";
+    out << "<text x=\"70\" y=\"30\" font-size=\"14\">Expected vs Actual Trajectory</text>\n";
+    out << "<polyline fill=\"none\" stroke=\"#2563eb\" stroke-width=\"2\" points=\"" << polyline_points(expected, false) << "\"/>\n";
+    out << "<polyline fill=\"none\" stroke=\"#16a34a\" stroke-width=\"2\" points=\"" << polyline_points(expected, true) << "\"/>\n";
+    out << "<polyline fill=\"none\" stroke=\"#dc2626\" stroke-width=\"2\" points=\"" << polyline_points(actual, true) << "\"/>\n";
+    out << "<text x=\"300\" y=\"40\" font-size=\"12\" fill=\"#2563eb\">Waypoint Path</text>\n";
+    out << "<text x=\"300\" y=\"58\" font-size=\"12\" fill=\"#16a34a\">Expected Trajectory</text>\n";
+    out << "<text x=\"300\" y=\"76\" font-size=\"12\" fill=\"#dc2626\">Fault-Injected Trajectory</text>\n";
+    out << "</svg>\n";
+}
+
+ControlLoopReport analyze_control_divergence(const std::string& scenario_name,
+                                             const std::vector<ControlLoopStep>& expected,
                                              const std::vector<ControlLoopStep>& actual) {
     ControlLoopReport r;
+    r.scenario_name = scenario_name;
     std::set<std::string> causes;
 
     const int n = std::min<int>(expected.size(), actual.size());
+    double sum_elapsed = 0.0;
+
     for (int i = 0; i < n; ++i) {
         const auto& e = expected[i];
         const auto& a = actual[i];
 
         const double pos_gap = norm(sub(e.position, a.position));
         r.max_position_error = std::max(r.max_position_error, a.position_error);
+        r.max_loop_elapsed_ms = std::max(r.max_loop_elapsed_ms, a.loop_elapsed_ms);
+        sum_elapsed += a.loop_elapsed_ms;
+        r.max_timing_jitter_ms = std::max(r.max_timing_jitter_ms, std::abs(a.loop_dt_s - kNominalDt) * 1000.0);
 
-        if (a.missed_update_cycle) r.missed_deadlines++;
+        if (a.loop_elapsed_ms > a.loop_budget_ms) r.missed_deadlines++;
         if (a.actuator_saturated) r.output_clipping_detected = true;
 
-        const double meas_gap = norm(sub(a.position, a.measured_position));
-        if (meas_gap > 0.35) r.state_estimate_drift_detected = true;
+        const double estimate_gap = norm(sub(a.position, a.state_estimate));
+        if (estimate_gap > 0.25) r.state_estimate_drift_detected = true;
 
         if (i >= 4) {
             const double e1 = actual[i].position_error;
@@ -193,9 +287,13 @@ ControlLoopReport analyze_control_divergence(const std::vector<ControlLoopStep>&
 
         if (a.dropped_sensor_sample) causes.insert("dropped_sensor_sample");
         if (a.delayed_measurement) causes.insert("delayed_measurement");
+        if (a.stale_state_estimate) causes.insert("stale_state_estimate");
         if (a.actuator_saturated) causes.insert("actuator_saturation");
         if (a.missed_update_cycle) causes.insert("missed_update_cycle");
+        if (a.timing_jitter) causes.insert("timing_jitter");
     }
+
+    r.avg_loop_elapsed_ms = n > 0 ? sum_elapsed / n : 0.0;
 
     if (r.first_divergence_step >= 0) {
         double peak_error_after_divergence = r.actual_error_at_divergence;
@@ -216,6 +314,7 @@ ControlLoopReport analyze_control_divergence(const std::vector<ControlLoopStep>&
 std::string control_report_json(const ControlLoopReport& report) {
     std::ostringstream oss;
     oss << "{\n"
+        << "  \"scenario_name\": \"" << report.scenario_name << "\",\n"
         << "  \"first_divergence_step\": " << report.first_divergence_step << ",\n"
         << "  \"first_divergence_time_s\": " << report.first_divergence_time_s << ",\n"
         << "  \"expected_error_at_divergence\": " << report.expected_error_at_divergence << ",\n"
@@ -226,12 +325,44 @@ std::string control_report_json(const ControlLoopReport& report) {
         << "  \"output_clipping_detected\": " << (report.output_clipping_detected ? "true" : "false") << ",\n"
         << "  \"state_estimate_drift_detected\": " << (report.state_estimate_drift_detected ? "true" : "false") << ",\n"
         << "  \"unstable_oscillation_detected\": " << (report.unstable_oscillation_detected ? "true" : "false") << ",\n"
+        << "  \"max_loop_elapsed_ms\": " << report.max_loop_elapsed_ms << ",\n"
+        << "  \"avg_loop_elapsed_ms\": " << report.avg_loop_elapsed_ms << ",\n"
+        << "  \"max_timing_jitter_ms\": " << report.max_timing_jitter_ms << ",\n"
         << "  \"root_cause_classes\": [";
     for (size_t i = 0; i < report.root_cause_classes.size(); ++i) {
         if (i) oss << ",";
         oss << "\"" << report.root_cause_classes[i] << "\"";
     }
     oss << "]\n}\n";
+    return oss.str();
+}
+
+std::string timing_budget_summary_json(const std::vector<ControlLoopStep>& expected,
+                                       const std::vector<ControlLoopStep>& actual) {
+    const int n = std::min<int>(expected.size(), actual.size());
+    int expected_deadlines = 0;
+    int actual_deadlines = 0;
+    double max_actual_elapsed = 0.0;
+    double avg_actual_elapsed = 0.0;
+    double max_jitter_ms = 0.0;
+
+    for (int i = 0; i < n; ++i) {
+        if (expected[i].loop_elapsed_ms > expected[i].loop_budget_ms) expected_deadlines++;
+        if (actual[i].loop_elapsed_ms > actual[i].loop_budget_ms) actual_deadlines++;
+        max_actual_elapsed = std::max(max_actual_elapsed, actual[i].loop_elapsed_ms);
+        avg_actual_elapsed += actual[i].loop_elapsed_ms;
+        max_jitter_ms = std::max(max_jitter_ms, std::abs(actual[i].loop_dt_s - kNominalDt) * 1000.0);
+    }
+    if (n > 0) avg_actual_elapsed /= n;
+
+    std::ostringstream oss;
+    oss << "{\n"
+        << "  \"expected_missed_deadlines\": " << expected_deadlines << ",\n"
+        << "  \"actual_missed_deadlines\": " << actual_deadlines << ",\n"
+        << "  \"max_actual_loop_elapsed_ms\": " << max_actual_elapsed << ",\n"
+        << "  \"avg_actual_loop_elapsed_ms\": " << avg_actual_elapsed << ",\n"
+        << "  \"max_timing_jitter_ms\": " << max_jitter_ms << "\n"
+        << "}\n";
     return oss.str();
 }
 

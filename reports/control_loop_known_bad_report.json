@@ -1,0 +1,17 @@
+{
+  "scenario_name": "known_bad_fault_injected",
+  "first_divergence_step": 38,
+  "first_divergence_time_s": 4,
+  "expected_error_at_divergence": 0.720307,
+  "actual_error_at_divergence": 1.56387,
+  "error_growth_after_divergence": 1.25664,
+  "max_position_error": 2.82051,
+  "missed_deadlines": 5,
+  "output_clipping_detected": true,
+  "state_estimate_drift_detected": true,
+  "unstable_oscillation_detected": true,
+  "max_loop_elapsed_ms": 123,
+  "avg_loop_elapsed_ms": 63.6875,
+  "max_timing_jitter_ms": 30,
+  "root_cause_classes": ["actuator_saturation","controller_output_clipping","delayed_measurement","dropped_sensor_sample","missed_update_cycle","stale_state_estimate","state_estimate_drift","timing_jitter","unstable_oscillation"]
+}
