@@ -1,0 +1,7 @@
+{
+  "suspected_cause": "retry_amplification",
+  "confidence": 0.820000,
+  "alternative_hypotheses": ["dependency DNS flap","transport reset before timeout"],
+  "affected_components": ["auth","gateway"],
+  "likely_user_symptom": "burst of auth failures and elevated latency"
+}

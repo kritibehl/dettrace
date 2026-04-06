@@ -1,0 +1,8 @@
+{"seq":0,"component":"edge","action":"request_start","state":"ok","detail":"req-100","timestamp_ms":0}
+{"seq":1,"component":"api","action":"call_user","state":"ok","detail":"req-100","timestamp_ms":10}
+{"seq":2,"component":"user","action":"call_profile","state":"ok","detail":"req-100","timestamp_ms":25}
+{"seq":3,"component":"profile","action":"call_db","state":"ok","detail":"req-100","timestamp_ms":40}
+{"seq":4,"component":"db","action":"reply","state":"ok","detail":"rows=1","timestamp_ms":65}
+{"seq":5,"component":"profile","action":"reply","state":"ok","detail":"profile_ready","timestamp_ms":75}
+{"seq":6,"component":"user","action":"reply","state":"ok","detail":"user_ready","timestamp_ms":90}
+{"seq":7,"component":"api","action":"reply","state":"ok","detail":"200","timestamp_ms":100}

@@ -1,0 +1,6 @@
+{"seq":0,"component":"edge","action":"request_start","state":"ok","detail":"trace-200","timestamp_ms":0}
+{"seq":1,"component":"gateway","action":"auth_lookup","state":"ok","detail":"attempt=0","timestamp_ms":8}
+{"seq":2,"component":"auth","action":"token_db_lookup","state":"ok","detail":"attempt=0","timestamp_ms":18}
+{"seq":3,"component":"token-db","action":"reply","state":"ok","detail":"token_ok","timestamp_ms":35}
+{"seq":4,"component":"auth","action":"reply","state":"ok","detail":"authorized","timestamp_ms":44}
+{"seq":5,"component":"gateway","action":"reply","state":"ok","detail":"200","timestamp_ms":52}

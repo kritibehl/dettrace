@@ -1,0 +1,8 @@
+{"seq":0,"component":"edge","action":"request_start","state":"ok","detail":"trace-200","timestamp_ms":0}
+{"seq":1,"component":"gateway","action":"auth_lookup","state":"ok","detail":"attempt=0","timestamp_ms":8}
+{"seq":2,"component":"auth","action":"token_db_lookup","state":"degraded","detail":"dns_failure","timestamp_ms":18}
+{"seq":3,"component":"gateway","action":"retry","state":"degraded","detail":"attempt=1","timestamp_ms":32}
+{"seq":4,"component":"auth","action":"token_db_lookup","state":"degraded","detail":"transport_reset","timestamp_ms":55}
+{"seq":5,"component":"gateway","action":"retry","state":"degraded","detail":"attempt=2","timestamp_ms":70}
+{"seq":6,"component":"auth","action":"token_db_lookup","state":"degraded","detail":"timeout_chain","timestamp_ms":135}
+{"seq":7,"component":"gateway","action":"reply","state":"degraded","detail":"503_auth_unavailable","timestamp_ms":145}

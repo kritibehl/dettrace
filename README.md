@@ -599,6 +599,83 @@ Key artifact:
 - safety-critical flight software claim
 
 
+
+## Incident Forensics
+
+### Proof statement
+
+**Replay-driven incident forensics tool that isolates first divergence, reconstructs causal behavior drift, and explains how faults become operator-visible failures.**
+
+### Why replay matters
+
+- logs often show aftermath
+- replay reveals drift onset
+- first divergence is more actionable than terminal symptom
+- causal reconstruction beats symptom-only debugging
+
+### Scenario packs
+
+DetTrace includes curated scenario packs:
+
+- `timeout_chain`
+- `retry_storm`
+- `stale_state`
+- `delayed_dependency`
+- `duplicate_ack`
+- `misordered_recovery`
+
+Each scenario produces:
+
+- expected healthy trace
+- degraded trace
+- replay trace
+- scenario notes
+- divergence report
+- root cause report
+- incident report
+- causal chain
+- invariant breaks
+- propagation view
+
+### Semantic divergence taxonomy
+
+DetTrace classifies divergence into categories such as:
+
+- timing divergence
+- ordering divergence
+- missing event
+- duplicate event
+- stale-state transition
+- retry amplification
+- timeout chain
+- recovery misordering
+
+### Invariant-guided replay
+
+DetTrace checks invariants such as:
+
+- no duplicate completion without retry
+- no action before dependency-ready
+- recovery must follow failure within N steps
+- ack ordering must preserve causality
+
+### Human-readable reports
+
+Key elite artifacts:
+
+- `artifacts/reports/scenario_summary.md`
+- `artifacts/reports/incident_cards.md`
+- `artifacts/reports/cluster_summary.json`
+- per-scenario `divergence_report.json`
+- per-scenario `root_cause_report.json`
+- per-scenario `incident_report.md`
+- per-scenario `causal_chain.md`
+
+### Ambiguity and confidence
+
+DetTrace reports likely causes with confidence and alternative hypotheses rather than pretending certainty when trace evidence is incomplete.
+
+
 ## Positioning
 
 DetTrace is a specialist debugging and incident-forensics tool for making hard failures reproducible, inspectable, and explainable.
@@ -609,17 +686,4 @@ It is not a packet sniffer, not a router-control framework, and not a full obser
 
 ## License
 
-MIT\n\n
-## What I build
-
-I build systems that:
-
-1. execute correctly under failure  
-   **Faultline** — crash-safe execution, replayable races, and correctness under partial failure
-
-2. detect unsafe system behavior  
-   **KubePulse** — resilience validation, timing-aware diagnostics, and unsafe-state detection under faults
-
-3. diagnose failures precisely  
-   **DetTrace** — deterministic replay, first-divergence isolation, and replay-based debugging for concurrent, distributed, and control-loop systems
-\n
+MIT

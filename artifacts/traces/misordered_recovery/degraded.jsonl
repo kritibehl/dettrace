@@ -1,0 +1,4 @@
+{"seq":0,"component":"lb","action":"failover","state":"ok","detail":"to_b","timestamp_ms":0}
+{"seq":1,"component":"checkout-a","action":"healthy","state":"degraded","detail":"marked_healthy_early","timestamp_ms":12}
+{"seq":2,"component":"payment","action":"error","state":"degraded","detail":"dependency_unavailable","timestamp_ms":26}
+{"seq":3,"component":"lb","action":"route","state":"degraded","detail":"masked_recovery_path","timestamp_ms":32}

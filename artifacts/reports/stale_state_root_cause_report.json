@@ -1,0 +1,7 @@
+{
+  "suspected_cause": "stale-state transition",
+  "confidence": 0.900000,
+  "alternative_hypotheses": ["delayed sensor update","ordering instability in state pipeline"],
+  "affected_components": ["controller","planner"],
+  "likely_user_symptom": "control drift or stale state actuation"
+}

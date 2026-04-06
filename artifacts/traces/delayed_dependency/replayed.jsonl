@@ -1,0 +1,4 @@
+{"seq":0,"component":"orchestrator","action":"dependency_probe","state":"ok","detail":"cache","timestamp_ms":0}
+{"seq":1,"component":"cache","action":"ready","state":"ok","detail":"cache_ready","timestamp_ms":12}
+{"seq":2,"component":"orchestrator","action":"dispatch","state":"ok","detail":"job_start","timestamp_ms":20}
+{"seq":3,"component":"worker","action":"complete","state":"ok","detail":"job_done","timestamp_ms":55}

@@ -1,0 +1,4 @@
+{"seq":0,"component":"lb","action":"failover","state":"ok","detail":"to_b","timestamp_ms":0}
+{"seq":1,"component":"checkout-b","action":"recover","state":"ok","detail":"instance_ready","timestamp_ms":22}
+{"seq":2,"component":"payment","action":"recover","state":"ok","detail":"dependency_ready","timestamp_ms":35}
+{"seq":3,"component":"lb","action":"healthy","state":"ok","detail":"route_stable","timestamp_ms":45}

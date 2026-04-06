@@ -1,0 +1,5 @@
+{"seq":0,"component":"planner","action":"state_update","state":"ok","detail":"est=v1","timestamp_ms":0}
+{"seq":1,"component":"planner","action":"state_update","state":"ok","detail":"est=v2","timestamp_ms":8}
+{"seq":2,"component":"controller","action":"consume_state","state":"degraded","detail":"est=v1_stale","timestamp_ms":10}
+{"seq":3,"component":"controller","action":"actuate","state":"degraded","detail":"cmd_from_stale_state","timestamp_ms":20}
+{"seq":4,"component":"plant","action":"state_commit","state":"degraded","detail":"drift_detected","timestamp_ms":36}

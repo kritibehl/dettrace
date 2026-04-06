@@ -62,3 +62,19 @@ target_include_directories(test_control_loop_replay PRIVATE include)
 add_test(NAME control_loop_replay COMMAND test_control_loop_replay)
 set_tests_properties(control_loop_replay PROPERTIES WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
 
+
+
+add_executable(dettrace_incident_forensics
+    src/incident_forensics_main.cpp
+    src/incident_forensics.cpp
+)
+target_include_directories(dettrace_incident_forensics PRIVATE include)
+
+add_executable(test_incident_forensics
+    tests/integration/test_incident_forensics.cpp
+    src/incident_forensics.cpp
+)
+target_include_directories(test_incident_forensics PRIVATE include)
+add_test(NAME incident_forensics COMMAND test_incident_forensics)
+set_tests_properties(incident_forensics PROPERTIES WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
+

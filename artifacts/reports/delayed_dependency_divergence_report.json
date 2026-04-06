@@ -1,0 +1,8 @@
+{
+  "scenario_name": "delayed_dependency",
+  "first_divergence_event": 1,
+  "divergence_class": "timing divergence",
+  "expected_excerpt": "{seq=1, component=cache, action=ready, state=ok, detail=cache_ready}",
+  "actual_excerpt": "{seq=1, component=orchestrator, action=dispatch, state=degraded, detail=action_before_ready}",
+  "confidence": 0.760000
+}

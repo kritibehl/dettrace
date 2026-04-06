@@ -1,0 +1,8 @@
+{
+  "scenario_name": "misordered_recovery",
+  "first_divergence_event": 1,
+  "divergence_class": "recovery misordering",
+  "expected_excerpt": "{seq=1, component=checkout-b, action=recover, state=ok, detail=instance_ready}",
+  "actual_excerpt": "{seq=1, component=checkout-a, action=healthy, state=degraded, detail=marked_healthy_early}",
+  "confidence": 0.820000
+}

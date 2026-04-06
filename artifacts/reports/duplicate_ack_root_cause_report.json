@@ -1,0 +1,7 @@
+{
+  "suspected_cause": "duplicate event",
+  "confidence": 0.900000,
+  "alternative_hypotheses": ["retry bookkeeping bug","idempotency guard missing"],
+  "affected_components": ["coordinator"],
+  "likely_user_symptom": "duplicate completion or user-visible duplicate side effect"
+}

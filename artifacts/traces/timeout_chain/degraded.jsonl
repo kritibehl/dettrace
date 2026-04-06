@@ -1,0 +1,8 @@
+{"seq":0,"component":"edge","action":"request_start","state":"ok","detail":"req-100","timestamp_ms":0}
+{"seq":1,"component":"api","action":"call_user","state":"ok","detail":"req-100","timestamp_ms":10}
+{"seq":2,"component":"user","action":"call_profile","state":"ok","detail":"req-100","timestamp_ms":25}
+{"seq":3,"component":"profile","action":"call_db","state":"ok","detail":"req-100","timestamp_ms":40}
+{"seq":4,"component":"profile","action":"timeout","state":"degraded","detail":"db_wait_exceeded","timestamp_ms":190}
+{"seq":5,"component":"user","action":"timeout","state":"degraded","detail":"downstream_timeout","timestamp_ms":210}
+{"seq":6,"component":"api","action":"cancel","state":"degraded","detail":"propagate_cancel","timestamp_ms":215}
+{"seq":7,"component":"edge","action":"reply","state":"degraded","detail":"504_gateway_timeout","timestamp_ms":220}

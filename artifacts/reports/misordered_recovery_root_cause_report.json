@@ -1,0 +1,7 @@
+{
+  "suspected_cause": "recovery misordering",
+  "confidence": 0.900000,
+  "alternative_hypotheses": ["masked failover","premature health signal"],
+  "affected_components": ["checkout-a","lb","payment"],
+  "likely_user_symptom": "recovery appears healthy before correctness is restored"
+}

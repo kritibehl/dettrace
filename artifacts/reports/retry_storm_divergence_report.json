@@ -1,0 +1,8 @@
+{
+  "scenario_name": "retry_storm",
+  "first_divergence_event": 2,
+  "divergence_class": "retry_amplification",
+  "expected_excerpt": "{seq=2, component=auth, action=token_db_lookup, state=ok, detail=attempt=0}",
+  "actual_excerpt": "{seq=2, component=auth, action=token_db_lookup, state=degraded, detail=dns_failure}",
+  "confidence": 0.820000
+}

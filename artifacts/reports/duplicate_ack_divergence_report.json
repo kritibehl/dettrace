@@ -1,0 +1,8 @@
+{
+  "scenario_name": "duplicate_ack",
+  "first_divergence_event": 3,
+  "divergence_class": "duplicate event",
+  "expected_excerpt": "<end_of_trace>",
+  "actual_excerpt": "{seq=3, component=coordinator, action=ack, state=degraded, detail=job-1_duplicate_ack}",
+  "confidence": 0.820000
+}

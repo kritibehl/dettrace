@@ -1,0 +1,3 @@
+{"seq":0,"component":"worker","action":"start","state":"ok","detail":"job-1","timestamp_ms":0}
+{"seq":1,"component":"worker","action":"complete","state":"ok","detail":"job-1","timestamp_ms":30}
+{"seq":2,"component":"coordinator","action":"ack","state":"ok","detail":"job-1_ack","timestamp_ms":34}
