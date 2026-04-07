@@ -9,8 +9,8 @@
 - **Alternative hypotheses:** masked failover; premature health signal
 
 ## Key Evidence
-- {seq=1, component=checkout-a, action=healthy, state=degraded, detail=marked_healthy_early}
-- {seq=1, component=checkout-a, action=healthy, state=degraded, detail=marked_healthy_early}
+- {seq=1, component=checkout-a, action=healthy, state=degraded, detail=marked_healthy_early, ts_ms=12}
+- {seq=1, component=checkout-a, action=healthy, state=degraded, detail=marked_healthy_early, ts_ms=12}
 
 ## Invariant Breaks
-- recovery must follow failure within N steps at event 1 (confidence=0.88): {seq=1, component=checkout-a, action=healthy, state=degraded, detail=marked_healthy_early}
+- recovery must follow failure within N steps at event 1 (confidence=0.89): {seq=1, component=checkout-a, action=healthy, state=degraded, detail=marked_healthy_early, ts_ms=12}

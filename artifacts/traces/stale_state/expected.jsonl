@@ -1,4 +1,5 @@
 {"seq":0,"component":"planner","action":"state_update","state":"ok","detail":"est=v1","timestamp_ms":0}
-{"seq":1,"component":"controller","action":"consume_state","state":"ok","detail":"est=v1","timestamp_ms":10}
-{"seq":2,"component":"controller","action":"actuate","state":"ok","detail":"cmd=nominal","timestamp_ms":20}
-{"seq":3,"component":"plant","action":"state_commit","state":"ok","detail":"x=1.0","timestamp_ms":35}
+{"seq":1,"component":"planner","action":"state_update","state":"ok","detail":"est=v2","timestamp_ms":8}
+{"seq":2,"component":"controller","action":"consume_state","state":"ok","detail":"est=v2","timestamp_ms":10}
+{"seq":3,"component":"controller","action":"actuate","state":"ok","detail":"cmd=nominal","timestamp_ms":20}
+{"seq":4,"component":"plant","action":"state_commit","state":"ok","detail":"x=1.0","timestamp_ms":35}

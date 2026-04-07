@@ -2,7 +2,7 @@
   "scenario_name": "stale_state",
   "first_divergence_event": 1,
   "divergence_class": "stale-state transition",
-  "expected_excerpt": "{seq=1, component=controller, action=consume_state, state=ok, detail=est=v1}",
-  "actual_excerpt": "{seq=1, component=planner, action=state_update, state=ok, detail=est=v2}",
-  "confidence": 0.820000
+  "expected_excerpt": "{seq=1, component=planner, action=state_update, state=ok, detail=est=v2, ts_ms=8}",
+  "actual_excerpt": "{seq=1, component=controller, action=consume_state, state=degraded, detail=est=v1_stale, ts_ms=10}",
+  "confidence": 0.900000
 }

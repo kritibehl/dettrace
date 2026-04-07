@@ -1,7 +1,7 @@
 {
   "suspected_cause": "timing divergence",
   "confidence": 0.840000,
-  "alternative_hypotheses": ["incorrect readiness gating","dependency probe lag"],
-  "affected_components": ["orchestrator"],
+  "alternative_hypotheses": ["readiness gate bug", "dependency probe lag"],
+  "affected_components": ["cache", "orchestrator"],
   "likely_user_symptom": "deadline miss after dependency delay"
 }

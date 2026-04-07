@@ -6,11 +6,11 @@
 - **First divergence event:** 1
 - **Affected components:** controller, planner
 - **Likely user symptom:** control drift or stale state actuation
-- **Alternative hypotheses:** delayed sensor update; ordering instability in state pipeline
+- **Alternative hypotheses:** delayed sensor update; state ordering instability
 
 ## Key Evidence
-- {seq=1, component=planner, action=state_update, state=ok, detail=est=v2}
-- {seq=3, component=controller, action=actuate, state=degraded, detail=cmd_from_stale_state}
+- {seq=1, component=controller, action=consume_state, state=degraded, detail=est=v1_stale, ts_ms=10}
+- {seq=2, component=controller, action=actuate, state=degraded, detail=cmd_from_stale_state, ts_ms=20}
 
 ## Invariant Breaks
-- ack ordering must preserve causality at event 3 (confidence=0.73): {seq=3, component=controller, action=actuate, state=degraded, detail=cmd_from_stale_state}
+- no stale-state actuation after fresher estimate exists at event 2 (confidence=0.79): {seq=2, component=controller, action=actuate, state=degraded, detail=cmd_from_stale_state, ts_ms=20}

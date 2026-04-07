@@ -1,3 +1,3 @@
 # Invariant Breaks
 
-- ack ordering must preserve causality at event 3 | confidence=0.73 | evidence={seq=3, component=controller, action=actuate, state=degraded, detail=cmd_from_stale_state}
+- no stale-state actuation after fresher estimate exists at event 2 | confidence=0.79 | evidence={seq=2, component=controller, action=actuate, state=degraded, detail=cmd_from_stale_state, ts_ms=20}

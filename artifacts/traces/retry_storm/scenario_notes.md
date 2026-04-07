@@ -1,4 +1,4 @@
 # Scenario Notes
 
-- fault injection: inject auth dependency failures causing repeated retries
-- notes: Healthy run performs a single auth lookup; degraded run amplifies retries and exposes error burst.
+- fault injection: inject dependency failures causing repeated retries
+- notes: Healthy run performs one auth lookup; degraded run amplifies retries and surfaces an error burst.

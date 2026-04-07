@@ -1,7 +1,7 @@
 {
   "suspected_cause": "timeout_chain",
   "confidence": 0.820000,
-  "alternative_hypotheses": ["ordering instability after retry","missing dependency-ready trace granularity"],
-  "affected_components": ["api","profile"],
+  "alternative_hypotheses": ["ordering instability after retry", "dependency trace missing around db reply window"],
+  "affected_components": ["api", "profile"],
   "likely_user_symptom": "gateway timeout visible to operator"
 }

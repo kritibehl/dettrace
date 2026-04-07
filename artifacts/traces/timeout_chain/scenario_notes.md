@@ -1,4 +1,4 @@
 # Scenario Notes
 
-- fault injection: inject profile->db timeout after nominal dependency request
-- notes: Healthy run completes request path; degraded run accumulates timeout chain and cancellation.
+- fault injection: inject profile->db timeout after downstream request
+- notes: Healthy run returns successfully; degraded run accumulates cascading timeouts and cancellation.

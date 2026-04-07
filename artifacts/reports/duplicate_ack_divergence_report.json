@@ -3,6 +3,6 @@
   "first_divergence_event": 3,
   "divergence_class": "duplicate event",
   "expected_excerpt": "<end_of_trace>",
-  "actual_excerpt": "{seq=3, component=coordinator, action=ack, state=degraded, detail=job-1_duplicate_ack}",
-  "confidence": 0.820000
+  "actual_excerpt": "{seq=3, component=coordinator, action=ack, state=degraded, detail=job-1_duplicate_ack, ts_ms=35}",
+  "confidence": 0.900000
 }

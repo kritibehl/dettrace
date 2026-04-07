@@ -2,7 +2,7 @@
   "scenario_name": "timeout_chain",
   "first_divergence_event": 4,
   "divergence_class": "timeout_chain",
-  "expected_excerpt": "{seq=4, component=db, action=reply, state=ok, detail=rows=1}",
-  "actual_excerpt": "{seq=4, component=profile, action=timeout, state=degraded, detail=db_wait_exceeded}",
+  "expected_excerpt": "{seq=4, component=db, action=reply, state=ok, detail=rows=1, ts_ms=65}",
+  "actual_excerpt": "{seq=4, component=profile, action=timeout, state=degraded, detail=db_wait_exceeded, ts_ms=190}",
   "confidence": 0.820000
 }

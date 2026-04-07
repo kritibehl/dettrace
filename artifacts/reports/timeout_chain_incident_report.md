@@ -6,7 +6,7 @@
 - **First divergence event:** 4
 - **Affected components:** api, profile
 - **Likely user symptom:** gateway timeout visible to operator
-- **Alternative hypotheses:** ordering instability after retry; missing dependency-ready trace granularity
+- **Alternative hypotheses:** ordering instability after retry; dependency trace missing around db reply window
 
 ## Key Evidence
-- {seq=4, component=profile, action=timeout, state=degraded, detail=db_wait_exceeded}
+- {seq=4, component=profile, action=timeout, state=degraded, detail=db_wait_exceeded, ts_ms=190}
