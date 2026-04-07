@@ -13,6 +13,8 @@ int main() {
     bool saw_recovery = false;
 
     std::vector<dettrace::DivergenceReport> reports;
+    std::vector<dettrace::IncidentFingerprint> fingerprints;
+
     for (const auto& scenario : scenarios) {
         const auto divergence = dettrace::classify_divergence(scenario);
         const auto invariant_breaks = dettrace::run_invariant_guided_replay(scenario);
@@ -38,6 +40,12 @@ int main() {
         const auto causal = dettrace::build_causal_chain_md(scenario, divergence, root);
         assert(causal.find("What changed first") != std::string::npos);
 
+        const auto fp = dettrace::build_incident_fingerprint(scenario, divergence, root);
+        assert(!fp.divergence_class.empty());
+        assert(fp.first_divergence_event >= 0);
+        assert(!fp.propagation_components.empty());
+
+        fingerprints.push_back(fp);
         reports.push_back(divergence);
     }
 
@@ -47,6 +55,13 @@ int main() {
 
     const auto clusters = dettrace::build_cluster_summary_json(reports);
     assert(clusters.find("timing-related") != std::string::npos || clusters.find("retry-amplified") != std::string::npos);
+
+    const auto sims = dettrace::find_similar_incidents(fingerprints[1], fingerprints, 3);
+    assert(!sims.empty());
+
+    const auto pred = dettrace::predict_propagation_path(scenarios[1], fingerprints[1], fingerprints);
+    assert(!pred.predicted_path.empty());
+    assert(pred.confidence > 0.5);
 
     return 0;
 }

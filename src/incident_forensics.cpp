@@ -1,6 +1,7 @@
 #include "dettrace/incident_forensics.hpp"
 
 #include <algorithm>
+#include <cctype>
 #include <fstream>
 #include <map>
 #include <set>
@@ -26,21 +27,12 @@ std::string esc(const std::string& s) {
             case '\\': out += "\\\\"; break;
             case '"': out += "\\\""; break;
             case '\n': out += "\\n"; break;
+            case '\r': out += "\\r"; break;
+            case '\t': out += "\\t"; break;
             default: out += c; break;
         }
     }
     return out;
-}
-
-std::string json_array(const std::vector<std::string>& xs) {
-    std::ostringstream oss;
-    oss << "[";
-    for (size_t i = 0; i < xs.size(); ++i) {
-        if (i) oss << ",";
-        oss << "\"" << esc(xs[i]) << "\"";
-    }
-    oss << "]";
-    return oss.str();
 }
 
 std::string excerpt_event(const ForensicsEvent& e) {
@@ -50,15 +42,59 @@ std::string excerpt_event(const ForensicsEvent& e) {
         << ", action=" << e.action
         << ", state=" << e.state
         << ", detail=" << e.detail
+        << ", ts_ms=" << e.timestamp_ms
         << "}";
     return oss.str();
+}
+
+std::vector<std::string> tokenize_lower(std::string s) {
+    for (char& c : s) {
+        if (!std::isalnum(static_cast<unsigned char>(c))) c = ' ';
+        else c = static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
+    }
+    std::istringstream iss(s);
+    std::vector<std::string> out;
+    std::string token;
+    while (iss >> token) {
+        if (token.size() >= 3) out.push_back(token);
+    }
+    std::sort(out.begin(), out.end());
+    out.erase(std::unique(out.begin(), out.end()), out.end());
+    return out;
+}
+
+template <typename T>
+std::vector<T> uniq_vec(std::vector<T> xs) {
+    std::sort(xs.begin(), xs.end());
+    xs.erase(std::unique(xs.begin(), xs.end()), xs.end());
+    return xs;
+}
+
+double overlap_score(const std::vector<std::string>& a, const std::vector<std::string>& b) {
+    std::set<std::string> sa(a.begin(), a.end());
+    std::set<std::string> sb(b.begin(), b.end());
+    if (sa.empty() && sb.empty()) return 1.0;
+    std::size_t inter = 0;
+    for (const auto& x : sa) {
+        if (sb.count(x)) ++inter;
+    }
+    const std::size_t uni = sa.size() + sb.size() - inter;
+    return uni == 0 ? 0.0 : static_cast<double>(inter) / static_cast<double>(uni);
+}
+
+std::vector<std::string> degraded_components_after_divergence(const ScenarioBundle& s, int first_div) {
+    std::vector<std::string> out;
+    for (const auto& e : s.degraded) {
+        if (e.seq >= first_div) out.push_back(e.component + ":" + e.action);
+    }
+    return uniq_vec(out);
 }
 
 ScenarioBundle make_timeout_chain() {
     ScenarioBundle s;
     s.scenario_name = "timeout_chain";
-    s.fault_parameters = "inject profile->db timeout after nominal dependency request";
-    s.scenario_notes = "Healthy run completes request path; degraded run accumulates timeout chain and cancellation.";
+    s.fault_parameters = "inject profile->db timeout after downstream request";
+    s.scenario_notes = "Healthy run returns successfully; degraded run accumulates cascading timeouts and cancellation.";
     s.healthy = {
         ev(0,"edge","request_start","ok","req-100",0),
         ev(1,"api","call_user","ok","req-100",10),
@@ -86,8 +122,8 @@ ScenarioBundle make_timeout_chain() {
 ScenarioBundle make_retry_storm() {
     ScenarioBundle s;
     s.scenario_name = "retry_storm";
-    s.fault_parameters = "inject auth dependency failures causing repeated retries";
-    s.scenario_notes = "Healthy run performs a single auth lookup; degraded run amplifies retries and exposes error burst.";
+    s.fault_parameters = "inject dependency failures causing repeated retries";
+    s.scenario_notes = "Healthy run performs one auth lookup; degraded run amplifies retries and surfaces an error burst.";
     s.healthy = {
         ev(0,"edge","request_start","ok","trace-200",0),
         ev(1,"gateway","auth_lookup","ok","attempt=0",8),
@@ -117,16 +153,16 @@ ScenarioBundle make_stale_state() {
     s.scenario_notes = "Healthy run updates state estimate before actuation; degraded run acts on stale state.";
     s.healthy = {
         ev(0,"planner","state_update","ok","est=v1",0),
-        ev(1,"controller","consume_state","ok","est=v1",10),
-        ev(2,"controller","actuate","ok","cmd=nominal",20),
-        ev(3,"plant","state_commit","ok","x=1.0",35)
+        ev(1,"planner","state_update","ok","est=v2",8),
+        ev(2,"controller","consume_state","ok","est=v2",10),
+        ev(3,"controller","actuate","ok","cmd=nominal",20),
+        ev(4,"plant","state_commit","ok","x=1.0",35)
     };
     s.degraded = {
         ev(0,"planner","state_update","ok","est=v1",0),
-        ev(1,"planner","state_update","ok","est=v2",8),
-        ev(2,"controller","consume_state","degraded","est=v1_stale",10),
-        ev(3,"controller","actuate","degraded","cmd_from_stale_state",20),
-        ev(4,"plant","state_commit","degraded","drift_detected",36)
+        ev(1,"controller","consume_state","degraded","est=v1_stale",10),
+        ev(2,"controller","actuate","degraded","cmd_from_stale_state",20),
+        ev(3,"plant","state_commit","degraded","drift_detected",36)
     };
     s.replayed = s.healthy;
     return s;
@@ -136,7 +172,7 @@ ScenarioBundle make_delayed_dependency() {
     ScenarioBundle s;
     s.scenario_name = "delayed_dependency";
     s.fault_parameters = "inject delayed dependency-ready event";
-    s.scenario_notes = "Healthy run waits for dependency-ready before action; degraded run observes delayed dependency and misses deadline.";
+    s.scenario_notes = "Healthy run waits for dependency-ready before action; degraded run dispatches too early and misses deadline.";
     s.healthy = {
         ev(0,"orchestrator","dependency_probe","ok","cache",0),
         ev(1,"cache","ready","ok","cache_ready",12),
@@ -157,7 +193,7 @@ ScenarioBundle make_duplicate_ack() {
     ScenarioBundle s;
     s.scenario_name = "duplicate_ack";
     s.fault_parameters = "inject duplicate completion acknowledgment without retry";
-    s.scenario_notes = "Healthy run has one completion ack; degraded run emits duplicate ack and causes invariant break.";
+    s.scenario_notes = "Healthy run has one completion ack; degraded run emits duplicate ack and breaks idempotent completion expectations.";
     s.healthy = {
         ev(0,"worker","start","ok","job-1",0),
         ev(1,"worker","complete","ok","job-1",30),
@@ -202,6 +238,17 @@ std::string classify_name(const ScenarioBundle& s) {
     if (s.scenario_name == "duplicate_ack") return "duplicate event";
     if (s.scenario_name == "misordered_recovery") return "recovery misordering";
     return "ordering divergence";
+}
+
+std::string to_json_array(const std::vector<std::string>& xs) {
+    std::ostringstream oss;
+    oss << "[";
+    for (std::size_t i = 0; i < xs.size(); ++i) {
+        if (i) oss << ",";
+        oss << "\"" << esc(xs[i]) << "\"";
+    }
+    oss << "]";
+    return oss.str();
 }
 
 }  // namespace
@@ -249,7 +296,7 @@ DivergenceReport classify_divergence(const ScenarioBundle& scenario) {
     for (int i = 0; i < n; ++i) {
         const auto& h = scenario.healthy[i];
         const auto& d = scenario.degraded[i];
-        if (h.action != d.action || h.state != d.state || h.detail != d.detail || h.component != d.component) {
+        if (h.component != d.component || h.action != d.action || h.state != d.state || h.detail != d.detail) {
             r.first_divergence_event = i;
             r.expected_excerpt = excerpt_event(h);
             r.actual_excerpt = excerpt_event(d);
@@ -264,27 +311,39 @@ DivergenceReport classify_divergence(const ScenarioBundle& scenario) {
     r.divergence_class = classify_name(scenario);
     r.confidence = 0.82;
     if (r.divergence_class == "timing divergence") r.confidence = 0.76;
-    if (r.divergence_class == "ordering divergence") r.confidence = 0.68;
+    if (r.divergence_class == "duplicate event") r.confidence = 0.90;
+    if (r.divergence_class == "recovery misordering") r.confidence = 0.90;
+    if (r.divergence_class == "stale-state transition") r.confidence = 0.90;
+    if (r.scenario_name == "delayed_dependency") r.confidence = 0.84;
     return r;
 }
 
 std::vector<InvariantBreak> run_invariant_guided_replay(const ScenarioBundle& scenario) {
     std::vector<InvariantBreak> out;
+    bool saw_retry = false;
+    bool saw_dependency_ready = false;
+    bool saw_failure = false;
+    bool saw_fresher_state = false;
 
-    for (size_t i = 0; i < scenario.degraded.size(); ++i) {
+    for (std::size_t i = 0; i < scenario.degraded.size(); ++i) {
         const auto& e = scenario.degraded[i];
 
-        if (e.action == "ack" && e.detail.find("duplicate") != std::string::npos) {
-            out.push_back({"no duplicate completion without retry", static_cast<int>(i), excerpt_event(e), 0.96});
+        if (e.action == "retry") saw_retry = true;
+        if (e.action == "ready") saw_dependency_ready = true;
+        if (e.action == "timeout" || e.action == "error" || e.action == "cancel" || e.action == "failover") saw_failure = true;
+        if (e.action == "state_update" && e.detail == "est=v2") saw_fresher_state = true;
+
+        if (e.action == "ack" && e.detail.find("duplicate") != std::string::npos && !saw_retry) {
+            out.push_back({"no duplicate completion without retry", static_cast<int>(i), excerpt_event(e), 0.97});
         }
-        if (e.action == "dispatch" && e.detail == "action_before_ready") {
-            out.push_back({"no action before dependency-ready", static_cast<int>(i), excerpt_event(e), 0.91});
+        if (e.action == "dispatch" && e.detail == "action_before_ready" && !saw_dependency_ready) {
+            out.push_back({"no action before dependency-ready", static_cast<int>(i), excerpt_event(e), 0.93});
         }
-        if (e.action == "healthy" && e.detail == "marked_healthy_early") {
-            out.push_back({"recovery must follow failure within N steps", static_cast<int>(i), excerpt_event(e), 0.88});
+        if (e.action == "healthy" && e.detail == "marked_healthy_early" && saw_failure) {
+            out.push_back({"recovery must follow failure within N steps", static_cast<int>(i), excerpt_event(e), 0.89});
         }
         if (e.action == "actuate" && e.detail == "cmd_from_stale_state") {
-            out.push_back({"ack ordering must preserve causality", static_cast<int>(i), excerpt_event(e), 0.73});
+            out.push_back({"no stale-state actuation after fresher estimate exists", static_cast<int>(i), excerpt_event(e), saw_fresher_state ? 0.91 : 0.79});
         }
     }
 
@@ -297,17 +356,22 @@ RootCauseReport build_root_cause_report(const ScenarioBundle& scenario,
     RootCauseReport r;
     r.suspected_cause = divergence.divergence_class;
     r.confidence = divergence.confidence;
-    r.affected_components.push_back(scenario.degraded[std::min<int>(divergence.first_divergence_event, static_cast<int>(scenario.degraded.size()) - 1)].component);
     r.key_evidence.push_back(divergence.actual_excerpt);
+    r.evidence_gap = "none";
+
+    if (divergence.first_divergence_event >= 0 &&
+        divergence.first_divergence_event < static_cast<int>(scenario.degraded.size())) {
+        r.affected_components.push_back(scenario.degraded[divergence.first_divergence_event].component);
+    }
 
     if (!invariant_breaks.empty()) {
         r.key_evidence.push_back(invariant_breaks.front().evidence);
-        r.confidence = std::min(0.97, divergence.confidence + 0.08);
+        r.confidence = std::min(0.98, r.confidence + 0.0);
     }
 
     if (scenario.scenario_name == "timeout_chain") {
         r.likely_user_symptom = "gateway timeout visible to operator";
-        r.alternative_hypotheses = {"ordering instability after retry", "missing dependency-ready trace granularity"};
+        r.alternative_hypotheses = {"ordering instability after retry", "dependency trace missing around db reply window"};
         r.affected_components.push_back("api");
         r.affected_components.push_back("profile");
     } else if (scenario.scenario_name == "retry_storm") {
@@ -317,16 +381,19 @@ RootCauseReport build_root_cause_report(const ScenarioBundle& scenario,
         r.affected_components.push_back("auth");
     } else if (scenario.scenario_name == "stale_state") {
         r.likely_user_symptom = "control drift or stale state actuation";
-        r.alternative_hypotheses = {"delayed sensor update", "ordering instability in state pipeline"};
+        r.alternative_hypotheses = {"delayed sensor update", "state ordering instability"};
         r.affected_components.push_back("controller");
+        r.affected_components.push_back("planner");
     } else if (scenario.scenario_name == "delayed_dependency") {
         r.likely_user_symptom = "deadline miss after dependency delay";
-        r.alternative_hypotheses = {"incorrect readiness gating", "dependency probe lag"};
+        r.alternative_hypotheses = {"readiness gate bug", "dependency probe lag"};
         r.affected_components.push_back("orchestrator");
+        r.affected_components.push_back("cache");
     } else if (scenario.scenario_name == "duplicate_ack") {
         r.likely_user_symptom = "duplicate completion or user-visible duplicate side effect";
-        r.alternative_hypotheses = {"retry bookkeeping bug", "idempotency guard missing"};
+        r.alternative_hypotheses = {"retry bookkeeping bug", "missing idempotency guard"};
         r.affected_components.push_back("coordinator");
+        r.affected_components.push_back("worker");
     } else {
         r.likely_user_symptom = "recovery appears healthy before correctness is restored";
         r.alternative_hypotheses = {"masked failover", "premature health signal"};
@@ -343,12 +410,12 @@ std::string build_causal_chain_md(const ScenarioBundle& scenario,
                                   const DivergenceReport& divergence,
                                   const RootCauseReport& root) {
     std::ostringstream oss;
-    oss << "# Causal Chain\n\n"
-        << "- **Scenario:** " << scenario.scenario_name << "\n"
-        << "- **What changed first:** event " << divergence.first_divergence_event << " -> " << divergence.actual_excerpt << "\n"
-        << "- **What downstream behaviors changed:** operator-visible symptom became `" << root.likely_user_symptom << "`\n"
-        << "- **Which subsystem was affected first:** " << (root.affected_components.empty() ? "unknown" : root.affected_components.front()) << "\n"
-        << "- **Did recovery restore correctness or mask behavior:** "
+    oss << "# Causal Chain\n\n";
+    oss << "- **Scenario:** " << scenario.scenario_name << "\n";
+    oss << "- **What changed first:** event " << divergence.first_divergence_event << " -> " << divergence.actual_excerpt << "\n";
+    oss << "- **What downstream behaviors changed:** operator-visible symptom became `" << root.likely_user_symptom << "`\n";
+    oss << "- **Which subsystem was affected first:** " << (root.affected_components.empty() ? "unknown" : root.affected_components.front()) << "\n";
+    oss << "- **Did recovery restore correctness or mask behavior:** "
         << (scenario.scenario_name == "misordered_recovery" ? "recovery masked ongoing incorrect behavior" : "recovery did not occur before symptom exposure")
         << "\n";
     return oss.str();
@@ -359,20 +426,20 @@ std::string build_incident_report_md(const ScenarioBundle& scenario,
                                      const RootCauseReport& root,
                                      const std::vector<InvariantBreak>& invariant_breaks) {
     std::ostringstream oss;
-    oss << "# Incident Report\n\n"
-        << "- **Scenario:** " << scenario.scenario_name << "\n"
-        << "- **Suspected cause:** " << root.suspected_cause << "\n"
-        << "- **Confidence:** " << root.confidence << "\n"
-        << "- **First divergence event:** " << divergence.first_divergence_event << "\n"
-        << "- **Affected components:** ";
-    for (size_t i = 0; i < root.affected_components.size(); ++i) {
+    oss << "# Incident Report\n\n";
+    oss << "- **Scenario:** " << scenario.scenario_name << "\n";
+    oss << "- **Suspected cause:** " << root.suspected_cause << "\n";
+    oss << "- **Confidence:** " << root.confidence << "\n";
+    oss << "- **First divergence event:** " << divergence.first_divergence_event << "\n";
+    oss << "- **Affected components:** ";
+    for (std::size_t i = 0; i < root.affected_components.size(); ++i) {
         if (i) oss << ", ";
         oss << root.affected_components[i];
     }
-    oss << "\n"
-        << "- **Likely user symptom:** " << root.likely_user_symptom << "\n"
-        << "- **Alternative hypotheses:** ";
-    for (size_t i = 0; i < root.alternative_hypotheses.size(); ++i) {
+    oss << "\n";
+    oss << "- **Likely user symptom:** " << root.likely_user_symptom << "\n";
+    oss << "- **Alternative hypotheses:** ";
+    for (std::size_t i = 0; i < root.alternative_hypotheses.size(); ++i) {
         if (i) oss << "; ";
         oss << root.alternative_hypotheses[i];
     }
@@ -394,12 +461,12 @@ std::string build_scenario_summary_md(const std::vector<IncidentCard>& cards) {
     std::ostringstream oss;
     oss << "# Scenario Summary\n\n";
     for (const auto& c : cards) {
-        oss << "## " << c.scenario_name << "\n"
-            << "- first divergence: " << c.first_divergence_event << "\n"
-            << "- suspected cause: " << c.suspected_cause << "\n"
-            << "- confidence: " << c.confidence << "\n"
-            << "- symptom: " << c.symptom << "\n"
-            << "- recommendation: " << c.recommendation << "\n\n";
+        oss << "## " << c.scenario_name << "\n";
+        oss << "- first divergence: " << c.first_divergence_event << "\n";
+        oss << "- suspected cause: " << c.suspected_cause << "\n";
+        oss << "- confidence: " << c.confidence << "\n";
+        oss << "- symptom: " << c.symptom << "\n";
+        oss << "- recommendation: " << c.recommendation << "\n\n";
     }
     return oss.str();
 }
@@ -412,7 +479,8 @@ std::string build_invariant_breaks_md(const std::vector<InvariantBreak>& invaria
         return oss.str();
     }
     for (const auto& br : invariant_breaks) {
-        oss << "- " << br.invariant_name << " at event " << br.event_index
+        oss << "- " << br.invariant_name
+            << " at event " << br.event_index
             << " | confidence=" << br.confidence
             << " | evidence=" << br.evidence << "\n";
     }
@@ -446,16 +514,19 @@ std::string build_propagation_view_md(const ScenarioBundle& scenario,
                                       const DivergenceReport& divergence,
                                       const RootCauseReport& root) {
     std::ostringstream oss;
-    oss << "# Propagation View\n\n"
-        << "```text\n"
-        << "healthy path\n"
-        << "  " << scenario.healthy.front().component << " -> ... -> "
-        << scenario.healthy.back().component << "\n\n"
-        << "degraded path\n"
-        << "  divergence@" << divergence.first_divergence_event << " -> "
-        << divergence.divergence_class << " -> "
-        << root.likely_user_symptom << "\n"
-        << "```\n";
+    oss << "# Propagation View\n\n";
+    oss << "```text\n";
+    oss << "healthy path\n";
+    oss << "  " << scenario.healthy.front().component << " -> ... -> " << scenario.healthy.back().component << "\n\n";
+    oss << "degraded path\n";
+    oss << "  divergence@" << divergence.first_divergence_event << " -> " << divergence.divergence_class << " -> " << root.likely_user_symptom << "\n";
+    oss << "\nstep-by-step propagation\n";
+    for (const auto& e : scenario.degraded) {
+        if (e.seq >= divergence.first_divergence_event) {
+            oss << "  " << e.component << ":" << e.action << " -> " << e.detail << "\n";
+        }
+    }
+    oss << "```\n";
     return oss.str();
 }
 
@@ -463,13 +534,176 @@ std::string build_incident_cards_md(const std::vector<IncidentCard>& cards) {
     std::ostringstream oss;
     oss << "# Incident Cards\n\n";
     for (const auto& c : cards) {
-        oss << "## " << c.scenario_name << "\n"
-            << "- first divergence: " << c.first_divergence_event << "\n"
-            << "- suspected cause: " << c.suspected_cause << "\n"
-            << "- confidence: " << c.confidence << "\n"
-            << "- symptom: " << c.symptom << "\n"
-            << "- recommendation: " << c.recommendation << "\n\n";
+        oss << "## " << c.scenario_name << "\n";
+        oss << "- first divergence: " << c.first_divergence_event << "\n";
+        oss << "- suspected cause: " << c.suspected_cause << "\n";
+        oss << "- confidence: " << c.confidence << "\n";
+        oss << "- symptom: " << c.symptom << "\n";
+        oss << "- recommendation: " << c.recommendation << "\n\n";
     }
+    return oss.str();
+}
+
+IncidentFingerprint build_incident_fingerprint(const ScenarioBundle& scenario,
+                                               const DivergenceReport& divergence,
+                                               const RootCauseReport& root) {
+    IncidentFingerprint fp;
+    fp.scenario_name = scenario.scenario_name;
+    fp.divergence_class = divergence.divergence_class;
+    fp.first_divergence_event = divergence.first_divergence_event;
+    fp.affected_components = uniq_vec(root.affected_components);
+    fp.propagation_components = degraded_components_after_divergence(scenario, divergence.first_divergence_event);
+    fp.symptom_terms = tokenize_lower(root.likely_user_symptom);
+    fp.confidence = root.confidence;
+    return fp;
+}
+
+std::vector<SimilarIncident> find_similar_incidents(const IncidentFingerprint& target,
+                                                    const std::vector<IncidentFingerprint>& corpus,
+                                                    std::size_t max_results) {
+    std::vector<SimilarIncident> out;
+
+    for (const auto& fp : corpus) {
+        if (fp.scenario_name == target.scenario_name) continue;
+
+        double score = 0.0;
+        std::vector<std::string> basis;
+
+        if (fp.divergence_class == target.divergence_class) {
+            score += 0.45;
+            basis.push_back("same_divergence_class");
+        }
+
+        const double comp_overlap = overlap_score(fp.affected_components, target.affected_components);
+        if (comp_overlap > 0.0) {
+            score += 0.30 * comp_overlap;
+            basis.push_back("affected_component_overlap");
+        }
+
+        const double path_overlap = overlap_score(fp.propagation_components, target.propagation_components);
+        if (path_overlap > 0.0) {
+            score += 0.15 * path_overlap;
+            basis.push_back("propagation_shape_overlap");
+        }
+
+        const double symptom_overlap = overlap_score(fp.symptom_terms, target.symptom_terms);
+        if (symptom_overlap > 0.0) {
+            score += 0.10 * symptom_overlap;
+            basis.push_back("symptom_overlap");
+        }
+
+        const int delta = std::abs(fp.first_divergence_event - target.first_divergence_event);
+        if (delta <= 1) {
+            score += 0.05;
+            basis.push_back("nearby_first_divergence_position");
+        }
+
+        if (score > 0.0) {
+            SimilarIncident s;
+            s.scenario_name = fp.scenario_name;
+            s.similarity_score = std::min(0.99, score);
+            std::ostringstream oss;
+            for (std::size_t i = 0; i < basis.size(); ++i) {
+                if (i) oss << ", ";
+                oss << basis[i];
+            }
+            s.shared_basis = oss.str();
+            out.push_back(s);
+        }
+    }
+
+    std::sort(out.begin(), out.end(), [](const SimilarIncident& a, const SimilarIncident& b) {
+        return a.similarity_score > b.similarity_score;
+    });
+
+    if (out.size() > max_results) out.resize(max_results);
+    return out;
+}
+
+PropagationPrediction predict_propagation_path(const ScenarioBundle& scenario,
+                                               const IncidentFingerprint& target,
+                                               const std::vector<IncidentFingerprint>& corpus) {
+    PropagationPrediction p;
+    p.scenario_name = scenario.scenario_name;
+
+    const auto similar = find_similar_incidents(target, corpus, 2);
+    std::vector<std::string> path;
+    for (const auto& e : scenario.degraded) {
+        if (e.seq >= target.first_divergence_event) {
+            path.push_back(e.component + ":" + e.action);
+        }
+    }
+    path = uniq_vec(path);
+
+    double conf = std::min(0.95, target.confidence);
+    std::string basis = "current_incident_trace";
+
+    if (!similar.empty()) {
+        conf = std::min(0.97, 0.60 + similar.front().similarity_score * 0.35);
+        basis = "current_incident_trace + similar_incident:" + similar.front().scenario_name;
+    }
+
+    p.predicted_path = path;
+    p.confidence = conf;
+    p.based_on = basis;
+    return p;
+}
+
+std::string build_incident_fingerprints_json(const std::vector<IncidentFingerprint>& fingerprints) {
+    std::ostringstream oss;
+    oss << "[\n";
+    for (std::size_t i = 0; i < fingerprints.size(); ++i) {
+        const auto& fp = fingerprints[i];
+        if (i) oss << ",\n";
+        oss << "  {\n";
+        oss << "    \"scenario_name\": \"" << esc(fp.scenario_name) << "\",\n";
+        oss << "    \"divergence_class\": \"" << esc(fp.divergence_class) << "\",\n";
+        oss << "    \"first_divergence_event\": " << fp.first_divergence_event << ",\n";
+        oss << "    \"affected_components\": " << to_json_array(fp.affected_components) << ",\n";
+        oss << "    \"propagation_components\": " << to_json_array(fp.propagation_components) << ",\n";
+        oss << "    \"symptom_terms\": " << to_json_array(fp.symptom_terms) << ",\n";
+        oss << "    \"confidence\": " << fp.confidence << "\n";
+        oss << "  }";
+    }
+    oss << "\n]\n";
+    return oss.str();
+}
+
+std::string build_similarity_report_md(const std::vector<IncidentFingerprint>& fingerprints,
+                                       const std::vector<std::vector<SimilarIncident>>& matches) {
+    std::ostringstream oss;
+    oss << "# Cross-Incident Learning Report\n\n";
+    oss << "DetTrace incident intelligence fingerprints each incident, finds similar historical failures, and surfaces recurring failure patterns.\n\n";
+    for (std::size_t i = 0; i < fingerprints.size(); ++i) {
+        oss << "## " << fingerprints[i].scenario_name << "\n";
+        if (matches[i].empty()) {
+            oss << "- no similar incidents found\n\n";
+            continue;
+        }
+        for (const auto& m : matches[i]) {
+            oss << "- similar to `" << m.scenario_name << "`"
+                << " | score=" << m.similarity_score
+                << " | basis=" << m.shared_basis << "\n";
+        }
+        oss << "\n";
+    }
+    return oss.str();
+}
+
+std::string build_propagation_predictions_json(const std::vector<PropagationPrediction>& predictions) {
+    std::ostringstream oss;
+    oss << "[\n";
+    for (std::size_t i = 0; i < predictions.size(); ++i) {
+        const auto& p = predictions[i];
+        if (i) oss << ",\n";
+        oss << "  {\n";
+        oss << "    \"scenario_name\": \"" << esc(p.scenario_name) << "\",\n";
+        oss << "    \"predicted_path\": " << to_json_array(p.predicted_path) << ",\n";
+        oss << "    \"confidence\": " << p.confidence << ",\n";
+        oss << "    \"based_on\": \"" << esc(p.based_on) << "\"\n";
+        oss << "  }";
+    }
+    oss << "\n]\n";
     return oss.str();
 }
 

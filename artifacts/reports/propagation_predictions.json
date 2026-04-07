@@ -1,0 +1,38 @@
+[
+  {
+    "scenario_name": "timeout_chain",
+    "predicted_path": ["api:cancel","edge:reply","profile:timeout","user:timeout"],
+    "confidence": 0.621389,
+    "based_on": "current_incident_trace + similar_incident:duplicate_ack"
+  },
+  {
+    "scenario_name": "retry_storm",
+    "predicted_path": ["auth:token_db_lookup","gateway:reply","gateway:retry"],
+    "confidence": 0.6175,
+    "based_on": "current_incident_trace + similar_incident:stale_state"
+  },
+  {
+    "scenario_name": "stale_state",
+    "predicted_path": ["controller:actuate","controller:consume_state","plant:state_commit"],
+    "confidence": 0.6175,
+    "based_on": "current_incident_trace + similar_incident:retry_storm"
+  },
+  {
+    "scenario_name": "delayed_dependency",
+    "predicted_path": ["cache:ready","orchestrator:dispatch","worker:complete"],
+    "confidence": 0.6175,
+    "based_on": "current_incident_trace + similar_incident:retry_storm"
+  },
+  {
+    "scenario_name": "duplicate_ack",
+    "predicted_path": ["coordinator:ack"],
+    "confidence": 0.621389,
+    "based_on": "current_incident_trace + similar_incident:timeout_chain"
+  },
+  {
+    "scenario_name": "misordered_recovery",
+    "predicted_path": ["checkout-a:healthy","lb:route","payment:error"],
+    "confidence": 0.6175,
+    "based_on": "current_incident_trace + similar_incident:retry_storm"
+  }
+]

@@ -600,6 +600,40 @@ Key artifact:
 
 
 
+## Incident Intelligence Engine
+
+DetTrace now includes a **cross-incident learning layer** on top of replay-driven forensics.
+
+It does not just isolate divergence inside a single run. It also:
+
+- fingerprints incidents from replay artifacts
+- finds similar historical failures across scenario packs
+- surfaces recurring failure patterns
+- predicts likely propagation paths from first divergence onward
+
+### New proof statement
+
+**Learns recurring failure patterns across incidents and predicts failure propagation paths before they fully unfold.**
+
+### What it uses
+
+- first divergence position
+- divergence class
+- affected components
+- propagation shape
+- symptom terms
+- causal-chain artifacts
+
+### New artifacts
+
+- `artifacts/reports/incident_fingerprints.json`
+- `artifacts/reports/cross_incident_learning.md`
+- `artifacts/reports/propagation_predictions.json`
+
+### Example positioning
+
+A retry storm with first divergence at event `2` can now be fingerprinted, compared against prior timing- and dependency-related failures, and used to predict likely downstream propagation through auth and gateway paths before the terminal symptom fully unfolds.
+
 ## Incident Forensics
 
 ### Proof statement

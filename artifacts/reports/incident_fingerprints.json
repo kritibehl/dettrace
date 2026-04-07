@@ -1,0 +1,56 @@
+[
+  {
+    "scenario_name": "timeout_chain",
+    "divergence_class": "timeout_chain",
+    "first_divergence_event": 4,
+    "affected_components": ["api","profile"],
+    "propagation_components": ["api:cancel","edge:reply","profile:timeout","user:timeout"],
+    "symptom_terms": ["gateway","operator","timeout","visible"],
+    "confidence": 0.82
+  },
+  {
+    "scenario_name": "retry_storm",
+    "divergence_class": "retry_amplification",
+    "first_divergence_event": 2,
+    "affected_components": ["auth","gateway"],
+    "propagation_components": ["auth:token_db_lookup","gateway:reply","gateway:retry"],
+    "symptom_terms": ["and","auth","burst","elevated","failures","latency"],
+    "confidence": 0.82
+  },
+  {
+    "scenario_name": "stale_state",
+    "divergence_class": "stale-state transition",
+    "first_divergence_event": 1,
+    "affected_components": ["controller","planner"],
+    "propagation_components": ["controller:actuate","controller:consume_state","plant:state_commit"],
+    "symptom_terms": ["actuation","control","drift","stale","state"],
+    "confidence": 0.9
+  },
+  {
+    "scenario_name": "delayed_dependency",
+    "divergence_class": "timing divergence",
+    "first_divergence_event": 1,
+    "affected_components": ["cache","orchestrator"],
+    "propagation_components": ["cache:ready","orchestrator:dispatch","worker:complete"],
+    "symptom_terms": ["after","deadline","delay","dependency","miss"],
+    "confidence": 0.84
+  },
+  {
+    "scenario_name": "duplicate_ack",
+    "divergence_class": "duplicate event",
+    "first_divergence_event": 3,
+    "affected_components": ["coordinator","worker"],
+    "propagation_components": ["coordinator:ack"],
+    "symptom_terms": ["completion","duplicate","effect","side","user","visible"],
+    "confidence": 0.9
+  },
+  {
+    "scenario_name": "misordered_recovery",
+    "divergence_class": "recovery misordering",
+    "first_divergence_event": 1,
+    "affected_components": ["checkout-a","lb","payment"],
+    "propagation_components": ["checkout-a:healthy","lb:route","payment:error"],
+    "symptom_terms": ["appears","before","correctness","healthy","recovery","restored"],
+    "confidence": 0.9
+  }
+]

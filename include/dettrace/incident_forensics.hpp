@@ -37,6 +37,7 @@ struct RootCauseReport {
     std::vector<std::string> affected_components;
     std::string likely_user_symptom;
     std::vector<std::string> key_evidence;
+    std::string evidence_gap;
 };
 
 struct IncidentCard {
@@ -57,6 +58,29 @@ struct ScenarioBundle {
     std::string fault_parameters;
 };
 
+struct IncidentFingerprint {
+    std::string scenario_name;
+    std::string divergence_class;
+    int first_divergence_event = -1;
+    std::vector<std::string> affected_components;
+    std::vector<std::string> propagation_components;
+    std::vector<std::string> symptom_terms;
+    double confidence = 0.0;
+};
+
+struct SimilarIncident {
+    std::string scenario_name;
+    double similarity_score = 0.0;
+    std::string shared_basis;
+};
+
+struct PropagationPrediction {
+    std::string scenario_name;
+    std::vector<std::string> predicted_path;
+    double confidence = 0.0;
+    std::string based_on;
+};
+
 std::vector<ScenarioBundle> build_forensics_scenario_pack();
 
 void write_forensics_trace_jsonl(const std::string& path, const std::vector<ForensicsEvent>& events);
@@ -64,12 +88,13 @@ std::string render_trace_excerpt(const std::vector<ForensicsEvent>& events, int 
 
 DivergenceReport classify_divergence(const ScenarioBundle& scenario);
 std::vector<InvariantBreak> run_invariant_guided_replay(const ScenarioBundle& scenario);
-std::string build_causal_chain_md(const ScenarioBundle& scenario,
-                                  const DivergenceReport& divergence,
-                                  const RootCauseReport& root);
 RootCauseReport build_root_cause_report(const ScenarioBundle& scenario,
                                         const DivergenceReport& divergence,
                                         const std::vector<InvariantBreak>& invariant_breaks);
+
+std::string build_causal_chain_md(const ScenarioBundle& scenario,
+                                  const DivergenceReport& divergence,
+                                  const RootCauseReport& root);
 std::string build_incident_report_md(const ScenarioBundle& scenario,
                                      const DivergenceReport& divergence,
                                      const RootCauseReport& root,
@@ -81,5 +106,19 @@ std::string build_propagation_view_md(const ScenarioBundle& scenario,
                                       const DivergenceReport& divergence,
                                       const RootCauseReport& root);
 std::string build_incident_cards_md(const std::vector<IncidentCard>& cards);
+
+IncidentFingerprint build_incident_fingerprint(const ScenarioBundle& scenario,
+                                               const DivergenceReport& divergence,
+                                               const RootCauseReport& root);
+std::vector<SimilarIncident> find_similar_incidents(const IncidentFingerprint& target,
+                                                    const std::vector<IncidentFingerprint>& corpus,
+                                                    std::size_t max_results = 3);
+PropagationPrediction predict_propagation_path(const ScenarioBundle& scenario,
+                                               const IncidentFingerprint& target,
+                                               const std::vector<IncidentFingerprint>& corpus);
+std::string build_incident_fingerprints_json(const std::vector<IncidentFingerprint>& fingerprints);
+std::string build_similarity_report_md(const std::vector<IncidentFingerprint>& fingerprints,
+                                       const std::vector<std::vector<SimilarIncident>>& matches);
+std::string build_propagation_predictions_json(const std::vector<PropagationPrediction>& predictions);
 
 }  // namespace dettrace
