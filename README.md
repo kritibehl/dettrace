@@ -790,3 +790,27 @@ Run a deterministic replay
 Show the first divergence
 Output trace artifacts
 
+
+---
+
+## Scenario Packs
+
+DetTrace includes scenario-pack folders for concurrency and recovery failures:
+
+- `timeout_chain`
+- `retry_storm`
+- `stale_state`
+- `delayed_dependency`
+- `duplicate_ack`
+- `misordered_recovery`
+
+Run all scenario packs:
+
+```bash
+./scripts/run_scenarios.sh
+Artifacts are stored under:
+
+artifacts/scenario_runs/<scenario_name>/
+
+This makes failure replay easier to demonstrate, compare, and preserve across runs.
+
