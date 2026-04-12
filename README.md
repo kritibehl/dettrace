@@ -861,3 +861,58 @@ grouping similar failures
 detecting recurring patterns
 cross-incident learning
 
+
+---
+
+## Incident Intelligence
+
+Run the full incident-intelligence pipeline:
+
+```bash
+./scripts/run_incident_intelligence.sh
+This pipeline:
+
+builds and runs DetTrace
+collects artifact metrics
+generates an incident fingerprint
+predicts failure propagation paths
+compares the current failure to prior saved incidents
+stores the current run in incident history
+
+Key outputs:
+
+artifacts/benchmarks/incident_fingerprint.json
+artifacts/benchmarks/propagation_prediction.json
+artifacts/benchmarks/similar_incidents.json
+artifacts/history/incident_<timestamp>.json
+
+Example questions DetTrace can now answer:
+
+"What was the first divergence?"
+"What type of failure pattern is this?"
+"What might this failure become downstream?"
+"Does this look like a previous outage?"
+Why Swift for the Analysis Layer
+
+The Swift companion is intentionally separate from the C++ execution core.
+
+C++ drives event generation and replay
+Swift handles analysis with async/await and actor isolation
+
+This makes the analysis layer easier to extend for:
+
+structured postmortems
+safe concurrent artifact processing
+operator-facing report generation
+Positioning
+
+DetTrace is a deterministic replay and incident-intelligence project for concurrency failures.
+
+It is built to show:
+
+first-divergence isolation
+preserved replay artifacts
+semantic failure comparison
+cross-incident learning
+propagation-aware analysis
+
