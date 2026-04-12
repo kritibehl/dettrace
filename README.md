@@ -774,3 +774,19 @@ Concrete examples demonstrate how DetTrace isolates real concurrency failures.
 
 ---
 
+
+---
+
+## Quick Demo (10 seconds)
+
+```bash
+git clone https://github.com/kritibehl/dettrace
+cd dettrace
+./scripts/run_demo.sh
+This will:
+
+Build the system
+Run a deterministic replay
+Show the first divergence
+Output trace artifacts
+
