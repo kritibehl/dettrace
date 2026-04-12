@@ -1,367 +1,282 @@
 <div align="center">
 
-# DetTrace
+# KubePulse
 
-**First-failure isolation through deterministic replay and incident forensics**
+**Resilience validation that catches when Kubernetes says healthy but the system is unsafe to operate**
 
-[![C++17](https://img.shields.io/badge/C%2B%2B-17-00599C?style=flat-square&logo=cplusplus&logoColor=white)](https://isocpp.org)
-[![Swift](https://img.shields.io/badge/Swift-Analyzer-F05138?style=flat-square&logo=swift&logoColor=white)](https://swift.org)
-[![CMake](https://img.shields.io/badge/CMake-Build-064F8C?style=flat-square&logo=cmake&logoColor=white)](https://cmake.org)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
+[![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
+[![Kubernetes](https://img.shields.io/badge/Kubernetes-Scenarios-326CE5?style=flat-square&logo=kubernetes&logoColor=white)](https://kubernetes.io)
+[![Terraform](https://img.shields.io/badge/Terraform-AWS%20EKS-7B42BC?style=flat-square&logo=terraform&logoColor=white)](https://terraform.io)
+[![Prometheus](https://img.shields.io/badge/Prometheus-Metrics-E6522C?style=flat-square&logo=prometheus&logoColor=white)](https://prometheus.io)
 
 </div>
 
 ---
 
-> Distributed and concurrent failures are easy to observe.
-> **DetTrace makes them reproducible, comparable, and explainable.**
+> **Kubernetes tells you whether a pod is alive.**
+> **KubePulse tells you whether the system is safe to operate.**
 
 ---
 
-## The Problem
+## The Problem Standard Probes Don't Solve
 
-Concurrency and distributed failures fail in one consistent way: they refuse to reproduce.
+A service passes readiness checks. The dashboard is green. Traffic continues.
 
-Add a log statement and the bug disappears. Remove it and it comes back differently. Retries amplify noise. Later symptoms look more important than where the failure actually began. By the time you collect enough data to reason about it, the interleaving that caused it is gone.
+Meanwhile: a downstream DNS lookup is failing. A dependency cascade has tripled p95 latency. A topology reroute put the service on a degraded path. **Readiness probes stayed green through all of it.**
 
-**DetTrace fixes this by reconstructing the failure deterministically** — recording execution as an event sequence, replaying it identically, and isolating the exact point where behavior first diverged from expectation.
+This is not an edge case. It is a structural gap between container-level health and user-visible health — and most deployment pipelines only measure one.
 
-The first divergence is the root cause. Everything after it is consequence.
-
----
-
-## What DetTrace Builds
-
-| Capability | What it does |
-|---|---|
-| **Deterministic replay** | Records execution as an event sequence, replays identically |
-| **First-divergence isolation** | Finds the exact event index where behavior first stopped matching expectation |
-| **Distributed incident analysis** | Reconstructs cross-service timelines using span lineage |
-| **Semantic incident diffing** | Compares failure patterns across runs — not just raw event mismatch |
-| **Blast-radius inference** | Identifies upstream and downstream impact across service dependencies |
-| **Incident fingerprinting** | Classifies failure into a named, stable pattern |
-| **Propagation prediction** | Predicts downstream failure path from first divergence onward |
-| **Cross-incident learning** | Matches current failure against historical incidents |
-| **Control-loop debugging** | Replay-based closed-loop analysis under sensor, actuator, and timing faults |
+KubePulse measures both.
 
 ---
 
-## First-Divergence: A Real Example
+## Probe False Positive: Demonstrated
 
-A concurrent execution path was failing nondeterministically. Logs showed many symptoms but not the root cause. Later timeouts and retries obscured when the failure actually began.
+### Topology Failover Scenario
 
-DetTrace recorded the expected execution, replayed under guard, and isolated the split:
-
-```
-Divergence at event index 5
-
-EXPECTED:  TASK_DEQUEUED task=1  worker=0  queue=0
-ACTUAL:    TASK_DEQUEUED task=2  worker=0  queue=0
-```
-
-**What this means:** Two workers competed for the same task. The failure appeared downstream as duplicate processing — but the root cause was at index 5, before any visible output. Without deterministic replay, this was invisible.
+A link failure triggers a reroute. Reachability recovers. Kubernetes reports healthy. But the system is now running on a degraded alternate path.
 
 ```json
 {
-  "first_divergence_index": 5,
-  "divergence_type": "event_mismatch",
-  "expected": { "seq": 5, "type": "TASK_DEQUEUED", "task": 1 },
-  "actual":   { "seq": 5, "type": "TASK_DEQUEUED", "task": 2 }
+  "readiness_false_positive": true,
+  "probes_say_healthy": true,
+  "safe_to_operate": false,
+  "recommendation_action": "reroute",
+  "what_probes_missed": "degraded alternate path — higher latency, weaker margins"
 }
 ```
 
----
+### Multi-Service Cascade Scenario
 
-## Distributed Incident Analysis
-
-DetTrace reconstructs cross-service failure sequences using OTEL-style span records.
-
-### Example incident: retry storm
+PostgreSQL latency spike → auth service retry amplification → API layer p99 inflation. Readiness probes stayed green throughout.
 
 ```
-dns_failure → retry → transport_reset → retry_burst → downstream_unavailable → timeout_chain
+Dependency chain modeled: edge → api → auth → postgres
 ```
 
-```
-Client / Edge Proxy
-        │
-        ▼
-   auth-service   ← first failing service
-        │
-        ▼
-     token-db     ← downstream impact
-
-Propagation:
-  edge-proxy → auth-service → token-db
-                │              ↑
-                └── retries ───┘
-                       │
-                       └── eventual timeout
-```
-
-### Incident report
-
-```json
-{
-  "incident_family": "retry_storm",
-  "annotations": ["dns_failure", "transport_reset", "retry_burst", "downstream_unavailable", "timeout_chain"],
-  "blast_radius": {
-    "root_service": "auth-service",
-    "directly_impacted_services": ["token-db"],
-    "upstream_services": ["edge-proxy"]
-  },
-  "timeline_correlation": {
-    "deploy_correlated": true,
-    "suspected_trigger": "recent_deploy",
-    "max_latency_ms": 900,
-    "error_burst_count": 3
-  }
-}
-```
-
----
-
-## Semantic Incident Diff
-
-DetTrace compares baseline and candidate incidents at the service and pattern level — not raw event differences.
-
-```json
-{
-  "baseline_first_failing_service": "profile-service",
-  "candidate_first_failing_service": "auth-service",
-  "baseline_first_failure_reason": "tcp_connect_timeout",
-  "candidate_first_failure_reason": "dns_failure",
-  "retry_delta": 2,
-  "timeout_delta": -1,
-  "network_error_delta": 2,
-  "max_latency_delta_ms": -410
-}
-```
-
-This distinguishes root-cause shifts from downstream symptom changes across runs.
-
----
-
-## Incident Intelligence: Cross-Run Learning
-
-DetTrace extends beyond single-run replay into pattern learning across incidents.
-
-### Fingerprinting
-
-```json
-{ "incident_fingerprint": "event_mismatch_task_mismatch" }
-```
-
-### Propagation prediction
-
-Given the divergence type, DetTrace predicts the downstream failure path before it fully unfolds:
-
-```json
-{
-  "predicted_failure_propagation_path": ["work_distribution_skew", "missed_or_duplicate_processing"]
-}
-```
-
-### Cross-incident similarity
-
-```json
-{ "confidence": 1.0, "top_match": "incident_20250301_task_mismatch" }
-```
-
-Confidence 1.0: this failure has been seen before. The exact divergence pattern and propagation path match a prior incident — converting debugging from "what is this?" to "we have seen this before."
-
----
-
-## Control-Loop Replay
-
-DetTrace includes a control-loop replay module for closed-loop debugging under sensor, actuator, and timing faults.
-
-### Scenarios
-
-| Scenario | Stable? | First divergence | Root cause class |
+| Metric | Baseline | Degraded | Delta |
 |---|---|---|---|
-| healthy | yes | none | — |
-| delayed_sensor | no | **step 38 / 3.9s** | delayed measurement, dropped sample |
-| actuator_saturation | no | **step 53 / 5.4s** | actuator saturation |
-| timing_jitter | no | timing-budget failure | 5 missed deadlines |
-
-### Diagnostics summary
+| p50 latency | 4.9 ms | 240 ms | +4,800% |
+| p95 latency | 10.1 ms | 780 ms | **+333%** |
+| p99 latency | — | 1,200 ms | **+275%** |
+| Error rate | 0% | 8% | +8pp |
+| Resilience score | 100 | **46** | −54 |
+| Network health | 100 | **75** | −25 |
+| Availability gap | 0% | 9% | +9pp |
+| Path extra latency | 0 ms | 410 ms | +410 ms |
 
 ```json
 {
-  "first_divergence_step": 38,
-  "first_divergence_timestamp": "3.9s",
-  "root_cause_class": "delayed_measurement",
-  "error_growth_after_divergence": 0.903344,
-  "deadline_misses": 5,
-  "instability_detected": true
+  "readiness_false_positive": true,
+  "probes_say_healthy": true,
+  "safe_to_operate": false,
+  "recommendation_action": "block",
+  "slo_violation": true,
+  "error_budget_remaining": "0.0%"
 }
 ```
 
-Canonical visual artifact: `reports/control_loop_canonical_summary.svg`
+---
+
+## Network Lab Results
+
+Container-based network lab for repeatable degradation experiments.
+
+### DNS Failure
+
+| | Baseline | Degraded |
+|---|---|---|
+| Request success | 25 / 25 | **0 / 25** |
+
+The dependency path broke entirely. Readiness probes were not informed.
+
+### API Path Latency Injection
+
+| | Baseline | Degraded |
+|---|---|---|
+| Requests succeeded | 25 / 25 | 23 / 25 |
+| p50 latency | 4.888 ms | **1,462 ms** |
+| p95 latency | 10.120 ms | **2,306 ms** |
+
+The service appeared "up." The latency made it operationally unsafe.
 
 ---
 
-## Failure Modes Modeled
+## What KubePulse Validates
 
-| Category | Failure modes |
+| Signal | What it tells you |
 |---|---|
-| Timeout | Cascading timeouts, timeout chains |
-| Retry | Retry storms, retry amplification |
-| Transport | TCP connect timeout, transport reset, cancellation propagation |
-| Network | DNS failure, latency inflation between hops |
-| Dependency | Downstream unavailable, dependency failover edge cases |
-| Recovery | Misordered failure recovery, stale-state transitions |
-| Control-loop | Delayed sensor, actuator saturation, timing jitter, missed deadlines |
+| Recovery time | Did the system return to acceptable state, or just stop crashing? |
+| p50 / p95 / p99 latency drift | Did latency return to baseline or stay elevated? |
+| Probe integrity | Did readiness signals match real availability? |
+| DNS / dependency reachability | Were downstream services actually reachable? |
+| Error-rate delta | Did degraded-path behavior increase failure rates? |
+| SLO pass/fail | Did behavior cross user-facing thresholds? |
+| Error budget remaining | How much runway remains before SLO breach? |
+| Rollout risk | Should traffic continue, reroute, or stop? |
 
 ---
 
-## Replayable Incident Packs
+## System States
 
-| Pack | Failure pattern |
-|---|---|
-| `cascading_timeouts.jsonl` | Timeout chain across service hops |
-| `retry_storm.jsonl` | Retry amplification under dependency failure |
-| `misordered_recovery.jsonl` | Recovery events arrive out of causal order |
-| `failover_edge.jsonl` | Dependency failover with incomplete blast-radius resolution |
-
----
-
-## Artifact Output per Run
-
-| Artifact | Contents |
-|---|---|
-| `expected.jsonl` | What execution should have produced |
-| `actual.jsonl` | What it actually produced |
-| `replayed.jsonl` | Deterministic replay output |
-| `divergence_report.json` | First divergence index, type, context |
-| `incident_fingerprint.json` | Named failure pattern |
-| `propagation_prediction.json` | Predicted downstream failure path |
-| `similar_incidents.json` | Cross-run similarity matches |
-| `reports/distributed_incident_report.json` | Full cross-service incident report |
-| `reports/distributed_semantic_diff.json` | Baseline vs candidate failure comparison |
-| `reports/control_loop_diagnostics_summary.json` | Control-loop timing and divergence |
-| `reports/incident_fingerprints.json` | Cross-incident fingerprint library |
-| `reports/cross_incident_learning.md` | Pattern learning summary |
+| State | Recovery | Latency drift | Probes | Interpretation |
+|---|---|---|---|---|
+| Healthy | 0–5s | Minimal | Aligned | Safe to operate |
+| Degraded | Elevated | Significant | **False positive possible** | Looks healthy, unsafe |
+| Recovered | Baseline | Normalizing | Realigned | Safe to resume |
 
 ---
 
-## Comparison with Existing Tools
+## Scenarios
 
-| | DetTrace | Mozilla rr | Valgrind Helgrind |
-|---|---|---|---|
-| Language | C++17 + Swift | C/C++, x86 Linux | C/C++ |
-| Approach | Event-level replay + divergence isolation | Full syscall-level record-and-replay | Lock order + happens-before analysis |
-| Scope | Application-level concurrency + distributed incidents | Full program including kernel | Data races and lock misuse |
-| Incident learning | **Yes** — fingerprint + propagation prediction | No | No |
-| Cross-run history | **Yes** | No | No |
-| Overhead | Low (application-level) | High (full system capture) | Very high (instrumentation) |
-| Output | **Structured artifacts + causal chain + semantic diff** | Replay binary | Violation reports |
-| Control-loop debugging | **Yes** | No | No |
-
-DetTrace operates at the application event level — faster and more portable than full record-and-replay, with application-meaningful events and an incident intelligence layer that syscall-level tools cannot provide.
+| Scenario | Failure type | Key signal |
+|---|---|---|
+| Readiness false positive | Topology failover + path reroute | `probes_say_healthy=true`, `safe_to_operate=false` |
+| Multi-service cascade | DB latency → retry amplification | 333% p95 drift, `recommendation: block` |
+| CPU stress | Pod CPU throttling | 8s recovery, resilience score 86/100 |
+| DNS failure | Resolver failure | 0/25 success vs 25/25 baseline |
+| API latency injection | Degraded hop | p50 4.9ms → 1,462ms |
+| AI service timeout | Model inference spike | Fallback success rate, degraded-serving mode |
+| Vector DB degradation | Retrieval latency | p99 drift, availability gap |
 
 ---
 
-## Swift Analysis Layer
+## AI Service Reliability
 
-`dettrace-swift/` — Swift companion analyzer using `async/await` and actor-isolated `AnalysisStore` for safe concurrent artifact processing.
+KubePulse includes scenario packs for Kubernetes-hosted AI services:
 
-```swift
-actor AnalysisStore {
-    private var incidents: [Incident] = []
+- Model inference timeout spikes
+- Vector DB degraded latency
+- Embedding service unavailable
+- Tool-router dependency failure
+- Partial fallback behavior under load
 
-    func ingest(_ artifacts: ArtifactSet) async throws {
-        let fingerprint = try await classify(artifacts.divergenceReport)
-        let prediction  = try await predict(fingerprint)
-        incidents.append(Incident(fingerprint: fingerprint, prediction: prediction))
-    }
-}
+For AI scenarios, scorecards surface: availability, p99 latency, fallback success rate, degraded-but-serving vs full outage. The condition "latency SLO passed but error budget exhausted" is expressible and detectable.
+
+---
+
+## Canonical Decision Artifact
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  Scenario: multi_service_cascade                        │
+│                                                         │
+│  Probes healthy?      YES  (misleading)                 │
+│  SLO met?             NO                                │
+│  Safe to operate?     NO                                │
+│  Error budget left?   0.0%                              │
+│                                                         │
+│  What probes missed:  8% error rate, 333% p95 drift,   │
+│                       9% availability gap               │
+│                                                         │
+│  Recommendation:      BLOCK rollout                     │
+└─────────────────────────────────────────────────────────┘
 ```
 
-C++ for execution. Swift for safe analysis. Actor isolation prevents analysis-time race conditions in the layer that is itself analyzing race conditions.
+---
+
+## Architecture
+
+```
+YAML scenario definition
+        ↓
+KubePulse scenario runner
+        ↓
+Baseline capture (p50 / p95 / p99 / error rate)
+        ↓
+Failure injection (CPU stress / pod kill / network partition / latency / DNS)
+        ↓
+Degraded measurement + SLO evaluation
+        ↓
+Probe integrity check
+        ↓
+Resilience score (composite)
+        ↓
+Decision artifact: continue / reroute / block
+        ↓
+CI gate (GitHub Actions) — blocks deployment if safe_to_operate=false
+```
+
+---
+
+## Infrastructure (Terraform)
 
 ```bash
-cd dettrace-swift
-swift run DetTraceAnalyzer ../artifacts/expected.jsonl ../artifacts/actual.jsonl
+cd terraform/
+terraform init
+terraform apply
+```
+
+Provisions: VPC · public and private subnets · NAT gateway · EKS cluster · managed node group
+
+---
+
+## CI Integration
+
+Every PR runs the full resilience suite. Deployments fail if resilience score drops below threshold or `safe_to_operate=false`.
+
+```yaml
+- name: Run KubePulse resilience gate
+  run: python kubepulse/run_scenarios.py --gate
 ```
 
 ---
 
-## Diagnostics Viewer
+## Extending with a New Scenario
 
-`viewer/` — lightweight developer UI for inspecting execution differences.
+1. Add a failure script in `lab/network-lab/scripts/failures/`
+2. Add the scenario branch in `run_experiment.sh`
+3. Capture: request success/failure, p50/p95 latency, DNS/TCP behavior, recovery timing
+4. Document healthy vs degraded vs recovered outcomes
+5. Add operator interpretation: safe to operate, still degraded, rollout risk, recommendation
 
-- Side-by-side diff for passing vs failing executions
-- First-divergence highlighting
-- Rule-based root-cause hints
-- Invariant status exploration
-- Reproducible scenarios and benchmark page
+---
+
+## Artifacts
+
+```
+docs/scorecards/          Resilience validation scorecards
+docs/reports/             Example run reports and what_probes_missed
+docs/network-lab/         Network lab result summaries
+docs/showcase/            Scenario matrix, false-green gallery, decision artifacts
+docs/compare/             Baseline vs degraded vs recovered comparisons
+```
+
+---
+
+## Quickstart (Network Lab)
 
 ```bash
-./scripts/serve_viewer.sh
-# → http://localhost:8000/viewer/index.html
+# Prerequisite: Docker Desktop running
+docker compose -f lab/network-lab/docker-compose.yml up -d --build
+
+# Run baseline
+bash lab/network-lab/scripts/run_experiment.sh baseline
+
+# Run DNS failure scenario
+bash lab/network-lab/scripts/run_experiment.sh dns_failure
+
+# Run latency injection
+bash lab/network-lab/scripts/run_experiment.sh latency_injection
 ```
 
 ---
 
-## Quick Start
+## Interview Framing
 
-```bash
-# Build
-cmake -B build && cmake --build build
-cd build && ctest --output-on-failure
-
-# Original deterministic replay demo
-./scripts/run_demo.sh
-
-# Distributed incident replay demo
-./scripts/run_distributed_demo.sh
-
-# Control-loop replay
-./scripts/run_control_loop.sh
-
-# Incident intelligence pipeline
-./scripts/run_incident_intelligence.sh
-
-# Swift analyzer
-cd dettrace-swift && swift run DetTraceAnalyzer ../artifacts/expected.jsonl ../artifacts/actual.jsonl
-```
-
----
-
-## Operator Runbook Output
-
-DetTrace emits runbook-oriented guidance alongside replay artifacts:
-
-1. Confirm request and span lineage; identify the first failing downstream hop
-2. Correlate the incident with recent deploy, health-change, or failover windows
-3. Inspect DNS, TCP connect, transport reset, and latency inflation symptoms
-4. Evaluate retry backoff and retry amplification extent
-5. Review blast radius before rollback or traffic shift
-
----
-
-## Case Studies
-
-- [Duplicate Dequeue Race Condition](docs/case-studies/duplicate-dequeue.md) — how DetTrace isolated a task ordering race at event index 5
-
----
-
-## Why This Matters
-
-As AI-generated code enters production at scale, the verification problem grows. Code generation is becoming automated — correctness verification is not. Deterministic replay is the discipline that makes concurrent and distributed systems provably debuggable rather than just statistically monitored.
+KubePulse started as a resilience validation tool. I pushed it toward a release-safety system after noticing that readiness probes stay green during dependency failures and topology reroutes — exactly the conditions where rollout should stop. The core insight is that container health and user-visible health are different measurements, and most deployment pipelines only check one of them.
 
 ---
 
 ## Stack
 
-C++17 · Swift · CMake · JSONL artifacts
+Python · FastAPI · Kubernetes · Prometheus · Docker · Terraform (AWS EKS) · GitHub Actions
 
 ---
 
 ## Related
 
 - [Faultline](https://github.com/kritibehl/faultline) — exactly-once execution correctness under distributed failure
-- [KubePulse](https://github.com/kritibehl/KubePulse) — resilience validation under degraded Kubernetes conditions
-- [Postmortem Atlas](https://github.com/kritibehl/postmortem-atlas) — real production outages, structured and analyzed
+- [Postmortem Atlas](https://github.com/kritibehl/postmortem-atlas) — real production outages, structured by failure class
+- [AutoOps-Insight](https://github.com/kritibehl/AutoOps-Insight) — CI failure intelligence and operator triage
+- [DetTrace](https://github.com/kritibehl/dettrace) — deterministic replay for concurrency failures
