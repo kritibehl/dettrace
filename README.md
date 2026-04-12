@@ -1,357 +1,120 @@
+<div align="center">
+
 # DetTrace
 
-> First-failure isolation through deterministic replay and incident forensics.
+**First-failure isolation through deterministic replay and incident forensics**
 
-DetTrace is a deterministic replay and divergence analysis tool for isolating the first point of failure in concurrent or distributed execution traces. It turns flaky, ambiguous failures into reproducible evidence by recording expected execution, comparing it against observed behavior, isolating the first divergence point, and preserving artifacts that make debugging and incident reconstruction easier.
+[![C++17](https://img.shields.io/badge/C%2B%2B-17-00599C?style=flat-square&logo=cplusplus&logoColor=white)](https://isocpp.org)
+[![Swift](https://img.shields.io/badge/Swift-Analyzer-F05138?style=flat-square&logo=swift&logoColor=white)](https://swift.org)
+[![CMake](https://img.shields.io/badge/CMake-Build-064F8C?style=flat-square&logo=cmake&logoColor=white)](https://cmake.org)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
 
----
-
-## Why DetTrace
-
-Distributed and concurrent failures are often easy to observe but hard to explain.
-
-A request fails at the edge. Retries amplify load. A downstream dependency becomes unavailable. Logs show fragments. Later symptoms look noisy and important — but they may not be where the failure actually began.
-
-DetTrace reconstructs those fragments into replayable timelines so you can identify the first failing hop, understand how failure propagated, and compare regressions semantically across runs.
-
-**Questions DetTrace answers:**
-
-- Where did execution first stop matching expectation?
-- Which downstream hop failed first?
-- Was this a timeout cascade or a retry storm?
-- Did failure propagate through request/span lineage?
-- Did failover reduce blast radius or create misordered recovery?
-- Was this more consistent with DNS, transport, dependency, or latency inflation symptoms?
+</div>
 
 ---
 
-## What It Proves
-
-DetTrace communicates one thing clearly:
-
-**It turns flaky or ambiguous failures into reproducible debugging evidence.**
-
-It does that by combining:
-
-- Deterministic replay
-- First-failure isolation
-- Divergence analysis
-- Replayable incident packs
-- Semantic diffing for distributed failures
+> Distributed and concurrent failures are easy to observe.
+> **DetTrace makes them reproducible, comparable, and explainable.**
 
 ---
 
+## The Problem
 
-## Control Loop Replay & Divergence Pack
+Concurrency and distributed failures fail in one consistent way: they refuse to reproduce.
 
-DetTrace includes a replay-based control-loop debugging module for closed-loop behavior analysis under sensor, actuator, and timing faults.
+Add a log statement and the bug disappears. Remove it and it comes back differently. Retries amplify noise. Later symptoms look more important than where the failure actually began. By the time you collect enough data to reason about it, the interleaving that caused it is gone.
 
-It now supports a control-loop scenario pack with:
-- `healthy`
-- `delayed_sensor`
-- `actuator_saturation`
-- `timing_jitter`
+**DetTrace fixes this by reconstructing the failure deterministically** — recording execution as an event sequence, replaying it identically, and isolating the exact point where behavior first diverged from expectation.
 
-### What it simulates
-
-- 2D waypoint tracking
-- plant state over time
-- controller output over time
-- expected vs actual trajectory
-- delayed measurements
-- dropped sensor samples
-- stale state estimates
-- actuator saturation
-- missed update cycles
-- timing jitter
-
-### What it detects
-
-- first divergence step
-- first divergence timestamp
-- error growth after divergence
-- missed deadline count
-- controller output clipping
-- unstable oscillation
-- root-cause classification
-
-### Proof artifacts
-
-- `reports/control_debug_summary.svg`
-- `reports/control_scenario_comparison.json`
-- `artifacts/control_delayed_sensor_trajectory.svg`
-- `artifacts/control_actuator_saturation_trajectory.svg`
-- `artifacts/control_timing_jitter_trajectory.svg`
-- per-scenario divergence reports and timing-budget summaries
-
-### Current scenario results
-
-- `delayed_sensor` diverges at step `38` / `3.9s`
-- `actuator_saturation` diverges at step `53` / `5.4s`
-- `timing_jitter` produces `5` missed deadlines without positional divergence
-- all faulted scenarios surface replay-based diagnostics and root-cause classes
-
-This makes the control-loop path a visible proof artifact for replay-based closed-loop debugging rather than a hidden simulation.
-
-
-
-## Control-Loop Replay
-
-DetTrace includes a separate control-loop replay path for replay-based closed-loop debugging.
-
-### Canonical visual artifact
-
-The control-loop module generates a canonical visual summary in:
-
-- `reports/control_loop_canonical_summary.svg`
-
-It surfaces:
-- expected trajectory
-- actual trajectory
-- first divergence point
-- timing-budget misses
-
-### Scenario comparison sheet
-
-The control-loop module generates a scenario comparison sheet in:
-
-- `reports/control_loop_comparison_sheet.json`
-
-Scenarios:
-- `healthy`
-- `delayed_sensor`
-- `dropped_sample`
-- `actuator_saturation`
-- `timing_jitter`
-
-### Compact diagnostics summary
-
-The control-loop module generates:
-
-- `reports/control_loop_diagnostics_summary.json`
-
-It summarizes:
-- first divergence timestamp
-- root-cause class
-- error growth
-- deadline misses
-- instability detected (`yes` / `no`)
-
-### What this is
-
-- control-loop replay and debugging
-- fault-aware controls analysis
-- replay-based divergence detection
-- timing-related debugging for closed-loop behavior
-
-### What this is not
-
-- avionics firmware
-- a full GNC stack
-- embedded flight-control software
-- safety-critical flight software claims
-
-
-## Current Scope
-
-- Deterministic replay for concurrent execution traces
-- First-divergence detection with structured reports
-- Replay artifact generation for expected, actual, and replayed traces
-- 4 replayable distributed incident packs
-- 10+ network, transport, and recovery annotations
-- OTEL-style span ingestion into a deterministic replay model
-- Semantic incident diffing across baseline and candidate runs
-- Blast-radius inference across upstream and downstream services
-- Operator-style incident reports and runbook guidance
-- 2 end-to-end test paths covering original replay and distributed incident analysis
+The first divergence is the root cause. Everything after it is consequence.
 
 ---
 
-## What DetTrace Does
+## What DetTrace Builds
 
-### Core Replay and Divergence Analysis
-
-- Generates an expected concurrent execution trace and validates invariants against it
-- Validates execution against an expected ordering during guarded replay
-- Detects the **first point of divergence** deterministically
-- Saves divergent trace artifacts even when replay throws, preserving failure context
-- Produces a structured divergence report identifying the mismatched events
-
-### Distributed Incident Analysis
-
-- Reconstructs cross-service timelines using request IDs, span IDs, and parent-span lineage
-- Ingests OTEL-style span records into a replayable distributed event model
-- Annotates traces with network and transport symptoms
-- Replays baseline incident timelines deterministically
-- Correlates incidents with deploy and error-burst timing windows
-- Infers blast radius across upstream callers and downstream dependencies
-- Produces semantic incident diffs and operator-oriented runbook guidance
-
----
-
-## Debugging Story
-
-A concurrent execution path was failing nondeterministically, but logs alone did not explain why. The system looked healthy at a high level, yet repeated runs produced inconsistent outcomes.
-
-DetTrace recorded the expected execution trace, replayed the run under guard, and isolated the first divergence at event index `5`.
-
-| | |
+| Capability | What it does |
 |---|---|
-| **What failed** | A different task was dequeued than the expected schedule required |
-| **What was confusing** | The failure appeared intermittent; later symptoms looked more important than the actual root split |
-| **What DetTrace revealed** | Execution diverged the moment `TASK_DEQUEUED task=2` appeared where `TASK_DEQUEUED task=1` was expected |
-
-This is the core value of the project: not just showing that something failed, but showing **where the failure actually began**.
-
----
-
-## Original Replay Example
-
-The original replay path includes a concrete flaky-case walkthrough in `examples/flaky_case_1/`.
-
-Observed first divergence at event index `5`:
-
-```
-Expected: TASK_DEQUEUED task=1 worker=0 queue=0
-Actual:   TASK_DEQUEUED task=2 worker=0 queue=0
-```
-
-DetTrace catches the exact split point deterministically and preserves the divergent trace artifacts for inspection.
-
-### What "event index 5 isolated" means
-
-In plain English: DetTrace found the exact step where execution first stopped matching the expected behavior.
-
-Instead of saying only that the run failed, it showed that the split happened at the 6th recorded event, when the system dequeued the wrong task. Everything after that point may be a downstream consequence rather than the root cause.
+| **Deterministic replay** | Records execution as an event sequence, replays identically |
+| **First-divergence isolation** | Finds the exact event index where behavior first stopped matching expectation |
+| **Distributed incident analysis** | Reconstructs cross-service timelines using span lineage |
+| **Semantic incident diffing** | Compares failure patterns across runs — not just raw event mismatch |
+| **Blast-radius inference** | Identifies upstream and downstream impact across service dependencies |
+| **Incident fingerprinting** | Classifies failure into a named, stable pattern |
+| **Propagation prediction** | Predicts downstream failure path from first divergence onward |
+| **Cross-incident learning** | Matches current failure against historical incidents |
+| **Control-loop debugging** | Replay-based closed-loop analysis under sensor, actuator, and timing faults |
 
 ---
 
-## First-Divergence Example
+## First-Divergence: A Real Example
 
-**Expected**
+A concurrent execution path was failing nondeterministically. Logs showed many symptoms but not the root cause. Later timeouts and retries obscured when the failure actually began.
+
+DetTrace recorded the expected execution, replayed under guard, and isolated the split:
+
+```
+Divergence at event index 5
+
+EXPECTED:  TASK_DEQUEUED task=1  worker=0  queue=0
+ACTUAL:    TASK_DEQUEUED task=2  worker=0  queue=0
+```
+
+**What this means:** Two workers competed for the same task. The failure appeared downstream as duplicate processing — but the root cause was at index 5, before any visible output. Without deterministic replay, this was invisible.
+
 ```json
-{"seq":5,"type":"TASK_DEQUEUED","task":1,"worker":0,"queue":0}
+{
+  "first_divergence_index": 5,
+  "divergence_type": "event_mismatch",
+  "expected": { "seq": 5, "type": "TASK_DEQUEUED", "task": 1 },
+  "actual":   { "seq": 5, "type": "TASK_DEQUEUED", "task": 2 }
+}
 ```
-
-**Actual**
-```json
-{"seq":5,"type":"TASK_DEQUEUED","task":2,"worker":0,"queue":0}
-```
-
-What changed:
-- The trace diverged at event index `5`
-- Task `2` was dequeued where task `1` was expected
-- Later failures were downstream effects of this earlier split
 
 ---
 
-## Without DetTrace vs. With DetTrace
+## Distributed Incident Analysis
 
-| Without | With DetTrace |
-|---|---|
-| Failure appears flaky and inconsistent | Failure becomes replayable |
-| Logs show many symptoms but not the first split | First divergence is isolated deterministically |
-| Later timeouts and retries obscure root cause | Earliest causal mismatch is preserved as evidence |
-| Distributed failures look ambiguous | Incident packs, annotations, and semantic diff make propagation explainable |
+DetTrace reconstructs cross-service failure sequences using OTEL-style span records.
 
----
-
-## Evidence Produced
-
-DetTrace generates debugging artifacts that make failures easier to inspect and compare:
-
-- Expected trace
-- Actual trace
-- Replayed trace
-- Guarded replay trace
-- First-divergence report
-- Distributed incident replay packs
-- Semantic incident diff
-- Operator-style incident report
-
----
-
-## Failure Modes Modeled
-
-| Category | Failure Mode |
-|---|---|
-| Timeout | Cascading timeouts, timeout chains |
-| Retry | Retry storms, retry amplification |
-| Transport | TCP connect timeout, transport reset, cancellation propagation |
-| Network | DNS failure, latency inflation between hops |
-| Dependency | Downstream unavailable, dependency failover edge cases |
-| Recovery | Misordered failure recovery |
-
-These are modeled as replayable trace and event streams.
-
----
-
-## Distributed Incident Pack Example
-
-DetTrace models distributed failure scenarios as replayable incident packs, including:
-
-- Cascading timeouts
-- Retry storms
-- Misordered recovery
-- Dependency failover edge cases
-
-Example progression:
+### Example incident: retry storm
 
 ```
-dns_failure -> retry -> transport_reset -> retry_burst -> downstream_unavailable -> timeout_chain
+dns_failure → retry → transport_reset → retry_burst → downstream_unavailable → timeout_chain
 ```
-
-This makes it possible to replay and compare failure propagation patterns rather than only inspect isolated events.
-
-### Example Incident Topology
 
 ```
 Client / Edge Proxy
-        |
-        v
-   auth-service   <- first failing service
-        |
-        v
-     token-db     <- downstream impact
-
-Observed signals:
-  dns_failure -> retry -> transport_reset -> retry_burst -> timeout_chain
+        │
+        ▼
+   auth-service   ← first failing service
+        │
+        ▼
+     token-db     ← downstream impact
 
 Propagation:
-  edge-proxy -> auth-service -> token-db
-                |             ^
-                +-- retries --+
-                       |
-                       +-- eventual timeout
+  edge-proxy → auth-service → token-db
+                │              ↑
+                └── retries ───┘
+                       │
+                       └── eventual timeout
 ```
 
-### Example Incident Report
+### Incident report
 
 ```json
 {
   "incident_family": "retry_storm",
-  "timeout_events": 1,
-  "retry_events": 2,
-  "network_error_events": 2,
-  "failover_events": 0,
-  "annotations": [
-    "dns_failure",
-    "transport_reset",
-    "retry_burst",
-    "downstream_unavailable",
-    "latency_inflation_between_hops",
-    "timeout_chain"
-  ],
+  "annotations": ["dns_failure", "transport_reset", "retry_burst", "downstream_unavailable", "timeout_chain"],
+  "blast_radius": {
+    "root_service": "auth-service",
+    "directly_impacted_services": ["token-db"],
+    "upstream_services": ["edge-proxy"]
+  },
   "timeline_correlation": {
     "deploy_correlated": true,
     "suspected_trigger": "recent_deploy",
     "max_latency_ms": 900,
     "error_burst_count": 3
-  },
-  "blast_radius": {
-    "root_service": "auth-service",
-    "directly_impacted_services": ["token-db"],
-    "upstream_services": ["edge-proxy"]
   }
 }
 ```
@@ -360,7 +123,7 @@ Propagation:
 
 ## Semantic Incident Diff
 
-DetTrace compares baseline and candidate incidents at the service and failure-pattern level, not just raw event mismatch.
+DetTrace compares baseline and candidate incidents at the service and pattern level — not raw event differences.
 
 ```json
 {
@@ -375,98 +138,148 @@ DetTrace compares baseline and candidate incidents at the service and failure-pa
 }
 ```
 
-DetTrace surfaces:
-
-- First failing service changes
-- Failure-reason shifts
-- Retry amplification deltas
-- Timeout and network-error changes
-- Latency characteristic changes between runs
-
-This helps distinguish root-cause shifts from downstream symptom changes across runs.
+This distinguishes root-cause shifts from downstream symptom changes across runs.
 
 ---
 
-## OTEL-Style Ingestion
+## Incident Intelligence: Cross-Run Learning
 
-DetTrace includes a JSONL ingest path that converts span-like records into replayable distributed events.
+DetTrace extends beyond single-run replay into pattern learning across incidents.
 
-| Span field | Maps to |
+### Fingerprinting
+
+```json
+{ "incident_fingerprint": "event_mismatch_task_mismatch" }
+```
+
+### Propagation prediction
+
+Given the divergence type, DetTrace predicts the downstream failure path before it fully unfolds:
+
+```json
+{
+  "predicted_failure_propagation_path": ["work_distribution_skew", "missed_or_duplicate_processing"]
+}
+```
+
+### Cross-incident similarity
+
+```json
+{ "confidence": 1.0, "top_match": "incident_20250301_task_mismatch" }
+```
+
+Confidence 1.0: this failure has been seen before. The exact divergence pattern and propagation path match a prior incident — converting debugging from "what is this?" to "we have seen this before."
+
+---
+
+## Control-Loop Replay
+
+DetTrace includes a control-loop replay module for closed-loop debugging under sensor, actuator, and timing faults.
+
+### Scenarios
+
+| Scenario | Stable? | First divergence | Root cause class |
+|---|---|---|---|
+| healthy | yes | none | — |
+| delayed_sensor | no | **step 38 / 3.9s** | delayed measurement, dropped sample |
+| actuator_saturation | no | **step 53 / 5.4s** | actuator saturation |
+| timing_jitter | no | timing-budget failure | 5 missed deadlines |
+
+### Diagnostics summary
+
+```json
+{
+  "first_divergence_step": 38,
+  "first_divergence_timestamp": "3.9s",
+  "root_cause_class": "delayed_measurement",
+  "error_growth_after_divergence": 0.903344,
+  "deadline_misses": 5,
+  "instability_detected": true
+}
+```
+
+Canonical visual artifact: `reports/control_loop_canonical_summary.svg`
+
+---
+
+## Failure Modes Modeled
+
+| Category | Failure modes |
 |---|---|
-| `trace_id` | `request_id` |
-| `span_id` | `span_id` |
-| `parent_span_id` | `parent_span_id` |
-| `peer_service` | `downstream_service` |
-| `start_ms` | `ts_ms` |
-
-This lets DetTrace analyze span-shaped telemetry using the same replay and incident-forensics model.
+| Timeout | Cascading timeouts, timeout chains |
+| Retry | Retry storms, retry amplification |
+| Transport | TCP connect timeout, transport reset, cancellation propagation |
+| Network | DNS failure, latency inflation between hops |
+| Dependency | Downstream unavailable, dependency failover edge cases |
+| Recovery | Misordered failure recovery, stale-state transitions |
+| Control-loop | Delayed sensor, actuator saturation, timing jitter, missed deadlines |
 
 ---
 
-## Quick Start
+## Replayable Incident Packs
 
-### Original deterministic replay demo
-
-```bash
-./scripts/run_demo.sh
-```
-
-This demo:
-- Builds the project
-- Generates an expected trace
-- Runs a divergent execution
-- Isolates the first divergence
-- Writes a structured divergence report
-
-### Distributed incident replay demo
-
-```bash
-./scripts/run_distributed_demo.sh
-```
-
-This demo:
-- Generates replayable incident packs
-- Ingests OTEL-style sample spans
-- Annotates network and transport symptoms
-- Writes an incident report
-- Generates a semantic diff between baseline and candidate runs
-
-### Distributed Demo Outputs
-
-| Output | Path |
+| Pack | Failure pattern |
 |---|---|
-| Replay packs | `packs/cascading_timeouts.jsonl`, `packs/retry_storm.jsonl`, `packs/misordered_recovery.jsonl`, `packs/failover_edge.jsonl` |
-| Sample ingest | `samples/otel_spans.jsonl` |
-| Annotated traces | `artifacts/baseline_annotated.jsonl`, `artifacts/candidate_annotated.jsonl`, `artifacts/otel_ingested_annotated.jsonl`, `artifacts/replayed_distributed.jsonl` |
-| Incident report | `reports/distributed_incident_report.json` |
-| Semantic diff | `reports/distributed_semantic_diff.json` |
+| `cascading_timeouts.jsonl` | Timeout chain across service hops |
+| `retry_storm.jsonl` | Retry amplification under dependency failure |
+| `misordered_recovery.jsonl` | Recovery events arrive out of causal order |
+| `failover_edge.jsonl` | Dependency failover with incomplete blast-radius resolution |
 
 ---
 
-## Running Tests
+## Artifact Output per Run
 
-```bash
-cmake -B build && cmake --build build
-cd build && ctest --output-on-failure
+| Artifact | Contents |
+|---|---|
+| `expected.jsonl` | What execution should have produced |
+| `actual.jsonl` | What it actually produced |
+| `replayed.jsonl` | Deterministic replay output |
+| `divergence_report.json` | First divergence index, type, context |
+| `incident_fingerprint.json` | Named failure pattern |
+| `propagation_prediction.json` | Predicted downstream failure path |
+| `similar_incidents.json` | Cross-run similarity matches |
+| `reports/distributed_incident_report.json` | Full cross-service incident report |
+| `reports/distributed_semantic_diff.json` | Baseline vs candidate failure comparison |
+| `reports/control_loop_diagnostics_summary.json` | Control-loop timing and divergence |
+| `reports/incident_fingerprints.json` | Cross-incident fingerprint library |
+| `reports/cross_incident_learning.md` | Pattern learning summary |
+
+---
+
+## Comparison with Existing Tools
+
+| | DetTrace | Mozilla rr | Valgrind Helgrind |
+|---|---|---|---|
+| Language | C++17 + Swift | C/C++, x86 Linux | C/C++ |
+| Approach | Event-level replay + divergence isolation | Full syscall-level record-and-replay | Lock order + happens-before analysis |
+| Scope | Application-level concurrency + distributed incidents | Full program including kernel | Data races and lock misuse |
+| Incident learning | **Yes** — fingerprint + propagation prediction | No | No |
+| Cross-run history | **Yes** | No | No |
+| Overhead | Low (application-level) | High (full system capture) | Very high (instrumentation) |
+| Output | **Structured artifacts + causal chain + semantic diff** | Replay binary | Violation reports |
+| Control-loop debugging | **Yes** | No | No |
+
+DetTrace operates at the application event level — faster and more portable than full record-and-replay, with application-meaningful events and an incident intelligence layer that syscall-level tools cannot provide.
+
+---
+
+## Swift Analysis Layer
+
+`dettrace-swift/` — Swift companion analyzer using `async/await` and actor-isolated `AnalysisStore` for safe concurrent artifact processing.
+
+```swift
+actor AnalysisStore {
+    private var incidents: [Incident] = []
+
+    func ingest(_ artifacts: ArtifactSet) async throws {
+        let fingerprint = try await classify(artifacts.divergenceReport)
+        let prediction  = try await predict(fingerprint)
+        incidents.append(Incident(fingerprint: fingerprint, prediction: prediction))
+    }
+}
 ```
 
-End-to-end coverage includes:
-
-- Original flaky replay validation
-- Distributed incident replay
-- OTEL ingestion
-- Annotation checks
-- Timeline correlation
-- Blast-radius inference
-- Semantic diff generation
-
----
-
-## Swift Companion Analyzer
-
-`dettrace-swift/` is a functional Swift CLI companion for inspecting trace artifacts outside the core C++ runtime.
-
-It reads generated trace files concurrently, compares traces, identifies divergence, produces structured JSON and Markdown reports, and supports repeated artifact inspection workflows during debugging.
+C++ for execution. Swift for safe analysis. Actor isolation prevents analysis-time race conditions in the layer that is itself analyzing race conditions.
 
 ```bash
 cd dettrace-swift
@@ -477,11 +290,9 @@ swift run DetTraceAnalyzer ../artifacts/expected.jsonl ../artifacts/actual.jsonl
 
 ## Diagnostics Viewer
 
-A lightweight developer-facing UI in `viewer/` for inspecting execution differences.
+`viewer/` — lightweight developer UI for inspecting execution differences.
 
-It provides:
-
-- Side-by-side diff for passing vs. failing executions
+- Side-by-side diff for passing vs failing executions
 - First-divergence highlighting
 - Rule-based root-cause hints
 - Invariant status exploration
@@ -489,35 +300,32 @@ It provides:
 
 ```bash
 ./scripts/serve_viewer.sh
-# -> http://localhost:8000/viewer/index.html
-# -> http://localhost:8000/viewer/benchmarks.html
+# → http://localhost:8000/viewer/index.html
 ```
 
 ---
 
-## Repo Structure
+## Quick Start
 
-```
-analysis/          Divergence detection and invariant checking
-trace/             Trace recording and serialization
-replay/            Replay engine
-examples/
-  flaky_case_1/    Concrete ordering-divergence walkthrough
-include/dettrace/  Public headers, distributed trace model
-src/               Core implementation and distributed incident mode
-scripts/           Demo runners and report helpers
-tests/
-  unit/
-  integration/     test_flaky_case_1 + distributed incident replay
-  regression/
-bench/             Overhead benchmarks
-docs/
-viewer/            Trace viewer
-artifacts/         Generated trace files
-packs/             Replayable distributed incident packs
-reports/           Divergence and incident reports
-samples/           Sample OTEL-style JSONL span input
-dettrace-swift/    Swift companion analyzer
+```bash
+# Build
+cmake -B build && cmake --build build
+cd build && ctest --output-on-failure
+
+# Original deterministic replay demo
+./scripts/run_demo.sh
+
+# Distributed incident replay demo
+./scripts/run_distributed_demo.sh
+
+# Control-loop replay
+./scripts/run_control_loop.sh
+
+# Incident intelligence pipeline
+./scripts/run_incident_intelligence.sh
+
+# Swift analyzer
+cd dettrace-swift && swift run DetTraceAnalyzer ../artifacts/expected.jsonl ../artifacts/actual.jsonl
 ```
 
 ---
@@ -528,249 +336,32 @@ DetTrace emits runbook-oriented guidance alongside replay artifacts:
 
 1. Confirm request and span lineage; identify the first failing downstream hop
 2. Correlate the incident with recent deploy, health-change, or failover windows
-3. Inspect DNS, TCP connect, transport reset, and latency symptoms
-4. Evaluate retry backoff and retry amplification
+3. Inspect DNS, TCP connect, transport reset, and latency inflation symptoms
+4. Evaluate retry backoff and retry amplification extent
 5. Review blast radius before rollback or traffic shift
 
 ---
 
+## Case Studies
 
-## Debugging Tool for Engineers
-
-DetTrace is a replay-based debugging tool for engineers working on concurrent, distributed, and control-loop systems.
-
-It is designed to make hard failures reproducible, comparable, and diagnosable through:
-- deterministic replay
-- first-divergence isolation
-- semantic comparison across runs
-- timing-aware diagnostics
-- replay artifacts that preserve root-cause evidence
-
-### Canonical visual artifact
-
-DetTrace generates a visual control-loop artifact showing:
-
-- expected trajectory
-- actual trajectory
-- divergence point
-
-Key artifact:
-- `reports/control_loop_canonical_summary.svg`
-
-### Diagnostics summary
-
-DetTrace generates compact diagnostics summaries such as:
-
-- First divergence: step `38`
-- Root cause: `delayed_measurement`
-- Error growth after divergence: `0.903344`
-- Deadline misses: `5`
-- Instability detected: `true`
-
-Key artifact:
-- `reports/control_loop_diagnostics_summary.json`
-
-### Scenario comparison table
-
-DetTrace compares healthy and faulted runs through scenario packs.
-
-| Scenario | Stable? | Divergence | Cause |
-|---|---|---|---|
-| healthy | yes | none | - |
-| delayed_sensor | no | step 38 | delayed measurement / dropped sample |
-| actuator_saturation | no | step 53 | actuator saturation |
-| timing_jitter | no | timing-budget failure | timing jitter / missed deadlines |
-
-Key artifact:
-- `reports/control_loop_comparison_sheet.json`
-
-### What this is
-
-- control-loop debugging tool
-- replay-based analysis system
-- first-divergence isolation tool
-- timing-aware diagnostics workflow
-
-### What this is not
-
-- avionics firmware
-- flight control system
-- full GNC stack
-- safety-critical flight software claim
-
-
-
-## Incident Intelligence Engine
-
-DetTrace now includes a **cross-incident learning layer** on top of replay-driven forensics.
-
-It does not just isolate divergence inside a single run. It also:
-
-- fingerprints incidents from replay artifacts
-- finds similar historical failures across scenario packs
-- surfaces recurring failure patterns
-- predicts likely propagation paths from first divergence onward
-
-### New proof statement
-
-**Learns recurring failure patterns across incidents and predicts failure propagation paths before they fully unfold.**
-
-### What it uses
-
-- first divergence position
-- divergence class
-- affected components
-- propagation shape
-- symptom terms
-- causal-chain artifacts
-
-### New artifacts
-
-- `artifacts/reports/incident_fingerprints.json`
-- `artifacts/reports/cross_incident_learning.md`
-- `artifacts/reports/propagation_predictions.json`
-
-### Example positioning
-
-A retry storm with first divergence at event `2` can now be fingerprinted, compared against prior timing- and dependency-related failures, and used to predict likely downstream propagation through auth and gateway paths before the terminal symptom fully unfolds.
-
-## Incident Forensics
-
-### Proof statement
-
-**Replay-driven incident forensics tool that isolates first divergence, reconstructs causal behavior drift, and explains how faults become operator-visible failures.**
-
-### Why replay matters
-
-- logs often show aftermath
-- replay reveals drift onset
-- first divergence is more actionable than terminal symptom
-- causal reconstruction beats symptom-only debugging
-
-### Scenario packs
-
-DetTrace includes curated scenario packs:
-
-- `timeout_chain`
-- `retry_storm`
-- `stale_state`
-- `delayed_dependency`
-- `duplicate_ack`
-- `misordered_recovery`
-
-Each scenario produces:
-
-- expected healthy trace
-- degraded trace
-- replay trace
-- scenario notes
-- divergence report
-- root cause report
-- incident report
-- causal chain
-- invariant breaks
-- propagation view
-
-### Semantic divergence taxonomy
-
-DetTrace classifies divergence into categories such as:
-
-- timing divergence
-- ordering divergence
-- missing event
-- duplicate event
-- stale-state transition
-- retry amplification
-- timeout chain
-- recovery misordering
-
-### Invariant-guided replay
-
-DetTrace checks invariants such as:
-
-- no duplicate completion without retry
-- no action before dependency-ready
-- recovery must follow failure within N steps
-- ack ordering must preserve causality
-
-### Human-readable reports
-
-Key elite artifacts:
-
-- `artifacts/reports/scenario_summary.md`
-- `artifacts/reports/incident_cards.md`
-- `artifacts/reports/cluster_summary.json`
-- per-scenario `divergence_report.json`
-- per-scenario `root_cause_report.json`
-- per-scenario `incident_report.md`
-- per-scenario `causal_chain.md`
-
-### Ambiguity and confidence
-
-DetTrace reports likely causes with confidence and alternative hypotheses rather than pretending certainty when trace evidence is incomplete.
-
-
-## Positioning
-
-DetTrace is a specialist debugging and incident-forensics tool for making hard failures reproducible, inspectable, and explainable.
-
-It is not a packet sniffer, not a router-control framework, and not a full observability platform. Its value is in making distributed failure sequences replayable, comparable, and explainable.
+- [Duplicate Dequeue Race Condition](docs/case-studies/duplicate-dequeue.md) — how DetTrace isolated a task ordering race at event index 5
 
 ---
 
-## License
+## Why This Matters
 
-MIT
-
----
-
-## Comparison with Existing Tools
-
-| Tool | Focus | Deterministic Replay | Concurrency Analysis | Output |
-|------|------|---------------------|---------------------|--------|
-| rr (Mozilla) | Full process replay | Yes | Low-level | Instruction-level |
-| Valgrind Helgrind | Data race detection | No | Yes | Race warnings |
-| DetTrace | Event-level replay & divergence | Yes | Yes | First divergence + causal trace |
-
-DetTrace focuses on **semantic divergence**, not just low-level execution or race detection.
+As AI-generated code enters production at scale, the verification problem grows. Code generation is becoming automated — correctness verification is not. Deterministic replay is the discipline that makes concurrent and distributed systems provably debuggable rather than just statistically monitored.
 
 ---
 
+## Stack
+
+C++17 · Swift · CMake · JSONL artifacts
 
 ---
 
-## Swift Analysis Layer (DetTraceAnalyzer)
+## Related
 
-DetTrace includes a Swift-based analysis engine using:
-
-- async/await concurrency
-- actor isolation for state safety
-
-### Why Swift?
-
-- Structured concurrency simplifies trace processing
-- Actor model prevents analysis-time race conditions
-- Aligns with modern Apple systems engineering practices
-
-The Swift analyzer produces:
-
-- divergence_report_swift.json
-- human-readable markdown reports
-
-This separation allows:
-- C++ for execution
-- Swift for safe analysis
-
----
-
-
----
-
-## Real Bug Case Studies
-
-- [Duplicate Dequeue Race Condition](docs/case-studies/duplicate-dequeue.md)
-
-Concrete examples demonstrate how DetTrace isolates real concurrency failures.
-
----
-
+- [Faultline](https://github.com/kritibehl/faultline) — exactly-once execution correctness under distributed failure
+- [KubePulse](https://github.com/kritibehl/KubePulse) — resilience validation under degraded Kubernetes conditions
+- [Postmortem Atlas](https://github.com/kritibehl/postmortem-atlas) — real production outages, structured and analyzed
