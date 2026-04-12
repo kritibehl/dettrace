@@ -1,0 +1,6 @@
+{
+  "first_divergence_index": 5,
+  "divergence_type": "event_mismatch",
+  "expected_event": "{type=TASK_DEQUEUED, task=1, worker=0, queue=0}",
+  "actual_event": "{type=TASK_DEQUEUED, task=2, worker=0, queue=0}"
+}

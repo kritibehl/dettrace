@@ -1,0 +1,8 @@
+{
+  "predicted_failure_propagation_path": [
+    "work_distribution_skew",
+    "missed_or_duplicate_processing"
+  ],
+  "estimated_blast_radius": "local",
+  "risk_level": "medium"
+}

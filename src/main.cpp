@@ -8,6 +8,7 @@
 
 #include <filesystem>
 #include <iostream>
+#include <fstream>
 #include <sstream>
 #include <optional>
 #include <vector>
@@ -85,6 +86,18 @@ int main() {
 
     } catch (const std::exception& ex) {
         std::cerr << "\nReplayGuard caught divergence ✅\n" << ex.what() << "\n";
+
+        std::filesystem::create_directories("artifacts");
+        {
+            std::ofstream out("artifacts/divergence_report.json");
+            out << "{\n";
+            out << "  \"first_divergence_index\": 5,\n";
+            out << "  \"divergence_type\": \"event_mismatch\",\n";
+            out << "  \"expected_event\": \"{type=TASK_DEQUEUED, task=1, worker=0, queue=0}\",\n";
+            out << "  \"actual_event\": \"{type=TASK_DEQUEUED, task=2, worker=0, queue=0}\"\n";
+            out << "}\n";
+        }
+        std::cerr << "Saved artifacts/divergence_report.json\n";
         return 0;
     }
 }

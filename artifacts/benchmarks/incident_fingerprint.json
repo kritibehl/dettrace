@@ -1,0 +1,7 @@
+{
+  "incident_fingerprint": "event_mismatch_task_mismatch",
+  "features": [
+    "event_mismatch",
+    "task_mismatch"
+  ]
+}
