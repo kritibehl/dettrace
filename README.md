@@ -841,3 +841,23 @@ replayed event count
 first divergence index
 artifact presence across runs
 
+
+---
+
+## Incident Fingerprinting
+
+DetTrace can classify failure patterns into reusable fingerprints.
+
+Example output:
+
+```json
+{
+  "incident_fingerprint": "retry_pattern_timeout_chain",
+  "features": ["retry_pattern", "timeout_chain"]
+}
+This enables:
+
+grouping similar failures
+detecting recurring patterns
+cross-incident learning
+

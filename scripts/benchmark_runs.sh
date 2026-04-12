@@ -17,6 +17,7 @@ for i in $(seq 1 "$RUNS"); do
   echo ">>> benchmark run $i/$RUNS"
   ./build/dettrace >/dev/null 2>&1 || true
   python3 scripts/collect_metrics.py > /tmp/dettrace_metrics.json
+  python3 scripts/fingerprint_incident.py > /tmp/dettrace_fingerprint.json
 
   expected_count=$(python3 - <<'PY'
 import json
