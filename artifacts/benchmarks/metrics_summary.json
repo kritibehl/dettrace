@@ -1,0 +1,11 @@
+{
+  "expected_event_count": 20,
+  "actual_event_count": 6,
+  "replayed_event_count": 20,
+  "artifact_files_present": {
+    "expected.jsonl": true,
+    "actual.jsonl": true,
+    "replayed.jsonl": true,
+    "divergence_report.json": false
+  }
+}

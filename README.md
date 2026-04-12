@@ -814,3 +814,30 @@ artifacts/scenario_runs/<scenario_name>/
 
 This makes failure replay easier to demonstrate, compare, and preserve across runs.
 
+
+---
+
+## Metrics and Benchmark Output
+
+Collect one-run artifact metrics:
+
+```bash
+./scripts/collect_metrics.py
+Run repeated benchmark passes:
+
+./scripts/benchmark_runs.sh 10
+
+Generated outputs:
+
+artifacts/benchmarks/metrics_summary.json
+artifacts/benchmarks/run_metrics.csv
+artifacts/benchmarks/benchmark_summary.json
+
+Tracked metrics include:
+
+expected event count
+actual event count
+replayed event count
+first divergence index
+artifact presence across runs
+

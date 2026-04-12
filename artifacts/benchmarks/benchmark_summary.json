@@ -1,0 +1,7 @@
+{
+  "total_runs": 10,
+  "avg_expected_event_count": 20.0,
+  "avg_actual_event_count": 6.0,
+  "avg_replayed_event_count": 20.0,
+  "avg_first_divergence_index": null
+}
