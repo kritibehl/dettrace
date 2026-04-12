@@ -916,3 +916,79 @@ semantic failure comparison
 cross-incident learning
 propagation-aware analysis
 
+
+---
+
+## Real Bug Case Study: Duplicate Dequeue Race
+
+### Scenario
+Two workers attempt to dequeue tasks during a narrow ownership handoff window.
+
+### Expected Behavior
+- Worker A → Task 1  
+- Worker B → Task 2  
+
+### Actual Behavior
+- Worker A → Task 1  
+- Worker B → Task 1  
+- Task 2 is delayed or skipped  
+
+### First Divergence (Detected by DetTrace)
+Event index: 5
+
+Expected:
+{type=TASK_DEQUEUED, task=1, worker=0, queue=0}
+
+Actual:
+{type=TASK_DEQUEUED, task=2, worker=0, queue=0}
+
+### Root Cause
+Queue ownership update was not serialized with dequeue visibility.
+
+### Why DetTrace Matters
+The visible failure appeared later as duplicate work and inconsistent queue progress.
+
+DetTrace identified the earlier semantic divergence instead of the downstream symptom.
+
+---
+
+
+---
+
+## Where DetTrace Fits
+
+| Tool | Focus | Strength | Limitation | How DetTrace Differs |
+|------|------|----------|------------|---------------------|
+| rr | Record/replay debugger | Low-level replay, reverse debugging | No semantic failure modeling | DetTrace isolates *semantic divergence* |
+| Helgrind | Data race detection | Finds synchronization bugs | No replay or causality reconstruction | DetTrace reconstructs failure timelines |
+| DetTrace | Deterministic replay + incident intelligence | First divergence + artifacts + pattern learning | Narrower scope | Focused on causality, not just execution |
+
+DetTrace is not a replacement for rr or Helgrind.  
+It operates at the **semantic event level**, not instruction level.
+
+---
+
+
+---
+
+## Example: Failure Propagation
+
+```json
+{
+  "predicted_failure_propagation_path": [
+    "work_distribution_skew",
+    "duplicate_processing",
+    "queue_pressure"
+  ],
+  "estimated_blast_radius": "local",
+  "risk_level": "medium"
+}
+Interpretation
+Divergence changes which worker receives work
+Leads to duplicate or skipped tasks
+Causes downstream queue pressure
+
+DetTrace answers:
+
+"What broke?" → "What will this break next?"
+
