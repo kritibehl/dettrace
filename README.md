@@ -721,3 +721,56 @@ It is not a packet sniffer, not a router-control framework, and not a full obser
 ## License
 
 MIT
+
+---
+
+## Comparison with Existing Tools
+
+| Tool | Focus | Deterministic Replay | Concurrency Analysis | Output |
+|------|------|---------------------|---------------------|--------|
+| rr (Mozilla) | Full process replay | Yes | Low-level | Instruction-level |
+| Valgrind Helgrind | Data race detection | No | Yes | Race warnings |
+| DetTrace | Event-level replay & divergence | Yes | Yes | First divergence + causal trace |
+
+DetTrace focuses on **semantic divergence**, not just low-level execution or race detection.
+
+---
+
+
+---
+
+## Swift Analysis Layer (DetTraceAnalyzer)
+
+DetTrace includes a Swift-based analysis engine using:
+
+- async/await concurrency
+- actor isolation for state safety
+
+### Why Swift?
+
+- Structured concurrency simplifies trace processing
+- Actor model prevents analysis-time race conditions
+- Aligns with modern Apple systems engineering practices
+
+The Swift analyzer produces:
+
+- divergence_report_swift.json
+- human-readable markdown reports
+
+This separation allows:
+- C++ for execution
+- Swift for safe analysis
+
+---
+
+
+---
+
+## Real Bug Case Studies
+
+- [Duplicate Dequeue Race Condition](docs/case-studies/duplicate-dequeue.md)
+
+Concrete examples demonstrate how DetTrace isolates real concurrency failures.
+
+---
+
