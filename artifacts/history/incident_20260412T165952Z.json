@@ -1,0 +1,15 @@
+{
+  "timestamp": "2026-04-12T16:59:52.965630+00:00",
+  "incident_fingerprint": "event_mismatch_task_mismatch",
+  "features": [
+    "event_mismatch",
+    "task_mismatch"
+  ],
+  "predicted_failure_propagation_path": [
+    "work_distribution_skew",
+    "missed_or_duplicate_processing"
+  ],
+  "risk_level": "medium",
+  "first_divergence_index": 5,
+  "divergence_type": "event_mismatch"
+}

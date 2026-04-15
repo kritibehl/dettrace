@@ -19,9 +19,11 @@ race_condition = {
     "source": "seed",
     "events": [
         {"service": "queue-service", "timestamp": ts(0), "trace_id": "baseline-1", "event_type": "dequeue", "message": "worker A dequeued task 1", "status": "ok", "latency_ms": 3},
-        {"service": "queue-service", "timestamp": ts(1), "trace_id": "baseline-1", "event_type": "dequeue", "message": "worker B dequeued task 2", "status": "ok", "latency_ms": 4},
+        {"service": "queue-service", "timestamp": ts(1), "trace_id": "baseline-1", "event_type": "commit", "message": "worker A committed task 1", "status": "ok", "latency_ms": 2},
+        {"service": "queue-service", "timestamp": ts(2), "trace_id": "baseline-1", "event_type": "dequeue", "message": "worker B dequeued task 2", "status": "ok", "latency_ms": 4},
         {"service": "queue-service", "timestamp": ts(0), "trace_id": "candidate-1", "event_type": "dequeue", "message": "worker A dequeued task 1", "status": "ok", "latency_ms": 3},
         {"service": "queue-service", "timestamp": ts(1), "trace_id": "candidate-1", "event_type": "dequeue", "message": "worker B dequeued task 1", "status": "ok", "latency_ms": 4},
+        {"service": "queue-service", "timestamp": ts(2), "trace_id": "candidate-1", "event_type": "commit", "message": "worker B committed duplicate task 1", "status": "ok", "latency_ms": 2},
     ],
 }
 

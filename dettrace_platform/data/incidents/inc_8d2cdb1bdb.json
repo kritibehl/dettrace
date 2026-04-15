@@ -1,0 +1,113 @@
+{
+  "incident_id": "inc_8d2cdb1bdb",
+  "incident_name": "retry-storm-meltdown",
+  "source": "seed",
+  "created_at": "2026-04-15T19:53:40.538187+00:00",
+  "event_count": 6,
+  "events": [
+    {
+      "service": "api-gateway",
+      "timestamp": "2026-04-12T12:00:00+00:00",
+      "trace_id": "retry-1",
+      "event_type": "request",
+      "message": "request enters gateway",
+      "latency_ms": 12.0,
+      "status": "ok",
+      "upstream": "checkout-service",
+      "metadata": {}
+    },
+    {
+      "service": "checkout-service",
+      "timestamp": "2026-04-12T12:00:01+00:00",
+      "trace_id": "retry-1",
+      "event_type": "dependency_retry",
+      "message": "retrying payment",
+      "latency_ms": 800.0,
+      "status": "timeout",
+      "upstream": "payment-service",
+      "metadata": {}
+    },
+    {
+      "service": "checkout-service",
+      "timestamp": "2026-04-12T12:00:02+00:00",
+      "trace_id": "retry-1",
+      "event_type": "dependency_retry",
+      "message": "retrying payment again",
+      "latency_ms": 900.0,
+      "status": "timeout",
+      "upstream": "payment-service",
+      "metadata": {}
+    },
+    {
+      "service": "checkout-service",
+      "timestamp": "2026-04-12T12:00:03+00:00",
+      "trace_id": "retry-1",
+      "event_type": "dependency_retry",
+      "message": "retrying payment third time",
+      "latency_ms": 950.0,
+      "status": "timeout",
+      "upstream": "payment-service",
+      "metadata": {}
+    },
+    {
+      "service": "checkout-service",
+      "timestamp": "2026-04-12T12:00:04+00:00",
+      "trace_id": "retry-1",
+      "event_type": "dependency_retry",
+      "message": "retrying payment fourth time",
+      "latency_ms": 1100.0,
+      "status": "timeout",
+      "upstream": "payment-service",
+      "metadata": {}
+    },
+    {
+      "service": "payment-service",
+      "timestamp": "2026-04-12T12:00:05+00:00",
+      "trace_id": "retry-1",
+      "event_type": "response",
+      "message": "upstream overloaded",
+      "latency_ms": 1300.0,
+      "status": "timeout",
+      "upstream": "db-service",
+      "metadata": {}
+    }
+  ],
+  "analysis": {
+    "divergence": null,
+    "fingerprint": {
+      "incident_fingerprint": "retry_storm_timeout_chain",
+      "features": [
+        "retry_storm",
+        "timeout_chain"
+      ]
+    },
+    "retry_storm_detection": {
+      "pattern": "retry_storm",
+      "service": "checkout-service",
+      "upstream": "payment-service",
+      "retry_count": 4,
+      "severity": "medium"
+    },
+    "timeout_chain_detection": {
+      "pattern": "timeout_chain",
+      "service_path": [
+        "checkout-service",
+        "checkout-service",
+        "checkout-service",
+        "checkout-service",
+        "payment-service"
+      ],
+      "count": 5,
+      "severity": "high"
+    },
+    "root_cause_explanation": {
+      "likely_root_cause": "checkout-service entered a retry storm against payment-service",
+      "reasoning": [
+        "Observed 4 retry events",
+        "Repeated retries amplify load and delay downstream recovery"
+      ],
+      "operator_summary": "Start with the upstream dependency and rate-limit retries before scaling consumers."
+    },
+    "memory_key": "2aed215179948e28"
+  }
+}

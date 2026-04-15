@@ -1,0 +1,105 @@
+{
+  "incident_id": "inc_7777274718",
+  "incident_name": "cascading-failure",
+  "source": "seed",
+  "created_at": "2026-04-15T19:59:55.286829+00:00",
+  "event_count": 6,
+  "events": [
+    {
+      "service": "frontend",
+      "timestamp": "2026-04-12T12:00:00+00:00",
+      "trace_id": "cascade-1",
+      "event_type": "request",
+      "message": "user search request",
+      "latency_ms": 30.0,
+      "status": "ok",
+      "upstream": "search-service",
+      "metadata": {}
+    },
+    {
+      "service": "search-service",
+      "timestamp": "2026-04-12T12:00:01+00:00",
+      "trace_id": "cascade-1",
+      "event_type": "call",
+      "message": "fanout to ranking",
+      "latency_ms": 60.0,
+      "status": "ok",
+      "upstream": "ranking-service",
+      "metadata": {}
+    },
+    {
+      "service": "ranking-service",
+      "timestamp": "2026-04-12T12:00:02+00:00",
+      "trace_id": "cascade-1",
+      "event_type": "call",
+      "message": "downstream call stalled",
+      "latency_ms": 1200.0,
+      "status": "timeout",
+      "upstream": "feature-store",
+      "metadata": {}
+    },
+    {
+      "service": "feature-store",
+      "timestamp": "2026-04-12T12:00:03+00:00",
+      "trace_id": "cascade-1",
+      "event_type": "response",
+      "message": "storage timeout",
+      "latency_ms": 1600.0,
+      "status": "timeout",
+      "upstream": "storage",
+      "metadata": {}
+    },
+    {
+      "service": "search-service",
+      "timestamp": "2026-04-12T12:00:04+00:00",
+      "trace_id": "cascade-1",
+      "event_type": "response",
+      "message": "search timeout surfaced",
+      "latency_ms": 1800.0,
+      "status": "timeout",
+      "upstream": "ranking-service",
+      "metadata": {}
+    },
+    {
+      "service": "frontend",
+      "timestamp": "2026-04-12T12:00:05+00:00",
+      "trace_id": "cascade-1",
+      "event_type": "response",
+      "message": "5xx returned to user",
+      "latency_ms": 2000.0,
+      "status": "timeout",
+      "upstream": "search-service",
+      "metadata": {}
+    }
+  ],
+  "analysis": {
+    "divergence": null,
+    "fingerprint": {
+      "incident_fingerprint": "timeout_chain",
+      "features": [
+        "timeout_chain"
+      ]
+    },
+    "retry_storm_detection": null,
+    "timeout_chain_detection": {
+      "pattern": "timeout_chain",
+      "service_path": [
+        "ranking-service",
+        "feature-store",
+        "search-service",
+        "frontend"
+      ],
+      "count": 4,
+      "severity": "high"
+    },
+    "root_cause_explanation": {
+      "likely_root_cause": "Timeout chain across multiple services",
+      "reasoning": [
+        "Timeouts observed across 4 linked service events",
+        "Downstream services likely inherited degraded latency from an upstream bottleneck"
+      ],
+      "operator_summary": "Inspect the earliest timeout in the chain and compare latency inflation service by service."
+    },
+    "memory_key": "763cc4b3b2b97cef"
+  }
+}

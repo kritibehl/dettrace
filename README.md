@@ -179,6 +179,16 @@ It summarizes:
 
 ### Distributed Incident Analysis
 
+## Integration Surface
+
+DetTrace accepts:
+- event streams
+- JSONL execution traces
+- OTEL-style spans
+- replay packs
+- baseline vs candidate incident artifacts
+
+
 - Reconstructs cross-service timelines using request IDs, span IDs, and parent-span lineage
 - Ingests OTEL-style span records into a replayable distributed event model
 - Annotates traces with network and transport symptoms
@@ -360,6 +370,17 @@ Propagation:
 
 ## Semantic Incident Diff
 
+## Public APIs
+
+Core APIs:
+- ingest(events)
+- replay(trace)
+- diff(expected, actual)
+- fingerprint(incident)
+- predict_propagation(fingerprint)
+- similar_incidents(current)
+
+
 DetTrace compares baseline and candidate incidents at the service and failure-pattern level, not just raw event mismatch.
 
 ```json
@@ -476,6 +497,15 @@ swift run DetTraceAnalyzer ../artifacts/expected.jsonl ../artifacts/actual.jsonl
 ---
 
 ## Diagnostics Viewer
+
+## Who Should Use This
+
+DetTrace is useful for:
+- backend teams debugging rare concurrency failures
+- platform teams tracing retry storms and causal chains
+- release teams comparing baseline vs candidate incident behavior
+- reliability engineers isolating root cause before downstream symptoms dominate
+
 
 A lightweight developer-facing UI in `viewer/` for inspecting execution differences.
 
@@ -1035,3 +1065,48 @@ cascading-failure
 Why this matters
 
 This turns DetTrace from a replay engine into a system that can ingest, compare, explain, and remember distributed failures.
+
+---
+
+## Incident Packs
+
+DetTrace includes polished incident packs under `incident_packs/`:
+
+- `duplicate_dequeue_race`
+- `retry_storm_chain`
+- `misordered_recovery`
+
+These are designed to make replay, semantic diffing, propagation analysis, and historical comparison easy to demonstrate.
+
+---
+
+## Event Schema
+
+Minimal required fields are documented for:
+
+- event replay
+- span lineage
+- semantic diffing
+
+See:
+- `docs/schema/event_replay.md`
+- `docs/schema/span_lineage.md`
+- `docs/schema/semantic_diffing.md`
+
+---
+
+## CLI / API Modes
+
+CLI commands:
+- `replay`
+- `diff`
+- `fingerprint`
+- `compare-incidents`
+
+API mode remains available through the DetTrace++ platform.
+
+---
+
+## Historical Incident Memory
+
+DetTrace persists fingerprints and similarity rankings across runs so repeated failures can be clustered and compared over time.

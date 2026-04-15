@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from fastapi import FastAPI, HTTPException
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
@@ -311,6 +311,59 @@ def clusters() -> Dict[str, Any]:
     return cluster_incidents()
 
 
+@app.get("/before-after-diff/{incident_id}")
+def before_after_diff(incident_id: str) -> Dict[str, Any]:
+    doc = load_incident(incident_id)
+    events = sort_events(doc["events"])
+    divergence = doc.get("analysis", {}).get("divergence")
+    if not divergence:
+        return {
+            "incident_id": incident_id,
+            "before": events[:3],
+            "after": events[-3:],
+            "divergence": None,
+        }
+
+    idx = divergence["first_divergence_index"]
+    start = max(0, idx - 2)
+    end = min(len(events), idx + 3)
+    return {
+        "incident_id": incident_id,
+        "before": events[start:idx],
+        "divergence_point": divergence,
+        "after": events[idx:end],
+    }
+
+
+
+@app.get("/graph/{incident_id}")
+def graph_view(incident_id: str) -> Dict[str, Any]:
+    doc = load_incident(incident_id)
+    events = sort_events(doc["events"])
+    nodes = []
+    edges = []
+    for idx, e in enumerate(events):
+        nodes.append({
+            "id": idx,
+            "service": e["service"],
+            "event_type": e["event_type"],
+            "timestamp": e["timestamp"],
+            "trace_id": e["trace_id"],
+        })
+        if idx > 0:
+            prev = events[idx - 1]
+            edges.append({
+                "from": idx - 1,
+                "to": idx,
+                "kind": "timeline",
+                "same_trace": prev["trace_id"] == e["trace_id"],
+            })
+    return {
+        "incident_id": incident_id,
+        "graph": {"nodes": nodes, "edges": edges},
+        "divergence": doc.get("analysis", {}).get("divergence"),
+    }
+
 @app.get("/timeline/{incident_id}", response_class=HTMLResponse)
 def timeline_page(incident_id: str) -> str:
     doc = load_incident(incident_id)
@@ -380,6 +433,8 @@ def root() -> Dict[str, Any]:
             "/explain/root-cause",
             "/incidents",
             "/clusters",
+            "/graph/{incident_id}",
+            "/before-after-diff/{incident_id}",
             "/timeline/{incident_id}",
         ],
     }

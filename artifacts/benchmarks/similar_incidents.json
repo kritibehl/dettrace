@@ -1,5 +1,19 @@
 {
   "current_incident_fingerprint": "event_mismatch_task_mismatch",
-  "similar_incidents": [],
-  "top_match": null
+  "similar_incidents": [
+    {
+      "incident_file": "artifacts/history/incident_20260412T054756Z.json",
+      "incident_fingerprint": "event_mismatch_task_mismatch",
+      "confidence": 1.0,
+      "first_divergence_index": 5,
+      "risk_level": "medium"
+    }
+  ],
+  "top_match": {
+    "incident_file": "artifacts/history/incident_20260412T054756Z.json",
+    "incident_fingerprint": "event_mismatch_task_mismatch",
+    "confidence": 1.0,
+    "first_divergence_index": 5,
+    "risk_level": "medium"
+  }
 }

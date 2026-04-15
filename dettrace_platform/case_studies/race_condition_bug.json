@@ -15,6 +15,15 @@
       "service": "queue-service",
       "timestamp": "2026-04-12T12:00:01+00:00",
       "trace_id": "baseline-1",
+      "event_type": "commit",
+      "message": "worker A committed task 1",
+      "status": "ok",
+      "latency_ms": 2
+    },
+    {
+      "service": "queue-service",
+      "timestamp": "2026-04-12T12:00:02+00:00",
+      "trace_id": "baseline-1",
       "event_type": "dequeue",
       "message": "worker B dequeued task 2",
       "status": "ok",
@@ -37,6 +46,15 @@
       "message": "worker B dequeued task 1",
       "status": "ok",
       "latency_ms": 4
+    },
+    {
+      "service": "queue-service",
+      "timestamp": "2026-04-12T12:00:02+00:00",
+      "trace_id": "candidate-1",
+      "event_type": "commit",
+      "message": "worker B committed duplicate task 1",
+      "status": "ok",
+      "latency_ms": 2
     }
   ]
 }
