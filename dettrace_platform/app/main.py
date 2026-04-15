@@ -156,7 +156,7 @@ def build_fingerprint(events: List[Dict[str, Any]], divergence: Optional[Dict[st
         features.append("timeout_chain")
 
     if any(e["event_type"].lower() == "dequeue" for e in events):
-        features.append("queue_path")
+        features.append("race_condition_duplicate_dequeue")
 
     if any("db" in (e["service"] + " " + e.get("message", "")).lower() for e in events):
         features.append("database_path")
