@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cd "$(dirname "$0")/.."
+source .venv/bin/activate
+
+cmd="${1:-}"
+shift || true
+
+case "$cmd" in
+  analyze)
+    python -m app.cli.main fingerprint "$1"
+    ;;
+  replay)
+    python -m app.cli.main replay "$1"
+    ;;
+  diff)
+    python -m app.cli.main diff "$1" "$2"
+    ;;
+  compare-incidents)
+    python -m app.cli.main compare-incidents "$1" "$2"
+    ;;
+  *)
+    echo "Usage:"
+    echo "  dettrace analyze <trace.json|trace.jsonl>"
+    echo "  dettrace replay <trace.json|trace.jsonl>"
+    echo "  dettrace diff <expected> <actual>"
+    echo "  dettrace compare-incidents <left> <right>"
+    exit 1
+    ;;
+esac

@@ -1110,3 +1110,48 @@ API mode remains available through the DetTrace++ platform.
 ## Historical Incident Memory
 
 DetTrace persists fingerprints and similarity rankings across runs so repeated failures can be clustered and compared over time.
+
+---
+
+## Incident Pack Gallery
+
+DetTrace ships with incident packs that make failure modes concrete:
+
+- `incident_packs/retry_storm`
+- `incident_packs/race_condition`
+- `incident_packs/cascading_failure`
+
+These packs document the symptom, invisible root cause, and the DetTrace analysis surface for each failure type.
+
+---
+
+## Visual Timeline Example
+
+A distributed timeout chain can be reconstructed as a service timeline:
+
+```text
+frontend -> search-service -> ranking-service -> feature-store -> timeout
+DetTrace uses this timeline to show where downstream symptoms began and where the incident first stopped being correct.
+
+---
+
+## CLI
+
+```bash
+cd dettrace_platform
+./bin/dettrace analyze case_studies/retry_storm_meltdown.json
+./bin/dettrace replay case_studies/race_condition_bug.json
+
+---
+
+## AutoOps Integration
+
+DetTrace can be used as a downstream incident-analysis engine for AutoOps.
+
+Example result:
+
+```json
+{
+  "root_cause": "retry amplification",
+  "first_divergence": "service A retry loop"
+}

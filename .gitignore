@@ -35,3 +35,7 @@ artifacts/*.tmp
 viewer/node_modules/
 viewer/dist/
 dettrace_platform/.venv/
+
+__pycache__/
+*.pyc
+dettrace_platform/data/incidents/
