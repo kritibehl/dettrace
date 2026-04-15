@@ -34,3 +34,4 @@ viewer/dist/
 artifacts/*.tmp
 viewer/node_modules/
 viewer/dist/
+dettrace_platform/.venv/
