@@ -1,0 +1,66 @@
+{
+  "incident_name": "retry-storm-meltdown",
+  "source": "seed",
+  "events": [
+    {
+      "service": "api-gateway",
+      "timestamp": "2026-04-12T12:00:00+00:00",
+      "trace_id": "retry-1",
+      "event_type": "request",
+      "message": "request enters gateway",
+      "status": "ok",
+      "latency_ms": 12,
+      "upstream": "checkout-service"
+    },
+    {
+      "service": "checkout-service",
+      "timestamp": "2026-04-12T12:00:01+00:00",
+      "trace_id": "retry-1",
+      "event_type": "dependency_retry",
+      "message": "retrying payment",
+      "status": "timeout",
+      "latency_ms": 800,
+      "upstream": "payment-service"
+    },
+    {
+      "service": "checkout-service",
+      "timestamp": "2026-04-12T12:00:02+00:00",
+      "trace_id": "retry-1",
+      "event_type": "dependency_retry",
+      "message": "retrying payment again",
+      "status": "timeout",
+      "latency_ms": 900,
+      "upstream": "payment-service"
+    },
+    {
+      "service": "checkout-service",
+      "timestamp": "2026-04-12T12:00:03+00:00",
+      "trace_id": "retry-1",
+      "event_type": "dependency_retry",
+      "message": "retrying payment third time",
+      "status": "timeout",
+      "latency_ms": 950,
+      "upstream": "payment-service"
+    },
+    {
+      "service": "checkout-service",
+      "timestamp": "2026-04-12T12:00:04+00:00",
+      "trace_id": "retry-1",
+      "event_type": "dependency_retry",
+      "message": "retrying payment fourth time",
+      "status": "timeout",
+      "latency_ms": 1100,
+      "upstream": "payment-service"
+    },
+    {
+      "service": "payment-service",
+      "timestamp": "2026-04-12T12:00:05+00:00",
+      "trace_id": "retry-1",
+      "event_type": "response",
+      "message": "upstream overloaded",
+      "status": "timeout",
+      "latency_ms": 1300,
+      "upstream": "db-service"
+    }
+  ]
+}

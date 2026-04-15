@@ -1,0 +1,66 @@
+{
+  "incident_name": "cascading-failure",
+  "source": "seed",
+  "events": [
+    {
+      "service": "frontend",
+      "timestamp": "2026-04-12T12:00:00+00:00",
+      "trace_id": "cascade-1",
+      "event_type": "request",
+      "message": "user search request",
+      "status": "ok",
+      "latency_ms": 30,
+      "upstream": "search-service"
+    },
+    {
+      "service": "search-service",
+      "timestamp": "2026-04-12T12:00:01+00:00",
+      "trace_id": "cascade-1",
+      "event_type": "call",
+      "message": "fanout to ranking",
+      "status": "ok",
+      "latency_ms": 60,
+      "upstream": "ranking-service"
+    },
+    {
+      "service": "ranking-service",
+      "timestamp": "2026-04-12T12:00:02+00:00",
+      "trace_id": "cascade-1",
+      "event_type": "call",
+      "message": "downstream call stalled",
+      "status": "timeout",
+      "latency_ms": 1200,
+      "upstream": "feature-store"
+    },
+    {
+      "service": "feature-store",
+      "timestamp": "2026-04-12T12:00:03+00:00",
+      "trace_id": "cascade-1",
+      "event_type": "response",
+      "message": "storage timeout",
+      "status": "timeout",
+      "latency_ms": 1600,
+      "upstream": "storage"
+    },
+    {
+      "service": "search-service",
+      "timestamp": "2026-04-12T12:00:04+00:00",
+      "trace_id": "cascade-1",
+      "event_type": "response",
+      "message": "search timeout surfaced",
+      "status": "timeout",
+      "latency_ms": 1800,
+      "upstream": "ranking-service"
+    },
+    {
+      "service": "frontend",
+      "timestamp": "2026-04-12T12:00:05+00:00",
+      "trace_id": "cascade-1",
+      "event_type": "response",
+      "message": "5xx returned to user",
+      "status": "timeout",
+      "latency_ms": 2000,
+      "upstream": "search-service"
+    }
+  ]
+}

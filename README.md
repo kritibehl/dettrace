@@ -992,3 +992,46 @@ DetTrace answers:
 
 "What broke?" → "What will this break next?"
 
+
+---
+
+## DetTrace++: Distributed Incident Forensics Platform
+
+DetTrace++ extends the replay core into a distributed incident forensics platform.
+
+### Added platform capabilities
+- Event ingestion API for traces and logs
+- Multi-service replay timeline
+- First-divergence detection across services
+- Retry storm detection
+- Timeout chain detection
+- Incident fingerprinting and clustering
+- Root cause explanation engine
+- Historical failure memory
+- Visual timeline UI
+
+### Run locally
+
+```bash
+cd dettrace_platform
+./scripts/run_platform.sh
+In a second terminal:
+
+cd dettrace_platform
+./scripts/load_case_studies.sh
+
+Then open:
+
+http://127.0.0.1:8010/docs
+http://127.0.0.1:8010/incidents
+
+For a visual timeline, use the incident id returned by /ingest:
+
+http://127.0.0.1:8010/timeline/<incident_id>
+Killer case studies
+race-condition-bug
+retry-storm-meltdown
+cascading-failure
+Why this matters
+
+This turns DetTrace from a replay engine into a system that can ingest, compare, explain, and remember distributed failures.
