@@ -39,3 +39,8 @@ dettrace_platform/.venv/
 __pycache__/
 *.pyc
 dettrace_platform/data/incidents/
+
+__pycache__/
+*.pyc
+dettrace_platform/data/incidents/
+*.bak.*
