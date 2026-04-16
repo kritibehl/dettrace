@@ -1155,3 +1155,19 @@ Example result:
   "root_cause": "retry amplification",
   "first_divergence": "service A retry loop"
 }
+
+---
+
+## First-Divergence Visualization
+
+DetTrace exposes the first semantic break directly:
+
+```json
+{
+  "first_divergence_index": 1,
+  "expected": { "event_type": "commit" },
+  "actual": { "event_type": "dequeue" },
+  "divergence_type": "cross_service_event_mismatch"
+}
+This surfaces the exact moment a system stopped being correct under concurrency or timing stress.
+

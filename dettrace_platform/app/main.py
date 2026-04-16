@@ -422,6 +422,26 @@ def timeline_page(incident_id: str) -> str:
 </html>"""
 
 
+
+@app.get("/divergence/{incident_id}")
+def first_divergence_view(incident_id: str) -> Dict[str, Any]:
+    doc = load_incident(incident_id)
+    divergence = doc.get("analysis", {}).get("divergence")
+
+    if not divergence:
+        return {
+            "incident_id": incident_id,
+            "message": "no divergence detected"
+        }
+
+    return {
+        "incident_id": incident_id,
+        "first_divergence_index": divergence["first_divergence_index"],
+        "expected": divergence["baseline_event"],
+        "actual": divergence["candidate_event"],
+        "divergence_type": divergence["divergence_type"]
+    }
+
 @app.get("/")
 def root() -> Dict[str, Any]:
     return {
@@ -435,6 +455,7 @@ def root() -> Dict[str, Any]:
             "/clusters",
             "/graph/{incident_id}",
             "/before-after-diff/{incident_id}",
+            "/divergence/{incident_id}",
             "/timeline/{incident_id}",
         ],
     }
