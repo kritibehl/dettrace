@@ -364,6 +364,57 @@ def graph_view(incident_id: str) -> Dict[str, Any]:
         "divergence": doc.get("analysis", {}).get("divergence"),
     }
 
+
+@app.get("/viewer/{incident_id}", response_class=HTMLResponse)
+def divergence_viewer_page(incident_id: str) -> str:
+    doc = load_incident(incident_id)
+    divergence = doc.get("analysis", {}).get("divergence")
+    events = sort_events(doc["events"])
+
+    by_trace: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
+    for e in events:
+        by_trace[e["trace_id"]].append(e)
+
+    traces = list(by_trace.keys())
+    expected = [e["event_type"] for e in by_trace[traces[0]]] if len(traces) >= 1 else []
+    actual = [e["event_type"] for e in by_trace[traces[1]]] if len(traces) >= 2 else []
+    likely_reason = "event ordering mismatch"
+    if doc.get("analysis", {}).get("uart_irq_analysis"):
+        likely_reason = doc["analysis"]["uart_irq_analysis"]["likely_reason"]
+    if doc.get("analysis", {}).get("firmware_trace_analysis"):
+        likely_reason = doc["analysis"]["firmware_trace_analysis"]["likely_reason"]
+
+    expected_text = " → ".join(expected) if expected else "n/a"
+    actual_text = " → ".join(actual) if actual else "n/a"
+    first_idx = divergence["first_divergence_index"] if divergence else "none"
+
+    return f"""<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Divergence Viewer</title>
+  <link rel="stylesheet" href="/static/timeline.css" />
+</head>
+<body>
+  <div class="wrap">
+    <h1>Divergence Viewer</h1>
+    <div class="card"><strong>Incident:</strong> {doc["incident_name"]}</div>
+    <div class="card">
+      <div><strong>Expected</strong></div>
+      <div>{expected_text}</div>
+    </div>
+    <div class="card">
+      <div><strong>Actual</strong></div>
+      <div>{actual_text}</div>
+    </div>
+    <div class="card">
+      <div><strong>First divergence:</strong> index {first_idx}</div>
+      <div><strong>Likely reason:</strong> {likely_reason}</div>
+    </div>
+  </div>
+</body>
+</html>"""
+
 @app.get("/timeline/{incident_id}", response_class=HTMLResponse)
 def timeline_page(incident_id: str) -> str:
     doc = load_incident(incident_id)
@@ -497,6 +548,7 @@ def root() -> Dict[str, Any]:
             "/before-after-diff/{incident_id}",
             "/sequence-compare/{incident_id}",
             "/divergence/{incident_id}",
+            "/viewer/{incident_id}",
             "/timeline/{incident_id}",
         ],
     }

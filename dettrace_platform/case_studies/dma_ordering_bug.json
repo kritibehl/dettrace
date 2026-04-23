@@ -1,0 +1,125 @@
+{
+  "incident_name": "dma-ordering-bug",
+  "source": "seed",
+  "events": [
+    {
+      "service": "firmware",
+      "timestamp": "2026-04-24T12:40:00+00:00",
+      "trace_id": "dma-baseline",
+      "event_type": "register_write",
+      "message": "write DMA_SRC",
+      "status": "ok",
+      "metadata": {
+        "register": "DMA_SRC",
+        "value": "0x1000"
+      }
+    },
+    {
+      "service": "firmware",
+      "timestamp": "2026-04-24T12:40:01+00:00",
+      "trace_id": "dma-baseline",
+      "event_type": "register_write",
+      "message": "write DMA_DST",
+      "status": "ok",
+      "metadata": {
+        "register": "DMA_DST",
+        "value": "0x2000"
+      }
+    },
+    {
+      "service": "firmware",
+      "timestamp": "2026-04-24T12:40:02+00:00",
+      "trace_id": "dma-baseline",
+      "event_type": "register_write",
+      "message": "write DMA_LEN",
+      "status": "ok",
+      "metadata": {
+        "register": "DMA_LEN",
+        "value": "64"
+      }
+    },
+    {
+      "service": "firmware",
+      "timestamp": "2026-04-24T12:40:03+00:00",
+      "trace_id": "dma-baseline",
+      "event_type": "register_write",
+      "message": "write DMA_START",
+      "status": "ok",
+      "metadata": {
+        "register": "DMA_START",
+        "value": "1"
+      }
+    },
+    {
+      "service": "dma-controller",
+      "timestamp": "2026-04-24T12:40:04+00:00",
+      "trace_id": "dma-baseline",
+      "event_type": "irq_assert",
+      "message": "DMA completion interrupt asserted",
+      "status": "ok",
+      "metadata": {
+        "irq": "DMA_DONE"
+      }
+    },
+
+    {
+      "service": "firmware",
+      "timestamp": "2026-04-24T12:40:00+00:00",
+      "trace_id": "dma-candidate",
+      "event_type": "register_write",
+      "message": "write DMA_SRC",
+      "status": "ok",
+      "metadata": {
+        "register": "DMA_SRC",
+        "value": "0x1000"
+      }
+    },
+    {
+      "service": "firmware",
+      "timestamp": "2026-04-24T12:40:01+00:00",
+      "trace_id": "dma-candidate",
+      "event_type": "register_write",
+      "message": "write DMA_START too early",
+      "status": "ok",
+      "metadata": {
+        "register": "DMA_START",
+        "value": "1"
+      }
+    },
+    {
+      "service": "firmware",
+      "timestamp": "2026-04-24T12:40:02+00:00",
+      "trace_id": "dma-candidate",
+      "event_type": "register_write",
+      "message": "write DMA_DST after start",
+      "status": "ok",
+      "metadata": {
+        "register": "DMA_DST",
+        "value": "0x2000"
+      }
+    },
+    {
+      "service": "firmware",
+      "timestamp": "2026-04-24T12:40:03+00:00",
+      "trace_id": "dma-candidate",
+      "event_type": "register_read",
+      "message": "read DMA_STATUS invalid descriptor ordering",
+      "status": "ok",
+      "metadata": {
+        "register": "DMA_STATUS",
+        "value": "ORDER_ERROR"
+      }
+    },
+    {
+      "service": "dma-controller",
+      "timestamp": "2026-04-24T12:40:04+00:00",
+      "trace_id": "dma-candidate",
+      "event_type": "irq_assert",
+      "message": "DMA error interrupt asserted",
+      "status": "ok",
+      "metadata": {
+        "irq": "DMA_ERROR"
+      }
+    }
+  ]
+}

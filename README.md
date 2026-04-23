@@ -1259,3 +1259,29 @@ First divergence: index 1
 
 This lets reviewers immediately see where execution stopped matching the correct sequence.
 
+
+---
+
+## Firmware Trace Replay
+
+DetTrace includes firmware-style trace replay for low-level event ordering validation.
+
+It can compare expected vs actual interrupt and register sequences across scenarios such as:
+- UART stuck interrupt
+- Timer missed tick
+- GPIO interrupt race
+- Register write ordering mismatch
+
+Example:
+
+**Expected**
+```text
+irq_assert → isr_enter → irq_clear
+Actual
+
+tick_miss → register_read → isr_exit
+
+First divergence: index 1
+
+This extends DetTrace beyond distributed failures into trace-driven firmware-style debugging without claiming hardware emulation.
+
