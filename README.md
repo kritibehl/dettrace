@@ -1227,3 +1227,35 @@ DetTrace includes a firmware-style trace replay pack for low-level event orderin
 
 This extends DetTrace beyond distributed failures into trace-driven firmware-style debugging without claiming hardware emulation.
 
+
+---
+
+## Failure Sequence Comparison
+
+DetTrace makes first-divergence debugging readable at a glance.
+
+### GPIO Interrupt Race
+
+**Expected**
+```text
+irq_assert → isr_enter → gpio_ack
+Actual
+
+gpio_edge → register_read → isr_exit
+
+First divergence: index 3
+
+Timer Missed Tick
+
+Expected
+
+irq_assert → isr_enter → tick_handle
+
+Actual
+
+tick_miss → register_read → isr_exit
+
+First divergence: index 1
+
+This lets reviewers immediately see where execution stopped matching the correct sequence.
+
