@@ -423,6 +423,36 @@ def timeline_page(incident_id: str) -> str:
 
 
 
+
+@app.get("/sequence-compare/{incident_id}")
+def sequence_compare_view(incident_id: str) -> Dict[str, Any]:
+    doc = load_incident(incident_id)
+    divergence = doc.get("analysis", {}).get("divergence")
+    events = sort_events(doc["events"])
+
+    by_trace: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
+    for e in events:
+        by_trace[e["trace_id"]].append(e)
+
+    traces = list(by_trace.keys())
+    if len(traces) < 2:
+        return {
+            "incident_id": incident_id,
+            "message": "need baseline and candidate traces"
+        }
+
+    baseline = by_trace[traces[0]]
+    candidate = by_trace[traces[1]]
+
+    return {
+        "incident_id": incident_id,
+        "baseline_trace_id": traces[0],
+        "candidate_trace_id": traces[1],
+        "expected_sequence": [e["event_type"] for e in baseline],
+        "actual_sequence": [e["event_type"] for e in candidate],
+        "first_divergence_index": divergence["first_divergence_index"] if divergence else None
+    }
+
 @app.get("/divergence/{incident_id}")
 def first_divergence_view(incident_id: str) -> Dict[str, Any]:
     doc = load_incident(incident_id)
@@ -465,6 +495,7 @@ def root() -> Dict[str, Any]:
             "/clusters",
             "/graph/{incident_id}",
             "/before-after-diff/{incident_id}",
+            "/sequence-compare/{incident_id}",
             "/divergence/{incident_id}",
             "/timeline/{incident_id}",
         ],
