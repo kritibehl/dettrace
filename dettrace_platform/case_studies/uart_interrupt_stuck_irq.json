@@ -1,0 +1,142 @@
+{
+  "incident_name": "uart-interrupt-stuck-irq",
+  "source": "seed",
+  "events": [
+    {
+      "service": "uart-controller",
+      "timestamp": "2026-04-20T12:01:00+00:00",
+      "trace_id": "uart-fail-baseline",
+      "event_type": "register_write",
+      "message": "write byte 0x41 to UART_TX",
+      "status": "ok",
+      "metadata": {
+        "register": "UART_TX",
+        "value": "0x41"
+      }
+    },
+    {
+      "service": "uart-controller",
+      "timestamp": "2026-04-20T12:01:01+00:00",
+      "trace_id": "uart-fail-baseline",
+      "event_type": "tx_fifo_empty",
+      "message": "TX FIFO drained",
+      "status": "ok",
+      "metadata": {
+        "fifo_level": 0
+      }
+    },
+    {
+      "service": "uart-controller",
+      "timestamp": "2026-04-20T12:01:02+00:00",
+      "trace_id": "uart-fail-baseline",
+      "event_type": "irq_assert",
+      "message": "TX empty interrupt asserted",
+      "status": "ok",
+      "metadata": {
+        "irq": "UART_TX_EMPTY"
+      }
+    },
+    {
+      "service": "firmware",
+      "timestamp": "2026-04-20T12:01:03+00:00",
+      "trace_id": "uart-fail-baseline",
+      "event_type": "isr_enter",
+      "message": "UART ISR entered",
+      "status": "ok",
+      "metadata": {
+        "irq": "UART_TX_EMPTY"
+      }
+    },
+    {
+      "service": "firmware",
+      "timestamp": "2026-04-20T12:01:04+00:00",
+      "trace_id": "uart-fail-baseline",
+      "event_type": "irq_clear",
+      "message": "UART TX empty interrupt cleared",
+      "status": "ok",
+      "metadata": {
+        "irq": "UART_TX_EMPTY"
+      }
+    },
+    {
+      "service": "firmware",
+      "timestamp": "2026-04-20T12:01:05+00:00",
+      "trace_id": "uart-fail-baseline",
+      "event_type": "isr_exit",
+      "message": "UART ISR exit",
+      "status": "ok",
+      "metadata": {
+        "irq": "UART_TX_EMPTY"
+      }
+    },
+
+    {
+      "service": "uart-controller",
+      "timestamp": "2026-04-20T12:01:00+00:00",
+      "trace_id": "uart-fail-candidate",
+      "event_type": "register_write",
+      "message": "write byte 0x41 to UART_TX",
+      "status": "ok",
+      "metadata": {
+        "register": "UART_TX",
+        "value": "0x41"
+      }
+    },
+    {
+      "service": "uart-controller",
+      "timestamp": "2026-04-20T12:01:01+00:00",
+      "trace_id": "uart-fail-candidate",
+      "event_type": "tx_fifo_empty",
+      "message": "TX FIFO drained",
+      "status": "ok",
+      "metadata": {
+        "fifo_level": 0
+      }
+    },
+    {
+      "service": "uart-controller",
+      "timestamp": "2026-04-20T12:01:02+00:00",
+      "trace_id": "uart-fail-candidate",
+      "event_type": "irq_assert",
+      "message": "TX empty interrupt asserted",
+      "status": "ok",
+      "metadata": {
+        "irq": "UART_TX_EMPTY"
+      }
+    },
+    {
+      "service": "firmware",
+      "timestamp": "2026-04-20T12:01:03+00:00",
+      "trace_id": "uart-fail-candidate",
+      "event_type": "isr_enter",
+      "message": "UART ISR entered",
+      "status": "ok",
+      "metadata": {
+        "irq": "UART_TX_EMPTY"
+      }
+    },
+    {
+      "service": "firmware",
+      "timestamp": "2026-04-20T12:01:04+00:00",
+      "trace_id": "uart-fail-candidate",
+      "event_type": "register_read",
+      "message": "read stale UART_STATUS; TX_READY still set, IRQ not cleared",
+      "status": "ok",
+      "metadata": {
+        "register": "UART_STATUS",
+        "value": "TX_READY|IRQ_PENDING"
+      }
+    },
+    {
+      "service": "firmware",
+      "timestamp": "2026-04-20T12:01:05+00:00",
+      "trace_id": "uart-fail-candidate",
+      "event_type": "isr_exit",
+      "message": "UART ISR exit without clearing IRQ",
+      "status": "ok",
+      "metadata": {
+        "irq": "UART_TX_EMPTY"
+      }
+    }
+  ]
+}
