@@ -1,0 +1,96 @@
+{
+  "incident_name": "uart-interrupt-nominal",
+  "source": "seed",
+  "events": [
+    {
+      "service": "firmware",
+      "timestamp": "2026-04-20T12:00:00+00:00",
+      "trace_id": "uart-nominal-1",
+      "event_type": "register_write",
+      "message": "write byte 0x41 to UART_TX",
+      "status": "ok",
+      "metadata": {
+        "register": "UART_TX",
+        "value": "0x41"
+      }
+    },
+    {
+      "service": "uart-controller",
+      "timestamp": "2026-04-20T12:00:01+00:00",
+      "trace_id": "uart-nominal-1",
+      "event_type": "tx_fifo_push",
+      "message": "TX FIFO received byte",
+      "status": "ok",
+      "metadata": {
+        "fifo_level": 1
+      }
+    },
+    {
+      "service": "uart-controller",
+      "timestamp": "2026-04-20T12:00:02+00:00",
+      "trace_id": "uart-nominal-1",
+      "event_type": "tx_fifo_empty",
+      "message": "TX FIFO drained",
+      "status": "ok",
+      "metadata": {
+        "fifo_level": 0
+      }
+    },
+    {
+      "service": "uart-controller",
+      "timestamp": "2026-04-20T12:00:03+00:00",
+      "trace_id": "uart-nominal-1",
+      "event_type": "irq_assert",
+      "message": "TX empty interrupt asserted",
+      "status": "ok",
+      "metadata": {
+        "irq": "UART_TX_EMPTY"
+      }
+    },
+    {
+      "service": "firmware",
+      "timestamp": "2026-04-20T12:00:04+00:00",
+      "trace_id": "uart-nominal-1",
+      "event_type": "isr_enter",
+      "message": "UART ISR entered",
+      "status": "ok",
+      "metadata": {
+        "irq": "UART_TX_EMPTY"
+      }
+    },
+    {
+      "service": "firmware",
+      "timestamp": "2026-04-20T12:00:05+00:00",
+      "trace_id": "uart-nominal-1",
+      "event_type": "register_write",
+      "message": "write byte 0x42 to UART_TX",
+      "status": "ok",
+      "metadata": {
+        "register": "UART_TX",
+        "value": "0x42"
+      }
+    },
+    {
+      "service": "firmware",
+      "timestamp": "2026-04-20T12:00:06+00:00",
+      "trace_id": "uart-nominal-1",
+      "event_type": "irq_clear",
+      "message": "UART TX empty interrupt cleared",
+      "status": "ok",
+      "metadata": {
+        "irq": "UART_TX_EMPTY"
+      }
+    },
+    {
+      "service": "firmware",
+      "timestamp": "2026-04-20T12:00:07+00:00",
+      "trace_id": "uart-nominal-1",
+      "event_type": "isr_exit",
+      "message": "UART ISR exit",
+      "status": "ok",
+      "metadata": {
+        "irq": "UART_TX_EMPTY"
+      }
+    }
+  ]
+}

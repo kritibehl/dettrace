@@ -434,12 +434,16 @@ def first_divergence_view(incident_id: str) -> Dict[str, Any]:
             "message": "no divergence detected"
         }
 
+    events = doc.get("events", [])
+    uart_issue = detect_uart_irq_issue(events)
+
     return {
         "incident_id": incident_id,
         "first_divergence_index": divergence["first_divergence_index"],
         "expected": divergence["baseline_event"],
         "actual": divergence["candidate_event"],
-        "divergence_type": divergence["divergence_type"]
+        "divergence_type": divergence["divergence_type"],
+        "likely_reason": uart_issue["likely_reason"] if uart_issue else "event ordering mismatch"
     }
 
 @app.get("/")

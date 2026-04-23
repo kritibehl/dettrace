@@ -1171,3 +1171,35 @@ DetTrace exposes the first semantic break directly:
 }
 This surfaces the exact moment a system stopped being correct under concurrency or timing stress.
 
+
+---
+
+## Firmware-Style Validation Scenario
+
+DetTrace replays hardware/software interaction traces for a virtual UART interrupt flow, comparing expected MMIO/register/interrupt ordering against actual execution and isolating the first divergence when firmware and peripheral behavior stop matching.
+
+### Event model
+- register_write
+- register_read
+- irq_assert
+- irq_clear
+- isr_enter
+- isr_exit
+- tx_fifo_empty
+- tx_fifo_push
+
+### Scenarios
+- `uart_interrupt_nominal.json`
+- `uart_interrupt_stuck_irq.json`
+
+### What DetTrace shows
+- expected register/interrupt sequence
+- actual observed sequence
+- first divergence index
+- likely reason:
+  - missing irq clear
+  - stale status bit
+  - unexpected write ordering
+
+This is trace-driven hardware/software interaction replay, not hardware emulation.
+
