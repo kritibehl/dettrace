@@ -443,7 +443,13 @@ def first_divergence_view(incident_id: str) -> Dict[str, Any]:
         "expected": divergence["baseline_event"],
         "actual": divergence["candidate_event"],
         "divergence_type": divergence["divergence_type"],
-        "likely_reason": uart_issue["likely_reason"] if uart_issue else "event ordering mismatch"
+        "likely_reason": (
+            uart_issue["likely_reason"]
+            if uart_issue else (
+                detect_firmware_trace_issue(events)["likely_reason"]
+                if detect_firmware_trace_issue(events) else "event ordering mismatch"
+            )
+        )
     }
 
 @app.get("/")

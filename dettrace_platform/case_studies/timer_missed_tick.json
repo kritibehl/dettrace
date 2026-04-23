@@ -1,0 +1,107 @@
+{
+  "incident_name": "timer-missed-tick",
+  "source": "seed",
+  "events": [
+    {
+      "service": "timer",
+      "timestamp": "2026-04-24T12:10:00+00:00",
+      "trace_id": "timer-baseline",
+      "event_type": "tick_fire",
+      "message": "periodic timer tick fired",
+      "status": "ok",
+      "metadata": {
+        "tick_id": 1
+      }
+    },
+    {
+      "service": "firmware",
+      "timestamp": "2026-04-24T12:10:01+00:00",
+      "trace_id": "timer-baseline",
+      "event_type": "irq_assert",
+      "message": "timer interrupt asserted",
+      "status": "ok",
+      "metadata": {
+        "irq": "TIMER_IRQ"
+      }
+    },
+    {
+      "service": "firmware",
+      "timestamp": "2026-04-24T12:10:02+00:00",
+      "trace_id": "timer-baseline",
+      "event_type": "isr_enter",
+      "message": "timer ISR entered",
+      "status": "ok",
+      "metadata": {
+        "irq": "TIMER_IRQ"
+      }
+    },
+    {
+      "service": "firmware",
+      "timestamp": "2026-04-24T12:10:03+00:00",
+      "trace_id": "timer-baseline",
+      "event_type": "irq_clear",
+      "message": "timer interrupt cleared",
+      "status": "ok",
+      "metadata": {
+        "irq": "TIMER_IRQ"
+      }
+    },
+    {
+      "service": "firmware",
+      "timestamp": "2026-04-24T12:10:04+00:00",
+      "trace_id": "timer-baseline",
+      "event_type": "isr_exit",
+      "message": "timer ISR exited",
+      "status": "ok",
+      "metadata": {
+        "irq": "TIMER_IRQ"
+      }
+    },
+
+    {
+      "service": "timer",
+      "timestamp": "2026-04-24T12:10:00+00:00",
+      "trace_id": "timer-candidate",
+      "event_type": "tick_fire",
+      "message": "periodic timer tick fired",
+      "status": "ok",
+      "metadata": {
+        "tick_id": 1
+      }
+    },
+    {
+      "service": "timer",
+      "timestamp": "2026-04-24T12:10:01+00:00",
+      "trace_id": "timer-candidate",
+      "event_type": "tick_miss",
+      "message": "timer tick missed before ISR service",
+      "status": "ok",
+      "metadata": {
+        "tick_id": 1
+      }
+    },
+    {
+      "service": "firmware",
+      "timestamp": "2026-04-24T12:10:02+00:00",
+      "trace_id": "timer-candidate",
+      "event_type": "register_read",
+      "message": "read delayed timer status after missed tick",
+      "status": "ok",
+      "metadata": {
+        "register": "TIMER_STATUS",
+        "value": "MISSED_TICK"
+      }
+    },
+    {
+      "service": "firmware",
+      "timestamp": "2026-04-24T12:10:03+00:00",
+      "trace_id": "timer-candidate",
+      "event_type": "isr_exit",
+      "message": "timer ISR path skipped clear due to missed tick",
+      "status": "ok",
+      "metadata": {
+        "irq": "TIMER_IRQ"
+      }
+    }
+  ]
+}

@@ -1203,3 +1203,27 @@ DetTrace replays hardware/software interaction traces for a virtual UART interru
 
 This is trace-driven hardware/software interaction replay, not hardware emulation.
 
+
+---
+
+## Firmware Trace Replay Pack
+
+DetTrace includes a firmware-style trace replay pack for low-level event ordering validation.
+
+### Scenarios
+- UART stuck interrupt
+- Timer missed tick
+- GPIO interrupt race
+- Register write ordering mismatch
+
+### DetTrace surfaces
+- first divergence index
+- expected vs actual event
+- likely reason:
+  - stale status bit
+  - missing irq_clear
+  - wrong ordering
+  - missed tick
+
+This extends DetTrace beyond distributed failures into trace-driven firmware-style debugging without claiming hardware emulation.
+

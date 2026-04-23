@@ -1,0 +1,118 @@
+{
+  "incident_name": "gpio-interrupt-race",
+  "source": "seed",
+  "events": [
+    {
+      "service": "gpio-controller",
+      "timestamp": "2026-04-24T12:20:00+00:00",
+      "trace_id": "gpio-baseline",
+      "event_type": "gpio_edge",
+      "message": "GPIO rising edge detected",
+      "status": "ok",
+      "metadata": {
+        "pin": "GPIO17"
+      }
+    },
+    {
+      "service": "firmware",
+      "timestamp": "2026-04-24T12:20:01+00:00",
+      "trace_id": "gpio-baseline",
+      "event_type": "irq_assert",
+      "message": "GPIO interrupt asserted",
+      "status": "ok",
+      "metadata": {
+        "irq": "GPIO_IRQ"
+      }
+    },
+    {
+      "service": "firmware",
+      "timestamp": "2026-04-24T12:20:02+00:00",
+      "trace_id": "gpio-baseline",
+      "event_type": "isr_enter",
+      "message": "GPIO ISR entered",
+      "status": "ok",
+      "metadata": {
+        "irq": "GPIO_IRQ"
+      }
+    },
+    {
+      "service": "firmware",
+      "timestamp": "2026-04-24T12:20:03+00:00",
+      "trace_id": "gpio-baseline",
+      "event_type": "gpio_ack",
+      "message": "GPIO edge acknowledged",
+      "status": "ok",
+      "metadata": {
+        "pin": "GPIO17"
+      }
+    },
+    {
+      "service": "firmware",
+      "timestamp": "2026-04-24T12:20:04+00:00",
+      "trace_id": "gpio-baseline",
+      "event_type": "irq_clear",
+      "message": "GPIO interrupt cleared",
+      "status": "ok",
+      "metadata": {
+        "irq": "GPIO_IRQ"
+      }
+    },
+
+    {
+      "service": "gpio-controller",
+      "timestamp": "2026-04-24T12:20:00+00:00",
+      "trace_id": "gpio-candidate",
+      "event_type": "gpio_edge",
+      "message": "GPIO rising edge detected",
+      "status": "ok",
+      "metadata": {
+        "pin": "GPIO17"
+      }
+    },
+    {
+      "service": "firmware",
+      "timestamp": "2026-04-24T12:20:01+00:00",
+      "trace_id": "gpio-candidate",
+      "event_type": "irq_assert",
+      "message": "GPIO interrupt asserted",
+      "status": "ok",
+      "metadata": {
+        "irq": "GPIO_IRQ"
+      }
+    },
+    {
+      "service": "firmware",
+      "timestamp": "2026-04-24T12:20:02+00:00",
+      "trace_id": "gpio-candidate",
+      "event_type": "isr_enter",
+      "message": "GPIO ISR entered",
+      "status": "ok",
+      "metadata": {
+        "irq": "GPIO_IRQ"
+      }
+    },
+    {
+      "service": "gpio-controller",
+      "timestamp": "2026-04-24T12:20:03+00:00",
+      "trace_id": "gpio-candidate",
+      "event_type": "gpio_edge",
+      "message": "second edge arrived before ack",
+      "status": "ok",
+      "metadata": {
+        "pin": "GPIO17"
+      }
+    },
+    {
+      "service": "firmware",
+      "timestamp": "2026-04-24T12:20:04+00:00",
+      "trace_id": "gpio-candidate",
+      "event_type": "register_read",
+      "message": "GPIO pending bit still set before ack/clear ordering completed",
+      "status": "ok",
+      "metadata": {
+        "register": "GPIO_PENDING",
+        "value": "EDGE_PENDING"
+      }
+    }
+  ]
+}

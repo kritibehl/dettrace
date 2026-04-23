@@ -1,0 +1,79 @@
+{
+  "incident_name": "register-write-ordering-mismatch",
+  "source": "seed",
+  "events": [
+    {
+      "service": "firmware",
+      "timestamp": "2026-04-24T12:30:00+00:00",
+      "trace_id": "reg-baseline",
+      "event_type": "register_write",
+      "message": "write CONTROL enable=1",
+      "status": "ok",
+      "metadata": {
+        "register": "CONTROL",
+        "value": "ENABLE"
+      }
+    },
+    {
+      "service": "firmware",
+      "timestamp": "2026-04-24T12:30:01+00:00",
+      "trace_id": "reg-baseline",
+      "event_type": "register_write",
+      "message": "write MODE tx=1",
+      "status": "ok",
+      "metadata": {
+        "register": "MODE",
+        "value": "TX"
+      }
+    },
+    {
+      "service": "peripheral",
+      "timestamp": "2026-04-24T12:30:02+00:00",
+      "trace_id": "reg-baseline",
+      "event_type": "register_read",
+      "message": "peripheral observed enabled mode ordering",
+      "status": "ok",
+      "metadata": {
+        "register": "MODE",
+        "value": "TX"
+      }
+    },
+
+    {
+      "service": "firmware",
+      "timestamp": "2026-04-24T12:30:00+00:00",
+      "trace_id": "reg-candidate",
+      "event_type": "register_write",
+      "message": "write MODE tx=1 before CONTROL enable",
+      "status": "ok",
+      "metadata": {
+        "register": "MODE",
+        "value": "TX"
+      }
+    },
+    {
+      "service": "firmware",
+      "timestamp": "2026-04-24T12:30:01+00:00",
+      "trace_id": "reg-candidate",
+      "event_type": "register_write",
+      "message": "write CONTROL enable=1",
+      "status": "ok",
+      "metadata": {
+        "register": "CONTROL",
+        "value": "ENABLE"
+      }
+    },
+    {
+      "service": "peripheral",
+      "timestamp": "2026-04-24T12:30:02+00:00",
+      "trace_id": "reg-candidate",
+      "event_type": "register_read",
+      "message": "peripheral observed unexpected register ordering",
+      "status": "ok",
+      "metadata": {
+        "register": "CONTROL",
+        "value": "ENABLE_AFTER_MODE"
+      }
+    }
+  ]
+}
