@@ -8,11 +8,11 @@
 
 ## Divergence Viewer
 
-![DetTrace Divergence Viewer — gpio-interrupt-race](docs/screenshots/dettrace-divergence-gpio-interrupt.png)
+![DetTrace Divergence Viewer — gpio-interrupt-race](docs/dettrace-divergence-gpio-interrupt.png)
 
 *GPIO interrupt race — first divergence at index 3. Expected `gpio_ack`, got `gpio_edge`. The failure appeared downstream as duplicate processing; the root cause was here, before any visible output.*
 
-![DetTrace Divergence Viewer — timer-missed-tick](docs/screenshots/dettrace-divergence-timer-missed-tick.png)
+![DetTrace Divergence Viewer — timer-missed-tick](docs/dettrace-divergence-timer-missed-tick.png)
 
 *Timer missed tick — first divergence at index 1. Expected `irq_assert`, got `tick_miss`. Both are real viewer outputs from the included incident packs.*
 
