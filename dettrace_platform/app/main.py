@@ -35,6 +35,12 @@ class ServiceEvent(BaseModel):
     metadata: Dict[str, Any] = Field(default_factory=dict)
 
 
+class OTelIngestRequest(BaseModel):
+    payload: Dict[str, Any]
+    incident_name: str = "otel-imported-incident"
+    source: str = "opentelemetry"
+
+
 class IncidentIngestRequest(BaseModel):
     incident_name: str
     source: str = "manual"
@@ -47,6 +53,57 @@ class MultiServiceReplayRequest(BaseModel):
 
 class ExplanationRequest(BaseModel):
     incident_id: str
+
+
+
+def _otel_attr_value(value: Dict[str, Any]) -> Any:
+    if "stringValue" in value:
+        return value["stringValue"]
+    if "intValue" in value:
+        return value["intValue"]
+    if "doubleValue" in value:
+        return value["doubleValue"]
+    if "boolValue" in value:
+        return value["boolValue"]
+    return value
+
+
+def _otel_attrs(attrs: List[Dict[str, Any]]) -> Dict[str, Any]:
+    out = {}
+    for item in attrs or []:
+        out[item.get("key")] = _otel_attr_value(item.get("value", {}))
+    return out
+
+
+def otel_to_events(payload: Dict[str, Any]) -> List[Dict[str, Any]]:
+    events = []
+    for rs in payload.get("resourceSpans", []):
+        resource_attrs = _otel_attrs(rs.get("resource", {}).get("attributes", []))
+        service = resource_attrs.get("service.name", "unknown-service")
+        for scope in rs.get("scopeSpans", []):
+            for span in scope.get("spans", []):
+                attrs = _otel_attrs(span.get("attributes", []))
+                start = int(span.get("startTimeUnixNano", "0"))
+                end = int(span.get("endTimeUnixNano", "0"))
+                latency_ms = (end - start) / 1_000_000 if end and start else None
+                status = str(attrs.get("status") or attrs.get("http.status_code") or "ok")
+                event_type = str(attrs.get("event_type") or span.get("name", "span")).replace(" ", "_").lower()
+                events.append({
+                    "service": service,
+                    "timestamp": str(start),
+                    "trace_id": span.get("traceId", "unknown-trace"),
+                    "event_type": event_type,
+                    "message": span.get("name", ""),
+                    "latency_ms": latency_ms,
+                    "status": "timeout" if status in {"504", "timeout"} else status,
+                    "upstream": attrs.get("upstream"),
+                    "metadata": {
+                        "span_id": span.get("spanId"),
+                        "attributes": attrs,
+                        "otel": True
+                    }
+                })
+    return sort_events(events)
 
 
 def now_iso() -> str:
@@ -226,10 +283,70 @@ def cluster_incidents() -> Dict[str, Any]:
     }
 
 
+
+def build_timeline_export(doc: Dict[str, Any]) -> Dict[str, Any]:
+    events = sort_events(doc["events"])
+    divergence = doc.get("analysis", {}).get("divergence")
+    bookmarks = []
+    snapshots = []
+    failure_tags = []
+
+    if divergence:
+        idx = divergence["first_divergence_index"]
+        bookmarks.append({
+            "label": "first_divergence",
+            "index": idx,
+            "reason": divergence.get("divergence_type", "unknown")
+        })
+        snapshots.append({
+            "type": "divergence_snapshot",
+            "index": idx,
+            "expected": divergence.get("baseline_event"),
+            "actual": divergence.get("candidate_event")
+        })
+        failure_tags.append("first_divergence")
+
+    retry = doc.get("analysis", {}).get("retry_storm_detection")
+    timeout = doc.get("analysis", {}).get("timeout_chain_detection")
+    firmware = doc.get("analysis", {}).get("firmware_trace_analysis")
+    uart = doc.get("analysis", {}).get("uart_irq_analysis")
+
+    if retry:
+        failure_tags.append("retry_storm")
+    if timeout:
+        failure_tags.append("timeout_chain")
+    if firmware:
+        failure_tags.append(firmware.get("pattern", "firmware_trace_issue"))
+    if uart:
+        failure_tags.append(uart.get("pattern", "uart_irq_issue"))
+
+    return {
+        "incident_id": doc["incident_id"],
+        "incident_name": doc["incident_name"],
+        "event_count": doc["event_count"],
+        "timeline": events,
+        "bookmarks": bookmarks,
+        "divergence_snapshots": snapshots,
+        "failure_tags": sorted(set(failure_tags)),
+        "analysis": doc.get("analysis", {})
+    }
+
+
 @app.get("/health")
 def health() -> Dict[str, Any]:
     return {"status": "ok", "service": "dettrace-plus-plus", "timestamp": now_iso()}
 
+
+
+@app.post("/ingest/otel")
+def ingest_otel(payload: OTelIngestRequest) -> Dict[str, Any]:
+    events = otel_to_events(payload.payload)
+    req = IncidentIngestRequest(
+        incident_name=payload.incident_name,
+        source=payload.source,
+        events=[ServiceEvent(**e) for e in events]
+    )
+    return ingest(req)
 
 @app.post("/ingest")
 def ingest(payload: IncidentIngestRequest) -> Dict[str, Any]:
@@ -290,6 +407,40 @@ def explain_root_cause(payload: ExplanationRequest) -> Dict[str, Any]:
         "explanation": doc["analysis"]["root_cause_explanation"],
     }
 
+
+
+@app.get("/timeline-export/{incident_id}")
+def timeline_export(incident_id: str) -> Dict[str, Any]:
+    doc = load_incident(incident_id)
+    return build_timeline_export(doc)
+
+
+@app.get("/search")
+def trace_search(q: str = "", tag: str = "") -> Dict[str, Any]:
+    docs = [json.loads(p.read_text()) for p in sorted(DATA_DIR.glob("*.json"))]
+    results = []
+    q_lower = q.lower()
+    tag_lower = tag.lower()
+
+    for doc in docs:
+        export = build_timeline_export(doc)
+        haystack = json.dumps(export).lower()
+        tags = [t.lower() for t in export.get("failure_tags", [])]
+
+        if q_lower and q_lower not in haystack:
+            continue
+        if tag_lower and tag_lower not in tags:
+            continue
+
+        results.append({
+            "incident_id": doc["incident_id"],
+            "incident_name": doc["incident_name"],
+            "fingerprint": doc.get("analysis", {}).get("fingerprint", {}).get("incident_fingerprint", "unknown"),
+            "failure_tags": export.get("failure_tags", []),
+            "event_count": doc.get("event_count")
+        })
+
+    return {"query": q, "tag": tag, "total": len(results), "items": results}
 
 @app.get("/incidents")
 def list_incidents() -> Dict[str, Any]:
@@ -543,6 +694,8 @@ def root() -> Dict[str, Any]:
             "/replay/multi-service",
             "/explain/root-cause",
             "/incidents",
+            "/timeline-export/{incident_id}",
+            "/search",
             "/clusters",
             "/graph/{incident_id}",
             "/before-after-diff/{incident_id}",

@@ -1285,3 +1285,45 @@ First divergence: index 1
 
 This extends DetTrace beyond distributed failures into trace-driven firmware-style debugging without claiming hardware emulation.
 
+
+---
+
+## OpenTelemetry Span Ingestion
+
+DetTrace can ingest OpenTelemetry-style span payloads and convert them into replayable event timelines.
+
+This allows span data to be analyzed using:
+- first-divergence detection
+- replay bookmarks
+- divergence snapshots
+- structured failure tags
+- trace search
+- incident reconstruction
+
+Example:
+
+```bash
+curl -X POST http://127.0.0.1:8010/ingest/otel \
+  -H "Content-Type: application/json" \
+  --data @dettrace_platform/case_studies/otel/retry_storm_spans.json
+Timeline Export, Bookmarks, Snapshots, and Search
+
+DetTrace exposes incident timelines as structured exports:
+
+GET /timeline-export/{incident_id}
+
+Timeline exports include:
+
+replay timeline
+first-divergence bookmark
+divergence snapshot
+structured failure tags
+full incident analysis
+
+Trace search:
+
+GET /search?q=retry
+GET /search?tag=retry_storm
+
+These features make DetTrace usable as a debugging and observability workflow, not only a replay engine.
+
