@@ -1397,3 +1397,31 @@ Timeline exports include structured debugging aids:
 
 These make replay output searchable, reportable, and usable during incident review.
 
+
+---
+
+## Demo Commands
+
+Start DetTrace++:
+
+```bash
+cd dettrace_platform
+uvicorn app.main:app --host 127.0.0.1 --port 8010
+Ingest OpenTelemetry retry-storm trace:
+
+curl -X POST http://127.0.0.1:8010/ingest/otel \
+  -H "Content-Type: application/json" \
+  --data @/tmp/otel_request.json
+
+View incident report:
+
+curl http://127.0.0.1:8010/report/<incident_id>
+
+Search retry-storm incidents:
+
+curl "http://127.0.0.1:8010/search?tag=retry_storm"
+
+Compare expected vs actual firmware event sequence:
+
+curl http://127.0.0.1:8010/sequence-compare/<incident_id>
+
