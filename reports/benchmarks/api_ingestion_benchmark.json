@@ -1,0 +1,8 @@
+{
+  "runs": 25,
+  "avg_ms": 1.42,
+  "min_ms": 1.025,
+  "max_ms": 7.06,
+  "scenario": "OTEL retry-storm ingestion",
+  "event_count_per_run": 5
+}

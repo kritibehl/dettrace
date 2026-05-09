@@ -1460,3 +1460,24 @@ DetTrace includes engineering hygiene beyond the core replay engine:
 - Makefile for repeatable test / benchmark / Docker workflows
 
 This keeps the project honest: DetTrace is not claimed as a production-scale service, but it demonstrates production-minded platform engineering around replay-driven debugging.
+
+---
+
+## Production-Minded Proof
+
+DetTrace includes engineering hygiene beyond the core replay engine:
+
+- API contract documentation
+- Dockerized FastAPI runtime
+- docker-compose local service deployment
+- GitHub Actions workflow validation
+- API workflow tests
+- OTEL ingestion validation
+- firmware sequence divergence validation
+- `/metrics` endpoint
+- benchmark script for ingestion latency
+- generated incident reports
+- security and production-readiness notes
+- Makefile for repeatable test / benchmark / Docker workflows
+
+This keeps the project honest: DetTrace is not claimed as a production-scale service, but it demonstrates production-minded platform engineering around replay-driven debugging.
