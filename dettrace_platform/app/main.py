@@ -442,6 +442,32 @@ def trace_search(q: str = "", tag: str = "") -> Dict[str, Any]:
 
     return {"query": q, "tag": tag, "total": len(results), "items": results}
 
+
+@app.get("/report/{incident_id}")
+def incident_report(incident_id: str) -> Dict[str, Any]:
+    doc = load_incident(incident_id)
+    analysis = doc.get("analysis", {})
+    divergence = analysis.get("divergence")
+    fingerprint = analysis.get("fingerprint", {}).get("incident_fingerprint", "unknown")
+    root = analysis.get("root_cause_explanation", {})
+
+    return {
+        "incident_id": incident_id,
+        "incident_name": doc.get("incident_name"),
+        "summary": {
+            "fingerprint": fingerprint,
+            "event_count": doc.get("event_count"),
+            "first_divergence_index": divergence.get("first_divergence_index") if divergence else None,
+            "likely_root_cause": root.get("likely_root_cause"),
+            "operator_summary": root.get("operator_summary")
+        },
+        "evidence": {
+            "expected_event": divergence.get("baseline_event") if divergence else None,
+            "actual_event": divergence.get("candidate_event") if divergence else None,
+            "failure_tags": build_timeline_export(doc).get("failure_tags", [])
+        }
+    }
+
 @app.get("/incidents")
 def list_incidents() -> Dict[str, Any]:
     docs = [json.loads(p.read_text()) for p in sorted(DATA_DIR.glob("*.json"))]
