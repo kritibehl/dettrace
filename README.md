@@ -1327,3 +1327,73 @@ GET /search?tag=retry_storm
 
 These features make DetTrace usable as a debugging and observability workflow, not only a replay engine.
 
+
+---
+
+## Logs vs Traces vs Replay
+
+| Signal | What it shows | What it misses | DetTrace value |
+|---|---|---|---|
+| Logs | Local symptoms and messages | Causal ordering across services | Reconstructs execution flow |
+| Traces | Cross-service request paths | Expected vs actual divergence | Converts spans into replayable timelines |
+| Replay | What happened vs what should have happened | Requires structured event model | Isolates first divergence and failure propagation |
+
+DetTrace complements logs and traces by reconstructing where execution first stopped matching the correct behavior.
+
+
+---
+
+## OpenTelemetry Retry-Storm Example
+
+Input:
+
+```bash
+curl -X POST http://127.0.0.1:8010/ingest/otel \
+  -H "Content-Type: application/json" \
+  --data @/tmp/otel_request.json
+
+Output:
+
+{
+  "incident_fingerprint": "retry_storm_timeout_chain",
+  "retry_count": 4,
+  "timeout_chain_events": 5,
+  "root_cause": "checkout-service entered a retry storm against payment-service"
+}
+
+Timeline export:
+
+GET /timeline-export/{incident_id}
+
+Search:
+
+GET /search?tag=retry_storm
+
+
+---
+
+## Replay Bookmarks and Divergence Snapshots
+
+Timeline exports include structured debugging aids:
+
+```json
+{
+  "bookmarks": [
+    {
+      "label": "first_divergence",
+      "index": 1,
+      "reason": "cross_service_event_mismatch"
+    }
+  ],
+  "divergence_snapshots": [
+    {
+      "type": "divergence_snapshot",
+      "expected": { "event_type": "irq_assert" },
+      "actual": { "event_type": "tick_miss" }
+    }
+  ],
+  "failure_tags": ["retry_storm", "timeout_chain"]
+}
+
+These make replay output searchable, reportable, and usable during incident review.
+

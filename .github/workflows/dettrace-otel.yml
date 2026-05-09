@@ -1,0 +1,49 @@
+name: DetTrace OTEL Ingestion
+
+on:
+  push:
+    paths:
+      - "dettrace_platform/**"
+      - ".github/workflows/dettrace-otel.yml"
+  pull_request:
+    paths:
+      - "dettrace_platform/**"
+
+jobs:
+  test-otel-ingestion:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        working-directory: dettrace_platform
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Validate OTEL ingestion conversion
+        working-directory: dettrace_platform
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from app.main import otel_to_events, detect_retry_storm, detect_timeout_chain
+
+          payload = json.loads(Path("case_studies/otel/retry_storm_spans.json").read_text())
+          events = otel_to_events(payload)
+
+          retry = detect_retry_storm(events)
+          timeout = detect_timeout_chain(events)
+
+          assert len(events) == 5
+          assert retry["retry_count"] == 4
+          assert retry["service"] == "checkout-service"
+          assert timeout["count"] == 5
+
+          print("OTEL ingestion test passed")
+          PY
