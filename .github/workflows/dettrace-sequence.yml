@@ -1,0 +1,43 @@
+name: DetTrace Sequence Comparison
+
+on:
+  push:
+    paths:
+      - "dettrace_platform/**"
+      - ".github/workflows/dettrace-sequence.yml"
+  pull_request:
+    paths:
+      - "dettrace_platform/**"
+
+jobs:
+  test-sequence-comparison:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        working-directory: dettrace_platform
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Validate firmware replay scenarios
+        working-directory: dettrace_platform
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from app.main import first_divergence, sort_events
+
+          for name, expected_idx in [
+              ("case_studies/timer_missed_tick.json", 1),
+              ("case_studies/gpio_interrupt_race.json", 3),
+              ("case_studies/uart_interrupt_stuck_irq.json", 4),
+          ]:
+              doc = json.loads(Path(name).read_text())
+              div = first_divergence(sort_events(doc["events"]))
+              assert div is not None
+              assert div["first_divergence_index"] == expected_idx
+              print(name, "passed")
+          PY
