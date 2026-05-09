@@ -1,0 +1,7 @@
+services:
+  dettrace:
+    build: .
+    ports:
+      - "8010:8010"
+    environment:
+      - DETTRACE_ENV=local

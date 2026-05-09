@@ -332,6 +332,25 @@ def build_timeline_export(doc: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 
+
+@app.get("/metrics")
+def metrics() -> Dict[str, Any]:
+    docs = [json.loads(p.read_text()) for p in sorted(DATA_DIR.glob("*.json"))]
+    fingerprints = Counter()
+    tags = Counter()
+
+    for doc in docs:
+        fp = doc.get("analysis", {}).get("fingerprint", {}).get("incident_fingerprint", "unknown")
+        fingerprints[fp] += 1
+        for tag in build_timeline_export(doc).get("failure_tags", []):
+            tags[tag] += 1
+
+    return {
+        "incident_count": len(docs),
+        "fingerprints": dict(fingerprints),
+        "failure_tags": dict(tags)
+    }
+
 @app.get("/health")
 def health() -> Dict[str, Any]:
     return {"status": "ok", "service": "dettrace-plus-plus", "timestamp": now_iso()}

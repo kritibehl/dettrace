@@ -1,0 +1,41 @@
+name: DetTrace Platform Validation
+
+on:
+  push:
+    paths:
+      - "dettrace_platform/**"
+      - "Dockerfile"
+      - "docker-compose.yml"
+      - ".github/workflows/dettrace-platform.yml"
+  pull_request:
+    paths:
+      - "dettrace_platform/**"
+      - "Dockerfile"
+      - "docker-compose.yml"
+
+jobs:
+  test-platform:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        working-directory: dettrace_platform
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest httpx
+
+      - name: Run API workflow tests
+        working-directory: dettrace_platform
+        run: |
+          PYTHONPATH=. pytest -q tests/test_api_workflows.py
+
+      - name: Build Docker image
+        run: |
+          docker build -t dettrace-platform .

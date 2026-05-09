@@ -1425,3 +1425,17 @@ Compare expected vs actual firmware event sequence:
 
 curl http://127.0.0.1:8010/sequence-compare/<incident_id>
 
+
+---
+
+## Deployment, CI, and Observability Proof
+
+DetTrace includes lightweight platform proof for local deployment and validation:
+
+- Dockerfile for containerized FastAPI runtime
+- docker-compose service for local API deployment
+- GitHub Actions workflow for API + OTEL + firmware replay validation
+- `/metrics` endpoint for incident counts, fingerprints, and failure tags
+- Terraform skeleton documenting service deployment variables
+
+This does not claim enterprise-scale production infrastructure; it proves deployability, CI validation, and observability-oriented service design.
