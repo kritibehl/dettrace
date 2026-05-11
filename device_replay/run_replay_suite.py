@@ -5,7 +5,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 REPORT_DIR = ROOT / "reports"
-REPORT_DIR.mkdir(exist_ok=True)
+REPORT_DIR.mkdir(parents=True, exist_ok=True)
 
 def run(cmd):
     completed = subprocess.run(

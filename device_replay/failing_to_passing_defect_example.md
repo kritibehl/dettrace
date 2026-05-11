@@ -4,6 +4,8 @@
 
 Missing interrupt clear after a device interrupt assertion.
 
+---
+
 ## Before: failing trace
 
 Input:

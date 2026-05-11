@@ -1543,20 +1543,39 @@ The interface is intentionally small and demonstrates C/C++ interoperability for
 
 ---
 
+---
+
 ## Device Replay Build and Automation
 
-The device replay proof pack includes command-line build and replay workflows:
+The device replay proof pack includes command-line build and replay workflows.
+
+### Run replay workflows
 
 ```bash
 make -C device_replay run
 python3 device_replay/run_replay_suite.py
+Python replay suite
 
-The Python replay suite runs:
+The automation suite runs:
 
 C++17 device replay
 C-compatible replay-result demo
 failing trace validation
 corrected trace validation
-JSON and Markdown defect summaries
+JSON defect summary generation
+Markdown defect summary generation
+Failing-to-passing replay example
 
-The failing-to-passing example demonstrates a missing interrupt-clear defect at divergence index 4 and a corrected trace that returns status: PASS.
+The replay workflow demonstrates a missing interrupt-clear defect at divergence index 4 and a corrected trace that restores the expected execution path.
+
+Failing replay:
+
+expected_event: interrupt_cleared
+actual_event: sensor_read
+probable_defect_type: missing_interrupt_clear
+
+Corrected replay:
+
+status: PASS
+first_divergence_index: none
+

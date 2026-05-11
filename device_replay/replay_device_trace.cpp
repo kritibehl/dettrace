@@ -97,7 +97,7 @@ static std::string classify_defect(const Event& expected, const Event& actual) {
 }
 
 int main(int argc, char** argv) {
-    const std::string path = argc > 1 ? argv[1] : "device_replay/sample_device_trace.json";
+    const std::string path = argc > 1 ? argv[1] : "sample_device_trace.json";
 
     try {
         const std::string json = read_file(path);
