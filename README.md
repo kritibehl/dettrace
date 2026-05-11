@@ -1545,6 +1545,8 @@ The interface is intentionally small and demonstrates C/C++ interoperability for
 
 ---
 
+---
+
 ## Device Replay Build and Automation
 
 The device replay proof pack includes command-line build and replay workflows.
