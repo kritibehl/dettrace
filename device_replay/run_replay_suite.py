@@ -31,6 +31,7 @@ def parse_replay_output(output):
     return parsed
 
 def main():
+    REPORT_DIR.mkdir(parents=True, exist_ok=True)
     steps = []
 
     steps.append(run(["make", "clean"]))
