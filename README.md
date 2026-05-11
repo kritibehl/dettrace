@@ -1514,3 +1514,29 @@ Actual:   sensor_read -> WAITING
 First divergence: index 4
 Probable defect: missing_interrupt_clear
 This is trace-driven device-event replay, not hardware emulation.
+
+---
+
+## C-Compatible Replay Result Interface
+
+DetTrace includes a small C-compatible replay-result interface around the C++17 device-event replay output.
+
+Files:
+
+- `device_replay/replay_result.h`
+- `device_replay/replay_result.c`
+- `device_replay/replay_c_api_demo.c`
+
+This exposes:
+
+```c
+typedef struct ReplayResult {
+    int first_divergence_index;
+    const char* expected_event;
+    const char* actual_event;
+    const char* expected_state;
+    const char* actual_state;
+    const char* probable_defect_type;
+} ReplayResult;
+
+The interface is intentionally small and demonstrates C/C++ interoperability for debugging outputs without claiming embedded firmware deployment.

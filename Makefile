@@ -14,3 +14,10 @@ docker:
 
 run:
 	cd dettrace_platform && uvicorn app.main:app --host 127.0.0.1 --port 8010
+
+
+device-replay:
+	c++ -std=c++17 device_replay/replay_device_trace.cpp -o device_replay/replay_device_trace
+	./device_replay/replay_device_trace || true
+	cc -std=c11 device_replay/replay_result.c device_replay/replay_c_api_demo.c -o device_replay/replay_c_api_demo
+	./device_replay/replay_c_api_demo
