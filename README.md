@@ -1540,3 +1540,23 @@ typedef struct ReplayResult {
 } ReplayResult;
 
 The interface is intentionally small and demonstrates C/C++ interoperability for debugging outputs without claiming embedded firmware deployment.
+
+---
+
+## Device Replay Build and Automation
+
+The device replay proof pack includes command-line build and replay workflows:
+
+```bash
+make -C device_replay run
+python3 device_replay/run_replay_suite.py
+
+The Python replay suite runs:
+
+C++17 device replay
+C-compatible replay-result demo
+failing trace validation
+corrected trace validation
+JSON and Markdown defect summaries
+
+The failing-to-passing example demonstrates a missing interrupt-clear defect at divergence index 4 and a corrected trace that returns status: PASS.

@@ -1,0 +1,92 @@
+{
+  "scenario": "device-interrupt-state-corrected",
+  "description": "Corrected trace where interrupt is cleared before the device accepts downstream network input.",
+  "expected": [
+    {
+      "index": 0,
+      "event_type": "button_press",
+      "expected_state": "IDLE",
+      "value": "BTN_START",
+      "notes": "user starts device workflow"
+    },
+    {
+      "index": 1,
+      "event_type": "sensor_read",
+      "expected_state": "SENSOR_READY",
+      "value": "temperature=42",
+      "notes": "sensor read completes"
+    },
+    {
+      "index": 2,
+      "event_type": "firmware_timer_tick",
+      "expected_state": "TIMER_ARMED",
+      "value": "tick=100ms",
+      "notes": "periodic firmware timer tick"
+    },
+    {
+      "index": 3,
+      "event_type": "interrupt_asserted",
+      "expected_state": "IRQ_PENDING",
+      "value": "DEVICE_IRQ",
+      "notes": "device interrupt asserted after timer tick"
+    },
+    {
+      "index": 4,
+      "event_type": "interrupt_cleared",
+      "expected_state": "READY",
+      "value": "DEVICE_IRQ",
+      "notes": "firmware clears interrupt and device becomes ready"
+    },
+    {
+      "index": 5,
+      "event_type": "network_packet_received",
+      "expected_state": "CONNECTED",
+      "value": "packet=HELLO",
+      "notes": "network packet processed after device reaches ready state"
+    }
+  ],
+  "actual": [
+    {
+      "index": 0,
+      "event_type": "button_press",
+      "actual_state": "IDLE",
+      "value": "BTN_START",
+      "notes": "user starts device workflow"
+    },
+    {
+      "index": 1,
+      "event_type": "sensor_read",
+      "actual_state": "SENSOR_READY",
+      "value": "temperature=42",
+      "notes": "sensor read completes"
+    },
+    {
+      "index": 2,
+      "event_type": "firmware_timer_tick",
+      "actual_state": "TIMER_ARMED",
+      "value": "tick=100ms",
+      "notes": "periodic firmware timer tick"
+    },
+    {
+      "index": 3,
+      "event_type": "interrupt_asserted",
+      "actual_state": "IRQ_PENDING",
+      "value": "DEVICE_IRQ",
+      "notes": "device interrupt asserted after timer tick"
+    },
+    {
+      "index": 4,
+      "event_type": "interrupt_cleared",
+      "actual_state": "READY",
+      "value": "DEVICE_IRQ",
+      "notes": "firmware clears interrupt and device becomes ready"
+    },
+    {
+      "index": 5,
+      "event_type": "network_packet_received",
+      "actual_state": "CONNECTED",
+      "value": "packet=HELLO",
+      "notes": "network packet processed after device reaches ready state"
+    }
+  ]
+}

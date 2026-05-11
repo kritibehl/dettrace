@@ -44,3 +44,9 @@ __pycache__/
 *.pyc
 dettrace_platform/data/incidents/
 *.bak.*
+
+# compiled local binaries
+device_replay/replay_c_api_demo
+device_replay/replay_device_trace
+device_replay/build/
+device_replay/reports/
