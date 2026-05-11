@@ -1481,3 +1481,36 @@ DetTrace includes engineering hygiene beyond the core replay engine:
 - Makefile for repeatable test / benchmark / Docker workflows
 
 This keeps the project honest: DetTrace is not claimed as a production-scale service, but it demonstrates production-minded platform engineering around replay-driven debugging.
+
+---
+
+## Device Event Replay Pack
+
+DetTrace includes a C++17 device-event replay proof pack for device-level debugging scenarios.
+
+The pack models trace-driven events such as:
+
+- button_press
+- sensor_read
+- network_packet_received
+- device_state_change
+- firmware_timer_tick
+- interrupt_asserted
+- interrupt_cleared
+
+It reports:
+
+- first divergence index
+- expected state
+- actual state
+- probable defect type
+- reproduction steps
+
+Example defect:
+
+```text
+Expected: interrupt_cleared -> READY
+Actual:   sensor_read -> WAITING
+First divergence: index 4
+Probable defect: missing_interrupt_clear
+This is trace-driven device-event replay, not hardware emulation.
