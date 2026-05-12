@@ -7,59 +7,139 @@
 </head>
 <body>
   <main>
-    <h1>DetTrace Replay Timeline</h1>
-    <p class="subtitle">Expected vs actual replay with first-divergence highlighting.</p>
+    <header>
+      <p class="eyebrow">DetTrace++ Debugging UI</p>
+      <h1>Visual Replay Timeline</h1>
+      <p class="subtitle">
+        Expected vs actual event flow with first-divergence highlighting, timeout-chain graphing,
+        replay diffs, and root-cause panels.
+      </p>
+    </header>
 
-    <section class="card">
-      <h2>Timer Missed Tick</h2>
-      <div class="timeline expected">
-        <span>tick_fire</span>
-        <span>irq_assert</span>
-        <span>isr_enter</span>
-        <span>irq_clear</span>
-        <span>isr_exit</span>
-      </div>
-      <div class="timeline actual">
-        <span>tick_fire</span>
-        <span class="divergence">tick_miss</span>
-        <span>register_read</span>
-        <span>isr_exit</span>
-      </div>
-      <p><strong>First divergence:</strong> index 1</p>
-      <p><strong>Likely reason:</strong> missed timer tick before ISR service.</p>
-    </section>
+    <section class="grid">
+      <article class="card">
+        <div class="card-header">
+          <h2>Race Condition</h2>
+          <span class="badge danger">First divergence: index 1</span>
+        </div>
 
-    <section class="card">
-      <h2>GPIO Interrupt Race</h2>
-      <div class="timeline expected">
-        <span>gpio_edge</span>
-        <span>irq_assert</span>
-        <span>isr_enter</span>
-        <span>gpio_ack</span>
-        <span>irq_clear</span>
-      </div>
-      <div class="timeline actual">
-        <span>gpio_edge</span>
-        <span>irq_assert</span>
-        <span>isr_enter</span>
-        <span class="divergence">gpio_edge</span>
-        <span>register_read</span>
-      </div>
-      <p><strong>First divergence:</strong> index 3</p>
-      <p><strong>Likely reason:</strong> second GPIO edge arrived before ack/clear completed.</p>
-    </section>
+        <h3>Expected</h3>
+        <div class="timeline expected">
+          <span>lock_acquire</span>
+          <span>state_write(worker-a)</span>
+          <span>lock_release</span>
+          <span>lock_acquire(worker-b)</span>
+        </div>
 
-    <section class="card">
-      <h2>Timeout Chain Graph</h2>
-      <div class="graph">
-        <span>frontend</span>
-        <span>→</span>
-        <span>control-service</span>
-        <span>→</span>
-        <span>device-service</span>
-        <span>→ timeout</span>
-      </div>
-      <p><strong>Detected:</strong> RPC timeout chain across 3 services.</p>
+        <h3>Actual</h3>
+        <div class="timeline actual">
+          <span>lock_acquire</span>
+          <span class="divergence">state_write(worker-b)</span>
+          <span>state_write(worker-a)</span>
+          <span>lock_release</span>
+        </div>
+
+        <div class="diff">
+          <strong>Replay diff:</strong>
+          expected worker-a state write, actual worker-b wrote without lock ownership.
+        </div>
+
+        <div class="root-cause">
+          <h3>Root-cause panel</h3>
+          <p><strong>Probable cause:</strong> shared state updated by the wrong worker before lock ownership was established.</p>
+          <p><strong>Affected subsystem:</strong> synchronization / shared-state update path</p>
+          <p><strong>Confidence:</strong> 0.88</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-header">
+          <h2>Deadlock Timeline</h2>
+          <span class="badge warning">Timeout chain: 2 events</span>
+        </div>
+
+        <h3>Expected</h3>
+        <div class="timeline expected">
+          <span>lock_acquire_A</span>
+          <span>lock_release_A</span>
+        </div>
+
+        <h3>Actual</h3>
+        <div class="timeline actual">
+          <span>lock_acquire_A</span>
+          <span class="divergence">lock_acquire_B</span>
+          <span>wait_for_B</span>
+          <span>wait_for_A</span>
+        </div>
+
+        <div class="graph">
+          <span>thread-a waits for B</span>
+          <span>→</span>
+          <span>thread-b waits for A</span>
+          <span>→ timeout</span>
+        </div>
+
+        <div class="root-cause">
+          <h3>Root-cause panel</h3>
+          <p><strong>Probable cause:</strong> lock acquisition order diverged from baseline and produced a circular wait.</p>
+          <p><strong>Affected subsystem:</strong> lock ordering / scheduler interleaving path</p>
+          <p><strong>Confidence:</strong> 0.84</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-header">
+          <h2>Timer Missed Tick</h2>
+          <span class="badge danger">First divergence: index 1</span>
+        </div>
+
+        <h3>Expected</h3>
+        <div class="timeline expected">
+          <span>tick_fire</span>
+          <span>irq_assert</span>
+          <span>isr_enter</span>
+          <span>irq_clear</span>
+          <span>isr_exit</span>
+        </div>
+
+        <h3>Actual</h3>
+        <div class="timeline actual">
+          <span>tick_fire</span>
+          <span class="divergence">tick_miss</span>
+          <span>register_read</span>
+          <span>isr_exit</span>
+        </div>
+
+        <div class="root-cause">
+          <h3>Root-cause panel</h3>
+          <p><strong>Probable cause:</strong> timer event skipped before ISR service.</p>
+          <p><strong>Affected subsystem:</strong> firmware timer / ISR scheduling path</p>
+          <p><strong>Confidence:</strong> 0.86</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-header">
+          <h2>RPC Timeout Chain</h2>
+          <span class="badge warning">3-service chain</span>
+        </div>
+
+        <div class="graph large">
+          <span>frontend</span>
+          <span>→</span>
+          <span>control-service</span>
+          <span>→</span>
+          <span>device-service</span>
+          <span>→ timeout</span>
+        </div>
+
+        <div class="root-cause">
+          <h3>Root-cause panel</h3>
+          <p><strong>Probable cause:</strong> timeout propagated across service boundary chain.</p>
+          <p><strong>Affected subsystem:</strong> RPC/device-service dependency path</p>
+          <p><strong>Confidence:</strong> 0.82</p>
+        </div>
+      </article>
     </section>
   </main>
 </body>
