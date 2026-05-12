@@ -1609,3 +1609,19 @@ DetTrace includes additional debugging proof packs for systems and validation ro
 - simulated macOS-style stack trace comparison and symbolized replay report
 
 These are simulated debugging artifacts designed to demonstrate replay-driven failure analysis, not production Apple integrations.
+
+---
+
+## Visual Replay Timeline UI
+
+DetTrace includes a visual replay timeline under `ui/replay_timeline/`.
+
+The UI shows:
+
+- expected vs actual event sequences
+- first-divergence highlighting
+- race-condition replay diff
+- deadlock timeout-chain graph
+- root-cause panels with affected subsystem and confidence score
+
+This makes replay analysis easier to inspect during debugging and validation workflows.
