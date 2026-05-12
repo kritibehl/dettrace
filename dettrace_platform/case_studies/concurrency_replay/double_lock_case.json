@@ -1,0 +1,11 @@
+{
+  "incident_name": "double-lock-case",
+  "source": "concurrency-replay-pack",
+  "events": [
+    {"service":"thread-1","timestamp":"2026-05-10T10:10:00+00:00","trace_id":"double-lock-baseline","event_type":"lock_acquire","message":"lock A acquired","status":"ok"},
+    {"service":"thread-1","timestamp":"2026-05-10T10:10:01+00:00","trace_id":"double-lock-baseline","event_type":"lock_release","message":"lock A released","status":"ok"},
+
+    {"service":"thread-1","timestamp":"2026-05-10T10:10:00+00:00","trace_id":"double-lock-candidate","event_type":"lock_acquire","message":"lock A acquired","status":"ok"},
+    {"service":"thread-1","timestamp":"2026-05-10T10:10:01+00:00","trace_id":"double-lock-candidate","event_type":"lock_acquire","message":"lock A acquired again before release","status":"error"}
+  ]
+}

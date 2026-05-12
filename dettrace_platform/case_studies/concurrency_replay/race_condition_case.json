@@ -1,0 +1,15 @@
+{
+  "incident_name": "race-condition-shared-counter",
+  "source": "concurrency-replay-pack",
+  "events": [
+    {"service":"worker-a","timestamp":"2026-05-10T10:00:00+00:00","trace_id":"race-baseline","event_type":"lock_acquire","message":"worker A acquired lock","status":"ok"},
+    {"service":"worker-a","timestamp":"2026-05-10T10:00:01+00:00","trace_id":"race-baseline","event_type":"state_write","message":"counter updated to 1","status":"ok"},
+    {"service":"worker-a","timestamp":"2026-05-10T10:00:02+00:00","trace_id":"race-baseline","event_type":"lock_release","message":"worker A released lock","status":"ok"},
+    {"service":"worker-b","timestamp":"2026-05-10T10:00:03+00:00","trace_id":"race-baseline","event_type":"lock_acquire","message":"worker B acquired lock","status":"ok"},
+
+    {"service":"worker-a","timestamp":"2026-05-10T10:00:00+00:00","trace_id":"race-candidate","event_type":"lock_acquire","message":"worker A acquired lock","status":"ok"},
+    {"service":"worker-b","timestamp":"2026-05-10T10:00:01+00:00","trace_id":"race-candidate","event_type":"state_write","message":"worker B wrote counter without lock ownership","status":"error"},
+    {"service":"worker-a","timestamp":"2026-05-10T10:00:02+00:00","trace_id":"race-candidate","event_type":"state_write","message":"worker A overwrote counter","status":"ok"},
+    {"service":"worker-a","timestamp":"2026-05-10T10:00:03+00:00","trace_id":"race-candidate","event_type":"lock_release","message":"worker A released lock","status":"ok"}
+  ]
+}

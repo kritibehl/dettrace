@@ -1,0 +1,12 @@
+{
+  "workflow": "simulated-macos-stack-comparison",
+  "status": "mismatch_found",
+  "analysis": {
+    "first_mismatched_frame": 3,
+    "expected_frame": "SerialTransport::readHeartbeat",
+    "actual_frame": "SerialTransport::disconnect",
+    "likely_affected_subsystem": "SerialTransport / DeviceSession lifecycle",
+    "probable_defect_class": "disconnect-before-heartbeat",
+    "confidence": 0.84
+  }
+}

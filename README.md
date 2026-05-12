@@ -1596,3 +1596,16 @@ DetTrace includes simulated replay packs for serial, RPC, DNS, and network-parti
 These packs strengthen trace-driven debugging coverage for device-cloud and networked service workflows.
 
 They are simulated replay artifacts, not production infrastructure traces.
+
+---
+
+## Apple-Oriented Debugging Proofs
+
+DetTrace includes additional debugging proof packs for systems and validation roles:
+
+- replay timeline UI with divergence highlighting
+- concurrency replay cases for race conditions, double-locks, deadlocks, and shared-state corruption
+- symbolic replay explanation examples with likely subsystem and confidence score
+- simulated macOS-style stack trace comparison and symbolized replay report
+
+These are simulated debugging artifacts designed to demonstrate replay-driven failure analysis, not production Apple integrations.

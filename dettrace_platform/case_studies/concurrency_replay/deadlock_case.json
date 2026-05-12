@@ -1,0 +1,13 @@
+{
+  "incident_name": "deadlock-case",
+  "source": "concurrency-replay-pack",
+  "events": [
+    {"service":"thread-a","timestamp":"2026-05-10T10:20:00+00:00","trace_id":"deadlock-baseline","event_type":"lock_acquire_A","message":"thread A acquired lock A","status":"ok"},
+    {"service":"thread-a","timestamp":"2026-05-10T10:20:01+00:00","trace_id":"deadlock-baseline","event_type":"lock_release_A","message":"thread A released lock A","status":"ok"},
+
+    {"service":"thread-a","timestamp":"2026-05-10T10:20:00+00:00","trace_id":"deadlock-candidate","event_type":"lock_acquire_A","message":"thread A acquired lock A","status":"ok"},
+    {"service":"thread-b","timestamp":"2026-05-10T10:20:01+00:00","trace_id":"deadlock-candidate","event_type":"lock_acquire_B","message":"thread B acquired lock B","status":"ok"},
+    {"service":"thread-a","timestamp":"2026-05-10T10:20:02+00:00","trace_id":"deadlock-candidate","event_type":"wait_for_B","message":"thread A waiting for lock B","status":"timeout"},
+    {"service":"thread-b","timestamp":"2026-05-10T10:20:03+00:00","trace_id":"deadlock-candidate","event_type":"wait_for_A","message":"thread B waiting for lock A","status":"timeout"}
+  ]
+}

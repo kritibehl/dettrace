@@ -1,0 +1,5 @@
+AppMain
+EventLoop::run
+DeviceSession::poll
+SerialTransport::readHeartbeat
+DeviceState::markReady

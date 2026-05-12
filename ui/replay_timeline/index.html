@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>DetTrace Replay Timeline</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main>
+    <h1>DetTrace Replay Timeline</h1>
+    <p class="subtitle">Expected vs actual replay with first-divergence highlighting.</p>
+
+    <section class="card">
+      <h2>Timer Missed Tick</h2>
+      <div class="timeline expected">
+        <span>tick_fire</span>
+        <span>irq_assert</span>
+        <span>isr_enter</span>
+        <span>irq_clear</span>
+        <span>isr_exit</span>
+      </div>
+      <div class="timeline actual">
+        <span>tick_fire</span>
+        <span class="divergence">tick_miss</span>
+        <span>register_read</span>
+        <span>isr_exit</span>
+      </div>
+      <p><strong>First divergence:</strong> index 1</p>
+      <p><strong>Likely reason:</strong> missed timer tick before ISR service.</p>
+    </section>
+
+    <section class="card">
+      <h2>GPIO Interrupt Race</h2>
+      <div class="timeline expected">
+        <span>gpio_edge</span>
+        <span>irq_assert</span>
+        <span>isr_enter</span>
+        <span>gpio_ack</span>
+        <span>irq_clear</span>
+      </div>
+      <div class="timeline actual">
+        <span>gpio_edge</span>
+        <span>irq_assert</span>
+        <span>isr_enter</span>
+        <span class="divergence">gpio_edge</span>
+        <span>register_read</span>
+      </div>
+      <p><strong>First divergence:</strong> index 3</p>
+      <p><strong>Likely reason:</strong> second GPIO edge arrived before ack/clear completed.</p>
+    </section>
+
+    <section class="card">
+      <h2>Timeout Chain Graph</h2>
+      <div class="graph">
+        <span>frontend</span>
+        <span>→</span>
+        <span>control-service</span>
+        <span>→</span>
+        <span>device-service</span>
+        <span>→ timeout</span>
+      </div>
+      <p><strong>Detected:</strong> RPC timeout chain across 3 services.</p>
+    </section>
+  </main>
+</body>
+</html>

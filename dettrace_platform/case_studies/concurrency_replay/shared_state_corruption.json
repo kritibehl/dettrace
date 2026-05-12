@@ -1,0 +1,11 @@
+{
+  "incident_name": "shared-state-corruption",
+  "source": "concurrency-replay-pack",
+  "events": [
+    {"service":"worker-a","timestamp":"2026-05-10T10:30:00+00:00","trace_id":"state-baseline","event_type":"state_read","message":"read version 10","status":"ok"},
+    {"service":"worker-a","timestamp":"2026-05-10T10:30:01+00:00","trace_id":"state-baseline","event_type":"state_write","message":"write version 11","status":"ok"},
+
+    {"service":"worker-a","timestamp":"2026-05-10T10:30:00+00:00","trace_id":"state-candidate","event_type":"state_read","message":"read version 10","status":"ok"},
+    {"service":"worker-b","timestamp":"2026-05-10T10:30:01+00:00","trace_id":"state-candidate","event_type":"state_write","message":"write stale version 9 over version 10","status":"error"}
+  ]
+}
