@@ -1,0 +1,36 @@
+{
+  "incident_name": "rpc-timeout-chain",
+  "source": "network-replay-pack",
+  "events": [
+    {
+      "service": "frontend",
+      "timestamp": "2026-05-09T12:10:00+00:00",
+      "trace_id": "rpc-timeout",
+      "event_type": "rpc_call",
+      "message": "frontend calls control-service",
+      "status": "timeout",
+      "upstream": "control-service",
+      "latency_ms": 900
+    },
+    {
+      "service": "control-service",
+      "timestamp": "2026-05-09T12:10:01+00:00",
+      "trace_id": "rpc-timeout",
+      "event_type": "rpc_call",
+      "message": "control-service calls device-service",
+      "status": "timeout",
+      "upstream": "device-service",
+      "latency_ms": 1100
+    },
+    {
+      "service": "device-service",
+      "timestamp": "2026-05-09T12:10:02+00:00",
+      "trace_id": "rpc-timeout",
+      "event_type": "rpc_call",
+      "message": "device-service calls serial-gateway",
+      "status": "timeout",
+      "upstream": "serial-gateway",
+      "latency_ms": 1300
+    }
+  ]
+}

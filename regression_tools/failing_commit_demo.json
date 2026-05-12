@@ -1,0 +1,46 @@
+{
+  "scenario": "device-replay-regression",
+  "description": "Simulated commit history for replay regression isolation.",
+  "commits": [
+    {
+      "commit": "a1b2c3d",
+      "label": "baseline replay path",
+      "replay_status": "PASS",
+      "first_divergence_index": null,
+      "probable_defect_type": null,
+      "summary": "expected interrupt clear sequence preserved"
+    },
+    {
+      "commit": "b2c3d4e",
+      "label": "add sensor polling cleanup",
+      "replay_status": "PASS",
+      "first_divergence_index": null,
+      "probable_defect_type": null,
+      "summary": "sensor read path still follows interrupt clear"
+    },
+    {
+      "commit": "c3d4e5f",
+      "label": "refactor interrupt state machine",
+      "replay_status": "FAIL",
+      "first_divergence_index": 4,
+      "probable_defect_type": "missing_interrupt_clear",
+      "summary": "sensor_read occurs before interrupt_cleared"
+    },
+    {
+      "commit": "d4e5f6a",
+      "label": "add packet handling branch",
+      "replay_status": "FAIL",
+      "first_divergence_index": 4,
+      "probable_defect_type": "missing_interrupt_clear",
+      "summary": "network packet processed while state remains WAITING"
+    },
+    {
+      "commit": "e5f6a7b",
+      "label": "add retry guard",
+      "replay_status": "FAIL",
+      "first_divergence_index": 4,
+      "probable_defect_type": "missing_interrupt_clear",
+      "summary": "retry guard does not restore interrupt clear ordering"
+    }
+  ]
+}

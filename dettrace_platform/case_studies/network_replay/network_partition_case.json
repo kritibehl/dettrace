@@ -1,0 +1,43 @@
+{
+  "incident_name": "network-partition-case",
+  "source": "network-replay-pack",
+  "events": [
+    {
+      "service": "controller",
+      "timestamp": "2026-05-09T12:30:00+00:00",
+      "trace_id": "partition-baseline",
+      "event_type": "heartbeat_send",
+      "message": "heartbeat sent to worker",
+      "status": "ok",
+      "upstream": "worker"
+    },
+    {
+      "service": "worker",
+      "timestamp": "2026-05-09T12:30:01+00:00",
+      "trace_id": "partition-baseline",
+      "event_type": "heartbeat_ack",
+      "message": "heartbeat acknowledged",
+      "status": "ok",
+      "upstream": "controller"
+    },
+
+    {
+      "service": "controller",
+      "timestamp": "2026-05-09T12:30:00+00:00",
+      "trace_id": "partition-candidate",
+      "event_type": "heartbeat_send",
+      "message": "heartbeat sent to worker",
+      "status": "ok",
+      "upstream": "worker"
+    },
+    {
+      "service": "controller",
+      "timestamp": "2026-05-09T12:30:01+00:00",
+      "trace_id": "partition-candidate",
+      "event_type": "heartbeat_timeout",
+      "message": "heartbeat ack missing during partition",
+      "status": "timeout",
+      "upstream": "worker"
+    }
+  ]
+}

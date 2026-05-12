@@ -1581,3 +1581,18 @@ Corrected replay:
 status: PASS
 first_divergence_index: none
 
+
+---
+
+## Serial / RPC / Network Failure Replay Pack
+
+DetTrace includes simulated replay packs for serial, RPC, DNS, and network-partition failures:
+
+- serial disconnect
+- RPC timeout chain
+- DNS retry storm
+- network partition / heartbeat timeout
+
+These packs strengthen trace-driven debugging coverage for device-cloud and networked service workflows.
+
+They are simulated replay artifacts, not production infrastructure traces.

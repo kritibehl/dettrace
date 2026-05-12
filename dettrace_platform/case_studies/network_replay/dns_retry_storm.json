@@ -1,0 +1,46 @@
+{
+  "incident_name": "dns-retry-storm",
+  "source": "network-replay-pack",
+  "events": [
+    {
+      "service": "agent",
+      "timestamp": "2026-05-09T12:20:00+00:00",
+      "trace_id": "dns-retry",
+      "event_type": "dependency_retry",
+      "message": "DNS lookup retry 1",
+      "status": "timeout",
+      "upstream": "dns-resolver",
+      "latency_ms": 700
+    },
+    {
+      "service": "agent",
+      "timestamp": "2026-05-09T12:20:01+00:00",
+      "trace_id": "dns-retry",
+      "event_type": "dependency_retry",
+      "message": "DNS lookup retry 2",
+      "status": "timeout",
+      "upstream": "dns-resolver",
+      "latency_ms": 800
+    },
+    {
+      "service": "agent",
+      "timestamp": "2026-05-09T12:20:02+00:00",
+      "trace_id": "dns-retry",
+      "event_type": "dependency_retry",
+      "message": "DNS lookup retry 3",
+      "status": "timeout",
+      "upstream": "dns-resolver",
+      "latency_ms": 900
+    },
+    {
+      "service": "agent",
+      "timestamp": "2026-05-09T12:20:03+00:00",
+      "trace_id": "dns-retry",
+      "event_type": "dependency_retry",
+      "message": "DNS lookup retry 4",
+      "status": "timeout",
+      "upstream": "dns-resolver",
+      "latency_ms": 1000
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "incident_name": "serial-disconnect",
+  "source": "network-replay-pack",
+  "events": [
+    {
+      "service": "device-agent",
+      "timestamp": "2026-05-09T12:00:00+00:00",
+      "trace_id": "serial-baseline",
+      "event_type": "serial_open",
+      "message": "serial port opened",
+      "status": "ok",
+      "upstream": "usb-serial"
+    },
+    {
+      "service": "device-agent",
+      "timestamp": "2026-05-09T12:00:01+00:00",
+      "trace_id": "serial-baseline",
+      "event_type": "serial_read",
+      "message": "device heartbeat received",
+      "status": "ok",
+      "upstream": "device"
+    },
+    {
+      "service": "device-agent",
+      "timestamp": "2026-05-09T12:00:02+00:00",
+      "trace_id": "serial-baseline",
+      "event_type": "serial_ack",
+      "message": "heartbeat acknowledged",
+      "status": "ok",
+      "upstream": "device"
+    },
+
+    {
+      "service": "device-agent",
+      "timestamp": "2026-05-09T12:00:00+00:00",
+      "trace_id": "serial-candidate",
+      "event_type": "serial_open",
+      "message": "serial port opened",
+      "status": "ok",
+      "upstream": "usb-serial"
+    },
+    {
+      "service": "device-agent",
+      "timestamp": "2026-05-09T12:00:01+00:00",
+      "trace_id": "serial-candidate",
+      "event_type": "serial_disconnect",
+      "message": "device disconnected before heartbeat",
+      "status": "error",
+      "upstream": "device"
+    },
+    {
+      "service": "device-agent",
+      "timestamp": "2026-05-09T12:00:02+00:00",
+      "trace_id": "serial-candidate",
+      "event_type": "retry_probe",
+      "message": "retry probe issued after disconnect",
+      "status": "timeout",
+      "upstream": "device"
+    }
+  ]
+}
