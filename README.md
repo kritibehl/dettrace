@@ -1695,3 +1695,18 @@ Files:
 - `bug_triage/regression_repro_steps.md`
 
 This adds proof for RPC lifecycle debugging, service communication failure analysis, reproducible bug reports, and Apple-style QA communication.
+
+---
+
+## Protocol Timing Notes
+
+DetTrace includes software-level protocol timing notes under `protocol_timing/`.
+
+Files:
+
+- `protocol_timing/heartbeat_timeout_window.md`
+- `protocol_timing/timing_jitter_analysis.json`
+
+These artifacts document heartbeat timeout windows, timing jitter observations, first-divergence evidence, and protocol sequencing failures.
+
+This is trace-driven software timing validation, not electrical signal-integrity analysis.

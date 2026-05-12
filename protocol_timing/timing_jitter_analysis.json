@@ -1,0 +1,43 @@
+{
+  "analysis_name": "heartbeat-timing-jitter",
+  "scope": "software protocol timing validation",
+  "safe_claim": "Trace-driven timing analysis; not physical-layer signal integrity.",
+  "baseline": {
+    "heartbeat_interval_ms": 100,
+    "ack_deadline_ms": 250,
+    "expected_sequence": [
+      "heartbeat_send",
+      "heartbeat_ack"
+    ]
+  },
+  "candidate": {
+    "observed_events": [
+      {
+        "event_type": "heartbeat_send",
+        "timestamp_ms": 0,
+        "status": "ok"
+      },
+      {
+        "event_type": "heartbeat_timeout",
+        "timestamp_ms": 251,
+        "status": "timeout"
+      }
+    ],
+    "jitter_observations_ms": [
+      12,
+      18,
+      41,
+      83,
+      151
+    ]
+  },
+  "result": {
+    "first_divergence_index": 1,
+    "expected_event": "heartbeat_ack",
+    "actual_event": "heartbeat_timeout",
+    "timeout_window_missed_by_ms": 1,
+    "probable_defect_type": "heartbeat_ack_missed_deadline",
+    "likely_affected_subsystem": "protocol heartbeat / worker lifecycle monitoring",
+    "confidence": 0.82
+  }
+}
