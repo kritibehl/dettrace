@@ -1680,3 +1680,18 @@ The export summarizes:
 - validation artifacts
 
 This is intended as a compact proof packet for debugging, QA, and systems-tooling review.
+
+---
+
+## gRPC Lifecycle Replay and Bug Triage
+
+DetTrace includes a simulated gRPC lifecycle replay pack and Apple-style bug triage docs.
+
+Files:
+
+- `dettrace_platform/case_studies/protocol_replay/grpc_timeout_lifecycle.json`
+- `docs/grpc_lifecycle_debugging.md`
+- `bug_triage/xcode_style_bug_report.md`
+- `bug_triage/regression_repro_steps.md`
+
+This adds proof for RPC lifecycle debugging, service communication failure analysis, reproducible bug reports, and Apple-style QA communication.

@@ -1,0 +1,108 @@
+{
+  "incident_name": "grpc-timeout-lifecycle",
+  "source": "protocol-replay-pack",
+  "description": "Simulated gRPC lifecycle replay showing expected RPC completion versus candidate deadline-exceeded path.",
+  "events": [
+    {
+      "service": "grpc-client",
+      "timestamp": "2026-05-12T12:00:00+00:00",
+      "trace_id": "grpc-lifecycle-baseline",
+      "event_type": "channel_ready",
+      "message": "gRPC channel entered READY state",
+      "status": "ok",
+      "upstream": "grpc-server",
+      "latency_ms": 5
+    },
+    {
+      "service": "grpc-client",
+      "timestamp": "2026-05-12T12:00:01+00:00",
+      "trace_id": "grpc-lifecycle-baseline",
+      "event_type": "rpc_start",
+      "message": "client started unary RPC",
+      "status": "ok",
+      "upstream": "grpc-server",
+      "latency_ms": 1
+    },
+    {
+      "service": "grpc-server",
+      "timestamp": "2026-05-12T12:00:02+00:00",
+      "trace_id": "grpc-lifecycle-baseline",
+      "event_type": "handler_start",
+      "message": "server handler started",
+      "status": "ok",
+      "upstream": "grpc-client",
+      "latency_ms": 2
+    },
+    {
+      "service": "grpc-server",
+      "timestamp": "2026-05-12T12:00:03+00:00",
+      "trace_id": "grpc-lifecycle-baseline",
+      "event_type": "rpc_complete",
+      "message": "server completed RPC before deadline",
+      "status": "ok",
+      "upstream": "grpc-client",
+      "latency_ms": 40
+    },
+    {
+      "service": "grpc-client",
+      "timestamp": "2026-05-12T12:00:04+00:00",
+      "trace_id": "grpc-lifecycle-baseline",
+      "event_type": "response_received",
+      "message": "client received RPC response",
+      "status": "ok",
+      "upstream": "grpc-server",
+      "latency_ms": 45
+    },
+
+    {
+      "service": "grpc-client",
+      "timestamp": "2026-05-12T12:00:00+00:00",
+      "trace_id": "grpc-lifecycle-candidate",
+      "event_type": "channel_ready",
+      "message": "gRPC channel entered READY state",
+      "status": "ok",
+      "upstream": "grpc-server",
+      "latency_ms": 5
+    },
+    {
+      "service": "grpc-client",
+      "timestamp": "2026-05-12T12:00:01+00:00",
+      "trace_id": "grpc-lifecycle-candidate",
+      "event_type": "rpc_start",
+      "message": "client started unary RPC",
+      "status": "ok",
+      "upstream": "grpc-server",
+      "latency_ms": 1
+    },
+    {
+      "service": "grpc-server",
+      "timestamp": "2026-05-12T12:00:02+00:00",
+      "trace_id": "grpc-lifecycle-candidate",
+      "event_type": "handler_start",
+      "message": "server handler started",
+      "status": "ok",
+      "upstream": "grpc-client",
+      "latency_ms": 2
+    },
+    {
+      "service": "grpc-client",
+      "timestamp": "2026-05-12T12:00:03+00:00",
+      "trace_id": "grpc-lifecycle-candidate",
+      "event_type": "deadline_exceeded",
+      "message": "client deadline exceeded before server completion",
+      "status": "timeout",
+      "upstream": "grpc-server",
+      "latency_ms": 1000
+    },
+    {
+      "service": "grpc-server",
+      "timestamp": "2026-05-12T12:00:04+00:00",
+      "trace_id": "grpc-lifecycle-candidate",
+      "event_type": "handler_cancelled",
+      "message": "server handler observed cancellation after client timeout",
+      "status": "error",
+      "upstream": "grpc-client",
+      "latency_ms": 1005
+    }
+  ]
+}
