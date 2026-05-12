@@ -1,0 +1,24 @@
+{
+  "input": "crash_tools/sample_crash_log.txt",
+  "status": "mismatch_found",
+  "actual_stack": [
+    "SerialTransport::disconnect",
+    "DeviceSession::poll",
+    "EventLoop::run",
+    "main"
+  ],
+  "expected_stack": [
+    "SerialTransport::readHeartbeat",
+    "DeviceSession::poll",
+    "EventLoop::run",
+    "main"
+  ],
+  "analysis": {
+    "first_mismatched_frame": 0,
+    "expected_frame": "SerialTransport::readHeartbeat",
+    "actual_frame": "SerialTransport::disconnect",
+    "probable_defect_class": "disconnect-before-heartbeat",
+    "likely_affected_subsystem": "SerialTransport / DeviceSession lifecycle",
+    "confidence": 0.84
+  }
+}

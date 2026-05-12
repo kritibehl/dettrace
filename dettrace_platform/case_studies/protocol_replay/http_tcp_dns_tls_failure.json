@@ -1,0 +1,15 @@
+{
+  "incident_name": "http-tcp-dns-tls-failure",
+  "source": "protocol-replay-pack",
+  "events": [
+    {"service":"client","timestamp":"2026-05-11T12:00:00+00:00","trace_id":"protocol-baseline","event_type":"dns_resolve","message":"resolved api.service.local","status":"ok","upstream":"dns"},
+    {"service":"client","timestamp":"2026-05-11T12:00:01+00:00","trace_id":"protocol-baseline","event_type":"tcp_connect","message":"TCP connected","status":"ok","upstream":"api"},
+    {"service":"client","timestamp":"2026-05-11T12:00:02+00:00","trace_id":"protocol-baseline","event_type":"tls_handshake","message":"TLS handshake complete","status":"ok","upstream":"api"},
+    {"service":"client","timestamp":"2026-05-11T12:00:03+00:00","trace_id":"protocol-baseline","event_type":"http_request","message":"HTTP 200","status":"ok","upstream":"api"},
+
+    {"service":"client","timestamp":"2026-05-11T12:00:00+00:00","trace_id":"protocol-candidate","event_type":"dns_resolve","message":"resolved api.service.local","status":"ok","upstream":"dns"},
+    {"service":"client","timestamp":"2026-05-11T12:00:01+00:00","trace_id":"protocol-candidate","event_type":"tcp_connect","message":"TCP connected","status":"ok","upstream":"api"},
+    {"service":"client","timestamp":"2026-05-11T12:00:02+00:00","trace_id":"protocol-candidate","event_type":"tls_handshake","message":"TLS handshake timeout","status":"timeout","upstream":"api"},
+    {"service":"client","timestamp":"2026-05-11T12:00:03+00:00","trace_id":"protocol-candidate","event_type":"http_request","message":"HTTP request blocked by TLS failure","status":"error","upstream":"api"}
+  ]
+}

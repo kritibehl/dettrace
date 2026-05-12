@@ -1,0 +1,23 @@
+{
+  "scenario": "api-contract-break",
+  "status": "FAIL",
+  "schema_mismatch": true,
+  "missing_top_level_fields": [
+    "event_count"
+  ],
+  "missing_analysis_fields": [
+    "fingerprint"
+  ],
+  "expected_fields": {
+    "required_fields": [
+      "incident_id",
+      "event_count",
+      "analysis"
+    ],
+    "analysis_required_fields": [
+      "fingerprint",
+      "root_cause_explanation"
+    ]
+  },
+  "regression_summary": "API response contract changed: expected event_count and fingerprint fields are missing."
+}

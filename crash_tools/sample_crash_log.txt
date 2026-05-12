@@ -1,0 +1,12 @@
+Process: DetTraceDeviceAgent
+Thread 4 Crashed:
+0   DeviceSession        SerialTransport::disconnect
+1   DeviceSession        DeviceSession::poll
+2   EventLoop            EventLoop::run
+3   AppMain              main
+
+Expected Stack:
+0   DeviceSession        SerialTransport::readHeartbeat
+1   DeviceSession        DeviceSession::poll
+2   EventLoop            EventLoop::run
+3   AppMain              main

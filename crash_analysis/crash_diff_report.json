@@ -1,0 +1,11 @@
+{
+  "workflow": "symbolicated-crash-diff",
+  "input": "crash_analysis/symbolicated_crash_example.txt",
+  "first_mismatched_frame": 0,
+  "expected_frame": "SerialTransport::readHeartbeat",
+  "actual_frame": "SerialTransport::disconnect",
+  "mismatched_subsystem": "SerialTransport / DeviceSession lifecycle",
+  "probable_defect_class": "disconnect-before-heartbeat",
+  "confidence": 0.84,
+  "triage_summary": "The crash path diverged before heartbeat read completed; actual frame indicates disconnect lifecycle executed before expected heartbeat path."
+}

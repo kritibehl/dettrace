@@ -1,0 +1,13 @@
+{
+  "incident_name": "go-context-cancellation-timeout",
+  "source": "protocol-replay-pack",
+  "events": [
+    {"service":"go-worker","timestamp":"2026-05-11T12:20:00+00:00","trace_id":"goctx-baseline","event_type":"context_start","message":"context created with timeout","status":"ok"},
+    {"service":"go-worker","timestamp":"2026-05-11T12:20:01+00:00","trace_id":"goctx-baseline","event_type":"work_complete","message":"work completed before deadline","status":"ok"},
+    {"service":"go-worker","timestamp":"2026-05-11T12:20:02+00:00","trace_id":"goctx-baseline","event_type":"context_cancel","message":"context cancelled after completion","status":"ok"},
+
+    {"service":"go-worker","timestamp":"2026-05-11T12:20:00+00:00","trace_id":"goctx-candidate","event_type":"context_start","message":"context created with timeout","status":"ok"},
+    {"service":"go-worker","timestamp":"2026-05-11T12:20:01+00:00","trace_id":"goctx-candidate","event_type":"context_deadline_exceeded","message":"deadline exceeded before work completed","status":"timeout"},
+    {"service":"go-worker","timestamp":"2026-05-11T12:20:02+00:00","trace_id":"goctx-candidate","event_type":"work_cancelled","message":"work cancelled by context timeout","status":"error"}
+  ]
+}

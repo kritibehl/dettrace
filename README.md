@@ -1625,3 +1625,36 @@ The UI shows:
 - root-cause panels with affected subsystem and confidence score
 
 This makes replay analysis easier to inspect during debugging and validation workflows.
+
+---
+
+## Swift, Crash Parsing, and Protocol Debugging Additions
+
+DetTrace includes additional lightweight proof artifacts for systems debugging roles:
+
+- Swift replay-report parsing CLI
+- XCTest-style parser test example
+- Git commit bisection workflow over actual repository history
+- Radar-style bug triage template
+- crash log / stack trace parser
+- HTTP/TCP/DNS/TLS replay scenario
+- gRPC/RPC lifecycle timeout scenario
+- Go context cancellation timeout scenario
+- service health and connection-pool diagnostic scenario
+
+These are simulated debugging artifacts intended to demonstrate tooling familiarity and replay-driven diagnosis, not production Apple or networking infrastructure ownership.
+
+---
+
+## Final Validation Proofs
+
+DetTrace includes additional Apple- and QA-oriented validation artifacts:
+
+- XCTest-style replay validation examples
+- simulated symbolicated crash comparison
+- stack-frame diff report
+- API contract replay validation
+- schema mismatch detection
+- regression summary generation
+
+These artifacts demonstrate validation, crash triage, and contract-testing familiarity without claiming production Apple tooling or enterprise API ownership.

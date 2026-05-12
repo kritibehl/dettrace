@@ -1,0 +1,10 @@
+{
+  "mode": "actual_git_history_scan",
+  "commit_count_scanned": 12,
+  "first_matching_replay_failure_commit": {
+    "commit": "39c4dd1",
+    "message": "DetTrace: document visual replay timeline UI",
+    "simulated_replay_status": "FAIL"
+  },
+  "note": "This scans real Git commits and marks replay/device commits as simulated failure candidates for bisection workflow demonstration."
+}

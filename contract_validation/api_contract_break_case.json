@@ -1,0 +1,23 @@
+{
+  "scenario": "api-contract-break",
+  "expected_schema": {
+    "required_fields": [
+      "incident_id",
+      "event_count",
+      "analysis"
+    ],
+    "analysis_required_fields": [
+      "fingerprint",
+      "root_cause_explanation"
+    ]
+  },
+  "actual_response": {
+    "incident_id": "inc_contract_demo",
+    "events": 5,
+    "analysis": {
+      "root_cause_explanation": {
+        "likely_root_cause": "retry storm detected"
+      }
+    }
+  }
+}

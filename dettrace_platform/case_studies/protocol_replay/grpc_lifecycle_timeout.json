@@ -1,0 +1,13 @@
+{
+  "incident_name": "grpc-lifecycle-timeout",
+  "source": "protocol-replay-pack",
+  "events": [
+    {"service":"grpc-client","timestamp":"2026-05-11T12:10:00+00:00","trace_id":"grpc-baseline","event_type":"channel_ready","message":"gRPC channel ready","status":"ok","upstream":"grpc-server"},
+    {"service":"grpc-client","timestamp":"2026-05-11T12:10:01+00:00","trace_id":"grpc-baseline","event_type":"rpc_start","message":"RPC started","status":"ok","upstream":"grpc-server"},
+    {"service":"grpc-server","timestamp":"2026-05-11T12:10:02+00:00","trace_id":"grpc-baseline","event_type":"rpc_complete","message":"RPC completed","status":"ok","upstream":"grpc-client"},
+
+    {"service":"grpc-client","timestamp":"2026-05-11T12:10:00+00:00","trace_id":"grpc-candidate","event_type":"channel_ready","message":"gRPC channel ready","status":"ok","upstream":"grpc-server"},
+    {"service":"grpc-client","timestamp":"2026-05-11T12:10:01+00:00","trace_id":"grpc-candidate","event_type":"rpc_start","message":"RPC started","status":"ok","upstream":"grpc-server"},
+    {"service":"grpc-client","timestamp":"2026-05-11T12:10:02+00:00","trace_id":"grpc-candidate","event_type":"rpc_timeout","message":"RPC timed out before completion","status":"timeout","upstream":"grpc-server"}
+  ]
+}

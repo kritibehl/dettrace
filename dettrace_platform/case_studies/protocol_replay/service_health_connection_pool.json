@@ -1,0 +1,13 @@
+{
+  "incident_name": "service-health-connection-pool",
+  "source": "protocol-replay-pack",
+  "events": [
+    {"service":"service-manager","timestamp":"2026-05-11T12:30:00+00:00","trace_id":"pool-baseline","event_type":"health_check_pass","message":"service healthy","status":"ok"},
+    {"service":"api-client","timestamp":"2026-05-11T12:30:01+00:00","trace_id":"pool-baseline","event_type":"connection_acquire","message":"connection acquired","status":"ok"},
+    {"service":"api-client","timestamp":"2026-05-11T12:30:02+00:00","trace_id":"pool-baseline","event_type":"connection_release","message":"connection released","status":"ok"},
+
+    {"service":"service-manager","timestamp":"2026-05-11T12:30:00+00:00","trace_id":"pool-candidate","event_type":"health_check_pass","message":"service health says ok","status":"ok"},
+    {"service":"api-client","timestamp":"2026-05-11T12:30:01+00:00","trace_id":"pool-candidate","event_type":"connection_acquire_timeout","message":"connection pool exhausted","status":"timeout"},
+    {"service":"api-client","timestamp":"2026-05-11T12:30:02+00:00","trace_id":"pool-candidate","event_type":"request_failed","message":"request failed after pool timeout","status":"error"}
+  ]
+}

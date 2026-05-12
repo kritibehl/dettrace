@@ -1,0 +1,15 @@
+Incident Identifier: DETTRACE-DEMO-001
+Process: DetTraceDeviceAgent
+Exception Type: EXC_BAD_ACCESS (SIGSEGV)
+
+Thread 4 Crashed:
+0   DetTraceDeviceAgent   0x00000001000012a0 SerialTransport::disconnect + 32
+1   DetTraceDeviceAgent   0x0000000100001540 DeviceSession::poll + 96
+2   DetTraceDeviceAgent   0x00000001000018f4 EventLoop::run + 120
+3   DetTraceDeviceAgent   0x0000000100001b10 main + 48
+
+Expected Symbolicated Path:
+0   DetTraceDeviceAgent   0x00000001000011f0 SerialTransport::readHeartbeat + 24
+1   DetTraceDeviceAgent   0x0000000100001540 DeviceSession::poll + 96
+2   DetTraceDeviceAgent   0x00000001000018f4 EventLoop::run + 120
+3   DetTraceDeviceAgent   0x0000000100001b10 main + 48
