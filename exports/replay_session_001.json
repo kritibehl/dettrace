@@ -1,0 +1,45 @@
+{
+  "session_id": "replay_session_001",
+  "project": "DetTrace++",
+  "summary": "Replay-driven failure-forensics session combining divergence analysis, protocol replay, crash-frame comparison, and root-cause explanation.",
+  "divergence_summary": {
+    "first_divergence_index": 4,
+    "expected_event": "interrupt_cleared",
+    "actual_event": "sensor_read",
+    "expected_state": "READY",
+    "actual_state": "WAITING",
+    "probable_defect_type": "missing_interrupt_clear"
+  },
+  "root_cause_panel": {
+    "probable_root_cause": "Device interrupt was not cleared before the next sensor read, leaving the device in WAITING state before downstream packet handling.",
+    "likely_affected_subsystem": "DeviceSession / interrupt lifecycle / serial-device state transition",
+    "confidence": 0.84,
+    "operator_summary": "Inspect interrupt clear ordering before allowing sensor reads or network packet handling."
+  },
+  "protocol_replay_chain": {
+    "scenario": "rpc-timeout-chain",
+    "chain": [
+      "frontend",
+      "control-service",
+      "device-service"
+    ],
+    "detected_pattern": "timeout_chain",
+    "count": 3,
+    "severity": "high"
+  },
+  "crash_frame_mismatch": {
+    "expected_frame": "SerialTransport::readHeartbeat",
+    "actual_frame": "SerialTransport::disconnect",
+    "first_mismatched_frame": 0,
+    "mismatched_subsystem": "SerialTransport / DeviceSession lifecycle",
+    "probable_defect_class": "disconnect-before-heartbeat"
+  },
+  "validation_artifacts": [
+    "device_replay/sample_device_trace.json",
+    "device_replay/sample_device_trace_fixed.json",
+    "device_replay/reports/device_replay_summary.md",
+    "crash_analysis/crash_diff_report.json",
+    "contract_validation/contract_validation_report.json",
+    "ui/replay_timeline/index.html"
+  ]
+}

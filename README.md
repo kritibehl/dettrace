@@ -1658,3 +1658,25 @@ DetTrace includes additional Apple- and QA-oriented validation artifacts:
 - regression summary generation
 
 These artifacts demonstrate validation, crash triage, and contract-testing familiarity without claiming production Apple tooling or enterprise API ownership.
+
+---
+
+## Replay Session Export
+
+DetTrace includes a recruiter-readable replay session export under `exports/`.
+
+Files:
+
+- `exports/replay_session_001.json`
+- `exports/replay_html_report.html`
+
+The export summarizes:
+
+- first-divergence evidence
+- expected vs actual replay state
+- replay-based root-cause panel
+- protocol timeout-chain replay
+- crash-frame mismatch
+- validation artifacts
+
+This is intended as a compact proof packet for debugging, QA, and systems-tooling review.

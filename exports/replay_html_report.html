@@ -1,0 +1,141 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>DetTrace++ Replay Session Report</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f6f7fb;
+      color: #111827;
+    }
+    main {
+      max-width: 980px;
+      margin: 42px auto;
+      padding: 0 22px 60px;
+    }
+    h1 { margin-bottom: 4px; font-size: 38px; }
+    .subtitle { color: #667085; margin-bottom: 28px; }
+    .card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 20px;
+      padding: 22px;
+      margin-bottom: 18px;
+      box-shadow: 0 10px 28px rgba(15, 23, 42, 0.07);
+    }
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .pill {
+      display: inline-block;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: #eef2ff;
+      border: 1px solid #c7d2fe;
+      margin: 4px 4px 4px 0;
+      font-size: 14px;
+    }
+    .bad {
+      background: #fee2e2;
+      border-color: #fca5a5;
+      color: #991b1b;
+      font-weight: 700;
+    }
+    .good {
+      background: #dcfce7;
+      border-color: #86efac;
+      color: #166534;
+      font-weight: 700;
+    }
+    .chain {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .chain span {
+      padding: 9px 13px;
+      border-radius: 999px;
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+    }
+    code {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+    @media (max-width: 760px) {
+      .row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>DetTrace++ Replay Session Report</h1>
+    <p class="subtitle">One-page export showing divergence, root cause, protocol replay, and crash-frame mismatch.</p>
+
+    <section class="card">
+      <h2>Divergence Summary</h2>
+      <div class="row">
+        <div>
+          <p><strong>Expected event:</strong> <span class="pill good">interrupt_cleared</span></p>
+          <p><strong>Expected state:</strong> <code>READY</code></p>
+        </div>
+        <div>
+          <p><strong>Actual event:</strong> <span class="pill bad">sensor_read</span></p>
+          <p><strong>Actual state:</strong> <code>WAITING</code></p>
+        </div>
+      </div>
+      <p><strong>First divergence:</strong> index <code>4</code></p>
+      <p><strong>Probable defect:</strong> <code>missing_interrupt_clear</code></p>
+    </section>
+
+    <section class="card">
+      <h2>Root-Cause Panel</h2>
+      <p><strong>Probable root cause:</strong> Device interrupt was not cleared before the next sensor read, leaving the device in WAITING state before downstream packet handling.</p>
+      <p><strong>Likely affected subsystem:</strong> DeviceSession / interrupt lifecycle / serial-device state transition</p>
+      <p><strong>Confidence:</strong> 0.84</p>
+      <p><strong>Operator summary:</strong> Inspect interrupt clear ordering before allowing sensor reads or network packet handling.</p>
+    </section>
+
+    <section class="card">
+      <h2>Protocol Replay Chain</h2>
+      <div class="chain">
+        <span>frontend</span>
+        <span>→</span>
+        <span>control-service</span>
+        <span>→</span>
+        <span>device-service</span>
+        <span class="bad">timeout</span>
+      </div>
+      <p><strong>Detected pattern:</strong> timeout_chain</p>
+      <p><strong>Count:</strong> 3</p>
+      <p><strong>Severity:</strong> high</p>
+    </section>
+
+    <section class="card">
+      <h2>Crash Frame Mismatch</h2>
+      <p><strong>Expected frame:</strong> <code>SerialTransport::readHeartbeat</code></p>
+      <p><strong>Actual frame:</strong> <code>SerialTransport::disconnect</code></p>
+      <p><strong>First mismatched frame:</strong> 0</p>
+      <p><strong>Mismatched subsystem:</strong> SerialTransport / DeviceSession lifecycle</p>
+      <p><strong>Probable defect class:</strong> disconnect-before-heartbeat</p>
+    </section>
+
+    <section class="card">
+      <h2>Validation Artifacts</h2>
+      <p><code>device_replay/sample_device_trace.json</code></p>
+      <p><code>device_replay/sample_device_trace_fixed.json</code></p>
+      <p><code>device_replay/reports/device_replay_summary.md</code></p>
+      <p><code>crash_analysis/crash_diff_report.json</code></p>
+      <p><code>contract_validation/contract_validation_report.json</code></p>
+      <p><code>ui/replay_timeline/index.html</code></p>
+    </section>
+  </main>
+</body>
+</html>
