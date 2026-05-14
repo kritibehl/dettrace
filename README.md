@@ -1710,3 +1710,37 @@ Files:
 These artifacts document heartbeat timeout windows, timing jitter observations, first-divergence evidence, and protocol sequencing failures.
 
 This is trace-driven software timing validation, not electrical signal-integrity analysis.
+
+---
+
+## Device Diagnostics and Command-Line Replay Inspection
+
+DetTrace includes additional diagnostics-oriented artifacts for product validation and device lifecycle debugging.
+
+### Hardware-interface diagnostic simulation
+
+Files under `hardware_diag/` model:
+
+- I2C timeout traces
+- USB reconnect behavior
+- PCIe-style enumeration flow
+- device probe sequencing
+
+These are software trace simulations, not driver/kernel/firmware implementations.
+
+### Command-line replay inspection
+
+`tools/replay_inspect_cli.py` supports:
+
+```bash
+python3 tools/replay_inspect_cli.py inspect-trace hardware_diag/i2c_timeout_trace.json
+python3 tools/replay_inspect_cli.py show-divergence hardware_diag/i2c_timeout_trace.json
+python3 tools/replay_inspect_cli.py show-timeouts hardware_diag/i2c_timeout_trace.json
+python3 tools/replay_inspect_cli.py show-retries hardware_diag/i2c_timeout_trace.json
+Device-health diagnostics
+
+Files under device_diag/ document unhealthy subsystem detection, timeout handling, reconnect recovery, degraded state, and recovery validation.
+
+Swift command-line parser
+
+swift_tools/DeviceReplayCLI.swift parses replay session exports and prints divergence/root-cause summaries.

@@ -1,0 +1,27 @@
+{
+  "scenario": "i2c-timeout-trace",
+  "safe_claim": "hardware-interface diagnostic simulation; not driver development",
+  "expected_flow": [
+    "probe_bus",
+    "address_device",
+    "read_register",
+    "ack_received",
+    "device_ready"
+  ],
+  "actual_flow": [
+    "probe_bus",
+    "address_device",
+    "read_register",
+    "timeout",
+    "retry_probe",
+    "stale_device_state"
+  ],
+  "diagnosis": {
+    "first_divergence_index": 3,
+    "expected_event": "ack_received",
+    "actual_event": "timeout",
+    "probable_defect_type": "i2c_ack_timeout",
+    "likely_affected_subsystem": "device probe / register read path",
+    "recovery_action": "retry probe and mark device degraded if ack does not arrive"
+  }
+}

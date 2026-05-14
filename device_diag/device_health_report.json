@@ -1,0 +1,19 @@
+{
+  "report_id": "device_health_001",
+  "status": "degraded",
+  "unhealthy_subsystem": "sensor_probe_path",
+  "symptoms": [
+    "sensor_read_timeout",
+    "device_reconnect",
+    "stale_device_state"
+  ],
+  "timeline": [
+    {"event": "probe_start", "status": "ok"},
+    {"event": "sensor_read", "status": "timeout"},
+    {"event": "device_reconnect", "status": "ok"},
+    {"event": "state_refresh", "status": "ok"},
+    {"event": "health_check_pass", "status": "recovered"}
+  ],
+  "recovery_path": "reconnect -> state_refresh -> health_check_pass",
+  "safe_claim": "device-health diagnostic simulation"
+}

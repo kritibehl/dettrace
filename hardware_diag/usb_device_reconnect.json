@@ -1,0 +1,26 @@
+{
+  "scenario": "usb-device-reconnect",
+  "safe_claim": "device lifecycle replay; not USB driver development",
+  "expected_flow": [
+    "usb_attach",
+    "descriptor_read",
+    "configuration_set",
+    "device_ready"
+  ],
+  "actual_flow": [
+    "usb_attach",
+    "descriptor_read",
+    "disconnect",
+    "reconnect",
+    "descriptor_read",
+    "device_ready"
+  ],
+  "diagnosis": {
+    "first_divergence_index": 2,
+    "expected_event": "configuration_set",
+    "actual_event": "disconnect",
+    "probable_defect_type": "transient_device_reconnect",
+    "likely_affected_subsystem": "device lifecycle / reconnect recovery path",
+    "recovery_action": "re-read descriptor after reconnect and validate stale state is cleared"
+  }
+}
