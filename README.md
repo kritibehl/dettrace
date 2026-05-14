@@ -1744,3 +1744,21 @@ Files under device_diag/ document unhealthy subsystem detection, timeout handlin
 Swift command-line parser
 
 swift_tools/DeviceReplayCLI.swift parses replay session exports and prints divergence/root-cause summaries.
+
+---
+
+## Hardware Diagnostic Test-Spec Matrix
+
+DetTrace includes a compact diagnostics review matrix at:
+
+- `device_diag/hardware_test_spec_matrix.md`
+
+The matrix maps diagnostic scenarios to:
+
+- expected device behavior
+- observable failure signal
+- replay evidence
+- validation command
+- pass/fail criteria
+
+This supports diagnostics review workflows using simulated replay artifacts, without claiming hardware lab, firmware, driver, or manufacturing-system ownership.
