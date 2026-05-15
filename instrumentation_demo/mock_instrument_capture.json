@@ -1,0 +1,61 @@
+{
+  "capture_id": "mock_capture_001",
+  "instrument": "mock-position-sensor",
+  "safe_claim": "mock instrument-data parsing and validation; not lab hardware control",
+  "expected_sample_count": 8,
+  "measurement_unit": "nm",
+  "allowed_range_nm": {
+    "min": 0,
+    "max": 100
+  },
+  "samples": [
+    {
+      "timestamp": "2026-05-14T10:00:00Z",
+      "channel_id": "CH1",
+      "measured_position_nm": 42.1,
+      "calibration_status": "valid",
+      "retry_count": 0,
+      "device_state": "ready"
+    },
+    {
+      "timestamp": "2026-05-14T10:00:01Z",
+      "channel_id": "CH1",
+      "measured_position_nm": 42.3,
+      "calibration_status": "valid",
+      "retry_count": 0,
+      "device_state": "ready"
+    },
+    {
+      "timestamp": "2026-05-14T10:00:02Z",
+      "channel_id": "CH1",
+      "measured_position_nm": 151.8,
+      "calibration_status": "valid",
+      "retry_count": 1,
+      "device_state": "ready"
+    },
+    {
+      "timestamp": "2026-05-14T10:00:04Z",
+      "channel_id": "CH1",
+      "measured_position_nm": 43.0,
+      "calibration_status": "drift_warning",
+      "retry_count": 2,
+      "device_state": "degraded"
+    },
+    {
+      "timestamp": "2026-05-14T10:00:05Z",
+      "channel_id": "CH1",
+      "measured_position_nm": 43.2,
+      "calibration_status": "drift_warning",
+      "retry_count": 2,
+      "device_state": "degraded"
+    },
+    {
+      "timestamp": "2026-05-14T10:00:07Z",
+      "channel_id": "CH1",
+      "measured_position_nm": 44.1,
+      "calibration_status": "valid",
+      "retry_count": 0,
+      "device_state": "recovered"
+    }
+  ]
+}

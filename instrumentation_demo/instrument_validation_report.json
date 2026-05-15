@@ -1,0 +1,108 @@
+{
+  "capture_id": "mock_capture_001",
+  "instrument": "mock-position-sensor",
+  "safe_claim": "mock instrument-data parsing and validation; not lab hardware control",
+  "sample_count": 6,
+  "expected_sample_count": 8,
+  "missing_sample_count": 2,
+  "incomplete_capture": true,
+  "missing_windows": [
+    {
+      "after": "2026-05-14T10:00:02+00:00",
+      "before": "2026-05-14T10:00:04+00:00",
+      "missing_sample_count_estimate": 1
+    },
+    {
+      "after": "2026-05-14T10:00:05+00:00",
+      "before": "2026-05-14T10:00:07+00:00",
+      "missing_sample_count_estimate": 1
+    }
+  ],
+  "out_of_range_count": 1,
+  "calibration_issue_count": 2,
+  "degraded_state_count": 3,
+  "retry_event_count": 3,
+  "diagnostic_status": "FAIL",
+  "findings": {
+    "out_of_range_samples": [
+      {
+        "timestamp": "2026-05-14T10:00:02Z",
+        "channel_id": "CH1",
+        "measured_position_nm": 151.8,
+        "calibration_status": "valid",
+        "retry_count": 1,
+        "device_state": "ready"
+      }
+    ],
+    "calibration_issues": [
+      {
+        "timestamp": "2026-05-14T10:00:04Z",
+        "channel_id": "CH1",
+        "measured_position_nm": 43.0,
+        "calibration_status": "drift_warning",
+        "retry_count": 2,
+        "device_state": "degraded"
+      },
+      {
+        "timestamp": "2026-05-14T10:00:05Z",
+        "channel_id": "CH1",
+        "measured_position_nm": 43.2,
+        "calibration_status": "drift_warning",
+        "retry_count": 2,
+        "device_state": "degraded"
+      }
+    ],
+    "degraded_states": [
+      {
+        "timestamp": "2026-05-14T10:00:04Z",
+        "channel_id": "CH1",
+        "measured_position_nm": 43.0,
+        "calibration_status": "drift_warning",
+        "retry_count": 2,
+        "device_state": "degraded"
+      },
+      {
+        "timestamp": "2026-05-14T10:00:05Z",
+        "channel_id": "CH1",
+        "measured_position_nm": 43.2,
+        "calibration_status": "drift_warning",
+        "retry_count": 2,
+        "device_state": "degraded"
+      },
+      {
+        "timestamp": "2026-05-14T10:00:07Z",
+        "channel_id": "CH1",
+        "measured_position_nm": 44.1,
+        "calibration_status": "valid",
+        "retry_count": 0,
+        "device_state": "recovered"
+      }
+    ],
+    "retry_events": [
+      {
+        "timestamp": "2026-05-14T10:00:02Z",
+        "channel_id": "CH1",
+        "measured_position_nm": 151.8,
+        "calibration_status": "valid",
+        "retry_count": 1,
+        "device_state": "ready"
+      },
+      {
+        "timestamp": "2026-05-14T10:00:04Z",
+        "channel_id": "CH1",
+        "measured_position_nm": 43.0,
+        "calibration_status": "drift_warning",
+        "retry_count": 2,
+        "device_state": "degraded"
+      },
+      {
+        "timestamp": "2026-05-14T10:00:05Z",
+        "channel_id": "CH1",
+        "measured_position_nm": 43.2,
+        "calibration_status": "drift_warning",
+        "retry_count": 2,
+        "device_state": "degraded"
+      }
+    ]
+  }
+}

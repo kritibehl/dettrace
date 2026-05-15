@@ -1762,3 +1762,27 @@ The matrix maps diagnostic scenarios to:
 - pass/fail criteria
 
 This supports diagnostics review workflows using simulated replay artifacts, without claiming hardware lab, firmware, driver, or manufacturing-system ownership.
+
+---
+
+## Mock Instrument Measurement Validation
+
+DetTrace includes a mock instrument-data validation workflow under `instrumentation_demo/`.
+
+Files:
+
+- `instrumentation_demo/mock_instrument_capture.json`
+- `instrumentation_demo/instrument_data_parser.py`
+- `instrumentation_demo/instrument_validation_report.json`
+- `instrumentation_demo/measurement_validation_report.md`
+
+The workflow parses structured measurement samples and detects:
+
+- missing measurements
+- incomplete capture windows
+- out-of-range sensor values
+- calibration drift warnings
+- retry events
+- degraded device states
+
+This is a mock hardware-adjacent diagnostic workflow, not laboratory instrument control or physical measurement automation.
