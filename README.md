@@ -1786,3 +1786,19 @@ The workflow parses structured measurement samples and detects:
 - degraded device states
 
 This is a mock hardware-adjacent diagnostic workflow, not laboratory instrument control or physical measurement automation.
+
+---
+
+## Runtime Replay Cases
+
+DetTrace includes small runtime-debugging replay cases under `runtime_replay_cases/`.
+
+Files:
+
+- `runtime_replay_cases/cache_fallback_trace.json`
+- `runtime_replay_cases/invalid_branch_target_trace.json`
+- `runtime_replay_cases/runtime_divergence_report.md`
+
+These cases compare expected versus observed interpreter-style execution traces for cache fallback and invalid branch-path behavior.
+
+Safe scope: runtime trace replay and first-divergence debugging. This does not claim VM implementation, JIT compiler work, compiler backend work, or production runtime optimization.

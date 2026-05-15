@@ -1,0 +1,63 @@
+{
+  "scenario": "cache-fallback-runtime-trace",
+  "safe_claim": "runtime trace replay for cache-fallback behavior; not a JIT compiler or VM implementation",
+  "expected_trace": [
+    {
+      "index": 0,
+      "event_type": "load_object_shape",
+      "runtime_state": "shape_A",
+      "message": "object shape matches cached assumption"
+    },
+    {
+      "index": 1,
+      "event_type": "inline_cache_hit",
+      "runtime_state": "optimized_path",
+      "message": "inline cache dispatches to optimized property load"
+    },
+    {
+      "index": 2,
+      "event_type": "property_load",
+      "runtime_state": "value_loaded",
+      "message": "property value loaded from cached offset"
+    },
+    {
+      "index": 3,
+      "event_type": "return_value",
+      "runtime_state": "complete",
+      "message": "optimized path returns expected value"
+    }
+  ],
+  "actual_trace": [
+    {
+      "index": 0,
+      "event_type": "load_object_shape",
+      "runtime_state": "shape_B",
+      "message": "object shape changed before cached property load"
+    },
+    {
+      "index": 1,
+      "event_type": "inline_cache_miss",
+      "runtime_state": "fallback_required",
+      "message": "shape assumption failed and cache fallback is required"
+    },
+    {
+      "index": 2,
+      "event_type": "generic_property_lookup",
+      "runtime_state": "fallback_path",
+      "message": "runtime falls back to generic property lookup"
+    },
+    {
+      "index": 3,
+      "event_type": "return_value",
+      "runtime_state": "complete",
+      "message": "fallback path returns value after slower lookup"
+    }
+  ],
+  "divergence": {
+    "first_divergence_index": 0,
+    "expected_event": "load_object_shape:shape_A",
+    "actual_event": "load_object_shape:shape_B",
+    "probable_runtime_issue": "cached_shape_assumption_invalidated",
+    "fallback_behavior": "inline_cache_miss -> generic_property_lookup"
+  }
+}

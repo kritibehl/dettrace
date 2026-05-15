@@ -1,0 +1,63 @@
+{
+  "scenario": "invalid-branch-target-runtime-trace",
+  "safe_claim": "runtime trace replay for invalid branch-path behavior; not compiler backend or VM optimizer work",
+  "expected_trace": [
+    {
+      "index": 0,
+      "event_type": "decode_branch",
+      "runtime_state": "target_validated",
+      "message": "branch target is inside valid bytecode range"
+    },
+    {
+      "index": 1,
+      "event_type": "jump_to_target",
+      "runtime_state": "pc_24",
+      "message": "program counter updates to valid target"
+    },
+    {
+      "index": 2,
+      "event_type": "execute_block",
+      "runtime_state": "block_active",
+      "message": "target block begins execution"
+    },
+    {
+      "index": 3,
+      "event_type": "return_value",
+      "runtime_state": "complete",
+      "message": "branch path completes normally"
+    }
+  ],
+  "actual_trace": [
+    {
+      "index": 0,
+      "event_type": "decode_branch",
+      "runtime_state": "target_unchecked",
+      "message": "branch target was not validated before jump"
+    },
+    {
+      "index": 1,
+      "event_type": "jump_to_target",
+      "runtime_state": "pc_999",
+      "message": "program counter jumps outside valid bytecode range"
+    },
+    {
+      "index": 2,
+      "event_type": "invalid_branch_target",
+      "runtime_state": "trap_required",
+      "message": "runtime detects invalid branch target"
+    },
+    {
+      "index": 3,
+      "event_type": "trap",
+      "runtime_state": "aborted",
+      "message": "execution aborts due to invalid branch"
+    }
+  ],
+  "divergence": {
+    "first_divergence_index": 0,
+    "expected_event": "decode_branch:target_validated",
+    "actual_event": "decode_branch:target_unchecked",
+    "probable_runtime_issue": "missing_branch_target_validation",
+    "fallback_behavior": "invalid_branch_target -> trap"
+  }
+}
