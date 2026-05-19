@@ -1802,3 +1802,19 @@ Files:
 These cases compare expected versus observed interpreter-style execution traces for cache fallback and invalid branch-path behavior.
 
 Safe scope: runtime trace replay and first-divergence debugging. This does not claim VM implementation, JIT compiler work, compiler backend work, or production runtime optimization.
+
+---
+
+## SystemVerilog FIFO Verification Lab
+
+DetTrace includes a small hardware-adjacent verification proof under `systemverilog_fifo_lab/`.
+
+The lab documents:
+
+- verification planning
+- directed testbench workflows
+- assertion coverage
+- corner-case validation
+- reset/full/empty/overflow/underflow behavior
+
+This is intended as a verification-learning and validation artifact, not production ASIC verification infrastructure.
