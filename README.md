@@ -1838,6 +1838,8 @@ Safe scope: these are replay and diagnostics artifacts. They do not claim driver
 
 ---
 
+---
+
 ## Replay Explorer Demo
 
 DetTrace includes a visual replay timeline demo:
