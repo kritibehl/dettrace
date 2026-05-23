@@ -1840,6 +1840,8 @@ Safe scope: these are replay and diagnostics artifacts. They do not claim driver
 
 ---
 
+---
+
 ## Replay Explorer Demo
 
 DetTrace includes a visual replay timeline demo:
@@ -1861,5 +1863,4 @@ Case study:
 
 Run the CLI replay explorer:
 
-```bash
-python3 tui/replay_explorer.py protocol_diag/spi_transfer_timeout.json
+    python3 tui/replay_explorer.py protocol_diag/spi_transfer_timeout.json
