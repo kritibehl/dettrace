@@ -1,0 +1,13 @@
+{
+  "scenario": "spi-transfer-timeout",
+  "safe_claim": "SPI-style protocol trace replay; not driver or firmware development",
+  "expected_flow": ["cs_assert", "spi_write", "spi_read", "cs_deassert", "transfer_complete"],
+  "actual_flow": ["cs_assert", "spi_write", "timeout", "retry_transfer", "stale_device_state"],
+  "diagnosis": {
+    "first_divergence_index": 2,
+    "expected_event": "spi_read",
+    "actual_event": "timeout",
+    "probable_defect_type": "spi_read_timeout",
+    "recovery_action": "retry transfer and verify stale state is cleared"
+  }
+}

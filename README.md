@@ -1818,3 +1818,20 @@ The lab documents:
 - reset/full/empty/overflow/underflow behavior
 
 This is intended as a verification-learning and validation artifact, not production ASIC verification infrastructure.
+
+---
+
+## Diagnostics / Developer-Tools Expansion Pack
+
+DetTrace includes lightweight trace-based diagnostics artifacts for systems and developer-tools workflows:
+
+- SPI-style transfer timeout replay
+- CAN-style message-drop replay
+- replay latency trace summaries
+- flamegraph-style performance notes
+- syscall-style trace replay
+- process timeline visualization notes
+- LLDB/GDB-style replay debugging workflow
+- simple CLI replay explorer
+
+Safe scope: these are replay and diagnostics artifacts. They do not claim driver development, firmware ownership, kernel engineering, eBPF implementation, production perf tooling, or debugger plugin development.

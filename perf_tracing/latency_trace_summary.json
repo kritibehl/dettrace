@@ -1,0 +1,15 @@
+{
+  "scenario": "replay-latency-summary",
+  "safe_claim": "latency trace summary for replay diagnostics; not production perf profiling",
+  "events": [
+    {"stage": "parse_trace", "latency_ms": 3.2},
+    {"stage": "compare_events", "latency_ms": 5.7},
+    {"stage": "detect_divergence", "latency_ms": 1.4},
+    {"stage": "generate_report", "latency_ms": 4.9}
+  ],
+  "summary": {
+    "p95_stage_ms": 5.7,
+    "slowest_stage": "compare_events",
+    "diagnostic_note": "event comparison dominates replay report generation"
+  }
+}

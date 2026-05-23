@@ -1,0 +1,13 @@
+{
+  "scenario": "syscall-trace-replay",
+  "safe_claim": "syscall-style trace replay; not kernel development or real eBPF instrumentation",
+  "expected_flow": ["open", "read", "write", "close"],
+  "actual_flow": ["open", "read", "EIO", "retry_read", "close"],
+  "diagnosis": {
+    "first_divergence_index": 2,
+    "expected_event": "write",
+    "actual_event": "EIO",
+    "probable_defect_type": "read_io_error",
+    "operator_summary": "Replay surfaces I/O error before downstream retry behavior"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "scenario": "can-style-message-drop",
+  "safe_claim": "CAN-style replay trace; not automotive firmware or bus driver work",
+  "expected_flow": ["bus_idle", "frame_send", "ack_received", "state_update"],
+  "actual_flow": ["bus_idle", "frame_send", "ack_missing", "retry_send", "degraded_state"],
+  "diagnosis": {
+    "first_divergence_index": 2,
+    "expected_event": "ack_received",
+    "actual_event": "ack_missing",
+    "probable_defect_type": "message_ack_loss",
+    "recovery_action": "retry frame and surface degraded state if ack remains missing"
+  }
+}
