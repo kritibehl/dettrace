@@ -1835,3 +1835,29 @@ DetTrace includes lightweight trace-based diagnostics artifacts for systems and 
 - simple CLI replay explorer
 
 Safe scope: these are replay and diagnostics artifacts. They do not claim driver development, firmware ownership, kernel engineering, eBPF implementation, production perf tooling, or debugger plugin development.
+
+---
+
+## Replay Explorer Demo
+
+DetTrace includes a visual replay timeline demo:
+
+- `reports/trace_timeline.html`
+
+The demo shows a SPI-style timeout case with:
+
+- expected protocol flow
+- actual replay flow
+- first-divergence highlighting
+- probable defect type
+- replay-based recovery action
+- safe embedded-adjacent diagnostic framing
+
+Case study:
+
+- `case_studies/spi_timeout_first_divergence.md`
+
+Run the CLI replay explorer:
+
+```bash
+python3 tui/replay_explorer.py protocol_diag/spi_transfer_timeout.json

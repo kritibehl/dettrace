@@ -1,0 +1,157 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>DetTrace Replay Explorer Demo</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f6f7fb;
+      color: #111827;
+    }
+    main {
+      max-width: 1000px;
+      margin: 42px auto;
+      padding: 0 22px 60px;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 38px;
+    }
+    .subtitle {
+      color: #667085;
+      margin-bottom: 28px;
+      line-height: 1.55;
+    }
+    .card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 20px;
+      padding: 22px;
+      margin-bottom: 18px;
+      box-shadow: 0 10px 28px rgba(15, 23, 42, 0.07);
+    }
+    .timeline {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 14px 0 18px;
+      align-items: center;
+    }
+    .event {
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: #eef2ff;
+      border: 1px solid #c7d2fe;
+      font-size: 14px;
+    }
+    .arrow {
+      color: #64748b;
+      font-weight: 700;
+    }
+    .divergence {
+      background: #fee2e2;
+      border-color: #fca5a5;
+      color: #991b1b;
+      font-weight: 700;
+      animation: pulse 1.2s ease-in-out infinite alternate;
+    }
+    .good {
+      background: #dcfce7;
+      border-color: #86efac;
+      color: #166534;
+      font-weight: 700;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    code {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+    .label {
+      color: #475569;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    @keyframes pulse {
+      from { transform: scale(1); box-shadow: none; }
+      to { transform: scale(1.04); box-shadow: 0 0 0 5px rgba(248, 113, 113, 0.16); }
+    }
+    @media (max-width: 760px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>DetTrace Replay Explorer Demo</h1>
+    <p class="subtitle">
+      SPI timeout replay showing expected vs actual protocol flow, first-divergence highlighting,
+      and replay-based root-cause interpretation.
+    </p>
+
+    <section class="card">
+      <h2>Expected Protocol Flow</h2>
+      <div class="timeline">
+        <span class="event good">cs_assert</span>
+        <span class="arrow">→</span>
+        <span class="event good">spi_write</span>
+        <span class="arrow">→</span>
+        <span class="event good">spi_read</span>
+        <span class="arrow">→</span>
+        <span class="event good">cs_deassert</span>
+        <span class="arrow">→</span>
+        <span class="event good">transfer_complete</span>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Actual Replay Flow</h2>
+      <div class="timeline">
+        <span class="event good">cs_assert</span>
+        <span class="arrow">→</span>
+        <span class="event good">spi_write</span>
+        <span class="arrow">→</span>
+        <span class="event divergence">timeout</span>
+        <span class="arrow">→</span>
+        <span class="event">retry_transfer</span>
+        <span class="arrow">→</span>
+        <span class="event">stale_device_state</span>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>First Divergence</h2>
+      <div class="grid">
+        <div>
+          <p class="label">Expected</p>
+          <p><code>index=2, event=spi_read</code></p>
+        </div>
+        <div>
+          <p class="label">Actual</p>
+          <p><code>index=2, event=timeout</code></p>
+        </div>
+      </div>
+      <p><strong>Probable defect type:</strong> <code>spi_read_timeout</code></p>
+      <p><strong>Recovery action:</strong> retry transfer and verify stale state is cleared.</p>
+    </section>
+
+    <section class="card">
+      <h2>Why Replay Helps</h2>
+      <p>
+        Logs may only show a later degraded device state. The replay timeline highlights the earliest protocol-state
+        divergence: the expected SPI read was replaced by a timeout before retry behavior and stale state appeared.
+      </p>
+      <p>
+        Safe scope: SPI-style protocol trace replay for diagnostics. This does not claim driver or firmware development.
+      </p>
+    </section>
+  </main>
+</body>
+</html>
