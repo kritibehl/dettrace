@@ -1864,3 +1864,17 @@ Case study:
 Run the CLI replay explorer:
 
     python3 tui/replay_explorer.py protocol_diag/spi_transfer_timeout.json
+
+### Replay Timeline Demo
+
+SPI timeout replay visualization:
+
+![Replay Timeline Demo](demo_assets/replay_timeline_demo.gif)
+
+The replay explorer highlights:
+
+- expected vs actual protocol flow
+- first-divergence detection
+- timeout propagation
+- stale device state transitions
+- replay-based recovery interpretation
