@@ -1878,3 +1878,17 @@ The replay explorer highlights:
 - timeout propagation
 - stale device state transitions
 - replay-based recovery interpretation
+
+### Replay Timeline Demo
+
+SPI timeout replay visualization:
+
+![Replay Timeline Demo](demo_assets/replay_timeline_demo.gif)
+
+The replay explorer highlights:
+
+- expected vs actual protocol flow
+- first-divergence detection
+- timeout propagation
+- stale device state transitions
+- replay-based recovery interpretation
