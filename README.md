@@ -1892,3 +1892,66 @@ The replay explorer highlights:
 - timeout propagation
 - stale device state transitions
 - replay-based recovery interpretation
+
+---
+
+## Trace → Divergence → Replay
+
+```text
+Raw Trace / Events
+        |
+        v
+Expected vs Actual Sequence
+        |
+        v
+First Divergence Detection
+        |
+        v
+Replay Diff + Root-Cause Panel
+        |
+        v
+Visual Report / CLI Output / Regression Evidence
+
+Example:
+
+Expected: cs_assert -> spi_write -> spi_read -> cs_deassert
+Actual:   cs_assert -> spi_write -> timeout  -> retry_transfer
+
+First divergence:
+index=2
+expected=spi_read
+actual=timeout
+
+See also:
+
+docs/images/trace_divergence_replay.md
+60-Second Replay Walkthrough
+
+DetTrace includes a visual replay GIF:
+
+The walkthrough shows:
+
+expected vs actual protocol flow
+highlighted first divergence
+timeout propagation
+stale device state transition
+replay-based recovery interpretation
+C++ Replay Testing
+
+DetTrace includes C++17 replay validation artifacts.
+
+Run:
+
+make -C device_replay run
+
+The C++ replay test validates:
+
+expected vs actual device-event replay
+first-divergence detection
+interrupt-clear ordering
+failing-to-passing defect reproduction
+C-compatible replay-result output
+
+More details:
+
+docs/testing/cpp_testing.md
