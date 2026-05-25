@@ -1,0 +1,25 @@
+{
+  "scenario": "http-traffic-capture-replay",
+  "safe_claim": "traffic capture/replay example using structured mock events; not packet capture or production network tracing",
+  "expected_flow": [
+    "dns_resolve",
+    "tcp_connect",
+    "tls_handshake",
+    "http_request",
+    "http_200"
+  ],
+  "actual_flow": [
+    "dns_resolve",
+    "tcp_connect",
+    "tls_handshake_timeout",
+    "retry_connect",
+    "http_unavailable"
+  ],
+  "diagnosis": {
+    "first_divergence_index": 2,
+    "expected_event": "tls_handshake",
+    "actual_event": "tls_handshake_timeout",
+    "probable_defect_type": "tls_handshake_timeout",
+    "replay_value": "surfaces protocol failure before downstream HTTP unavailable response"
+  }
+}

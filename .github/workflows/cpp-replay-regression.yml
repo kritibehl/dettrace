@@ -1,0 +1,24 @@
+name: C++ Replay Regression
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  cpp-replay-regression:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Configure CMake
+        run: cmake -S . -B build
+
+      - name: Build replay tools
+        run: cmake --build build --config Release
+
+      - name: Run C++ replay regression tests
+        run: ctest --test-dir build --output-on-failure

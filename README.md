@@ -1955,3 +1955,27 @@ C-compatible replay-result output
 More details:
 
 docs/testing/cpp_testing.md
+
+---
+
+## C++ Replay Regression and Developer-Tools Workflow
+
+DetTrace includes C++ replay-debugging validation and CI-backed regression checks.
+
+Artifacts:
+
+- `CMakeLists.txt`
+- `cpp_tests/replay_regression_tests.cpp`
+- `.github/workflows/cpp-replay-regression.yml`
+- `failure_modes/failure_mode_library.md`
+- `traffic_replay/http_capture_replay_example.json`
+
+The workflow validates:
+
+- first-divergence expectations
+- failure-mode reproduction
+- CLI/debugging artifact consistency
+- C/C++ replay tooling builds
+- regression test execution through CMake/CTest
+
+Safe scope: this is replay-debugging and developer-tool validation. It does not claim production firmware, kernel, packet-capture, or VM implementation work.
