@@ -1,0 +1,33 @@
+{
+  "workflow": "pre-post-silicon-style-bringup-trace-validation",
+  "safe_claim": "firmware-style trace validation; not silicon ownership or hardware lab bring-up",
+  "expected_trace": "bringup_validation/pre_silicon_boot_trace.json",
+  "observed_trace": "bringup_validation/post_silicon_boot_trace.json",
+  "expected_event_count": 7,
+  "observed_event_count": 8,
+  "first_divergence": {
+    "index": 3,
+    "expected": {
+      "phase": "register_init",
+      "event": "clock_enable",
+      "register": "CLK_CTRL",
+      "value": "0x1",
+      "calibration_status": "not_started",
+      "status": "ok"
+    },
+    "observed": {
+      "phase": "register_init",
+      "event": "clock_enable_timeout",
+      "register": "CLK_CTRL",
+      "value": "0x0",
+      "calibration_status": "not_started",
+      "status": "timeout"
+    }
+  },
+  "timeout_event_count": 1,
+  "retry_event_count": 1,
+  "calibration_issue_count": 2,
+  "blocked_or_degraded_event_count": 2,
+  "diagnostic_status": "FAIL",
+  "root_cause_summary": "Observed boot trace diverged during register initialization: expected clock_enable but observed clock_enable_timeout, followed by retry behavior, calibration drift warning, and blocked ready state."
+}
