@@ -1979,3 +1979,39 @@ The workflow validates:
 - regression test execution through CMake/CTest
 
 Safe scope: this is replay-debugging and developer-tool validation. It does not claim production firmware, kernel, packet-capture, or VM implementation work.
+
+---
+
+## Bring-Up Trace Validation and Firmware-Style Telemetry
+
+DetTrace includes two additional diagnostics workflows:
+
+### Pre/Post-Silicon-Style Bring-Up Trace Validation
+
+Files under `bringup_validation/` compare expected pre-silicon-style boot sequencing against observed post-silicon-style traces.
+
+The workflow checks:
+
+- boot phase ordering
+- register initialization sequence
+- calibration status
+- timeout/retry events
+- first divergence
+
+Safe scope: firmware-style trace validation only. This does not claim silicon ownership or hardware lab bring-up.
+
+### Structured Firmware-Style Log Queries
+
+Files under `firmware_logs/` provide searchable JSONL telemetry and summary reporting.
+
+The workflow supports:
+
+- filtering by device ID
+- filtering by severity
+- filtering by boot phase
+- calibration-failure detection
+- retry-storm classification
+- timeout-chain summaries
+- failure-family grouping
+
+Safe scope: structured diagnostic telemetry simulation, not production firmware telemetry ownership or Splunk deployment.

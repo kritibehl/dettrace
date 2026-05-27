@@ -1,0 +1,12 @@
+{"timestamp":"2026-05-15T09:00:00Z","device_id":"dev-001","severity":"INFO","boot_phase":"reset","event":"reset_asserted","message":"reset asserted"}
+{"timestamp":"2026-05-15T09:00:01Z","device_id":"dev-001","severity":"INFO","boot_phase":"reset","event":"reset_released","message":"reset released"}
+{"timestamp":"2026-05-15T09:00:02Z","device_id":"dev-001","severity":"INFO","boot_phase":"register_init","event":"clock_enable","message":"clock enable started"}
+{"timestamp":"2026-05-15T09:00:03Z","device_id":"dev-001","severity":"WARN","boot_phase":"register_init","event":"clock_enable_retry","message":"clock enable retry 1"}
+{"timestamp":"2026-05-15T09:00:04Z","device_id":"dev-001","severity":"WARN","boot_phase":"register_init","event":"clock_enable_retry","message":"clock enable retry 2"}
+{"timestamp":"2026-05-15T09:00:05Z","device_id":"dev-001","severity":"ERROR","boot_phase":"register_init","event":"clock_enable_timeout","message":"clock enable timed out"}
+{"timestamp":"2026-05-15T09:00:06Z","device_id":"dev-001","severity":"INFO","boot_phase":"calibration","event":"calibration_start","message":"calibration started"}
+{"timestamp":"2026-05-15T09:00:07Z","device_id":"dev-001","severity":"ERROR","boot_phase":"calibration","event":"calibration_drift","message":"calibration drift detected"}
+{"timestamp":"2026-05-15T09:00:08Z","device_id":"dev-001","severity":"ERROR","boot_phase":"device_ready","event":"ready_blocked","message":"ready state blocked due to calibration drift"}
+{"timestamp":"2026-05-15T09:00:00Z","device_id":"dev-002","severity":"INFO","boot_phase":"reset","event":"reset_asserted","message":"reset asserted"}
+{"timestamp":"2026-05-15T09:00:01Z","device_id":"dev-002","severity":"INFO","boot_phase":"reset","event":"reset_released","message":"reset released"}
+{"timestamp":"2026-05-15T09:00:02Z","device_id":"dev-002","severity":"INFO","boot_phase":"device_ready","event":"ready_asserted","message":"device ready"}

@@ -1,0 +1,14 @@
+{
+  "trace_id": "post_silicon_observed_boot_v1",
+  "safe_claim": "observed-style firmware trace simulation; not physical silicon validation ownership",
+  "boot_events": [
+    {"index": 0, "phase": "reset", "event": "reset_asserted", "register": "RESET_CTRL", "value": "0x1", "calibration_status": "not_started", "status": "ok"},
+    {"index": 1, "phase": "reset", "event": "reset_released", "register": "RESET_CTRL", "value": "0x0", "calibration_status": "not_started", "status": "ok"},
+    {"index": 2, "phase": "register_init", "event": "pll_config_write", "register": "PLL_CFG", "value": "0xA5", "calibration_status": "not_started", "status": "ok"},
+    {"index": 3, "phase": "register_init", "event": "clock_enable_timeout", "register": "CLK_CTRL", "value": "0x0", "calibration_status": "not_started", "status": "timeout"},
+    {"index": 4, "phase": "register_init", "event": "retry_clock_enable", "register": "CLK_CTRL", "value": "0x1", "calibration_status": "not_started", "status": "retry"},
+    {"index": 5, "phase": "calibration", "event": "calibration_start", "register": "CAL_CTRL", "value": "0x1", "calibration_status": "running", "status": "ok"},
+    {"index": 6, "phase": "calibration", "event": "calibration_drift_warning", "register": "CAL_STATUS", "value": "0x2", "calibration_status": "drift_warning", "status": "degraded"},
+    {"index": 7, "phase": "device_ready", "event": "ready_blocked", "register": "BOOT_STATUS", "value": "0x0", "calibration_status": "drift_warning", "status": "blocked"}
+  ]
+}

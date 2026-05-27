@@ -1,0 +1,28 @@
+{
+  "event_count": 12,
+  "severity_counts": {
+    "INFO": 7,
+    "WARN": 2,
+    "ERROR": 3
+  },
+  "boot_phase_counts": {
+    "reset": 4,
+    "register_init": 4,
+    "calibration": 2,
+    "device_ready": 2
+  },
+  "retry_event_count": 2,
+  "timeout_event_count": 1,
+  "calibration_failure_count": 1,
+  "retry_storms": {
+    "dev-001": 2
+  },
+  "timeout_chains": {
+    "dev-001": 2
+  },
+  "failure_families": {
+    "calibration_failure": 1,
+    "timeout_chain": 1,
+    "retry_storm": 2
+  }
+}

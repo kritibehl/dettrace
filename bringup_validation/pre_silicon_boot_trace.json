@@ -1,0 +1,13 @@
+{
+  "trace_id": "pre_silicon_expected_boot_v1",
+  "safe_claim": "firmware-style bring-up trace validation; not silicon ownership or hardware lab bring-up",
+  "boot_events": [
+    {"index": 0, "phase": "reset", "event": "reset_asserted", "register": "RESET_CTRL", "value": "0x1", "calibration_status": "not_started", "status": "ok"},
+    {"index": 1, "phase": "reset", "event": "reset_released", "register": "RESET_CTRL", "value": "0x0", "calibration_status": "not_started", "status": "ok"},
+    {"index": 2, "phase": "register_init", "event": "pll_config_write", "register": "PLL_CFG", "value": "0xA5", "calibration_status": "not_started", "status": "ok"},
+    {"index": 3, "phase": "register_init", "event": "clock_enable", "register": "CLK_CTRL", "value": "0x1", "calibration_status": "not_started", "status": "ok"},
+    {"index": 4, "phase": "calibration", "event": "calibration_start", "register": "CAL_CTRL", "value": "0x1", "calibration_status": "running", "status": "ok"},
+    {"index": 5, "phase": "calibration", "event": "calibration_done", "register": "CAL_STATUS", "value": "0x1", "calibration_status": "valid", "status": "ok"},
+    {"index": 6, "phase": "device_ready", "event": "ready_asserted", "register": "BOOT_STATUS", "value": "0x1", "calibration_status": "valid", "status": "ok"}
+  ]
+}
