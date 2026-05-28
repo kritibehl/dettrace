@@ -2040,3 +2040,28 @@ Quality artifacts under `quality_artifacts/` include:
 - failure taxonomy
 
 Safe scope: replay-based diagnostics and QA workflows. This does not claim USB/PCIe/DisplayPort driver development, kernel engineering, or firmware ownership.
+
+---
+
+## Large-Scale I/O Transport Validation Harness
+
+DetTrace includes a repeatable validation harness under `validation_harness/`.
+
+The suite runs a 20-scenario I/O transport failure corpus across repeated executions:
+
+- 100 runs = 2,000 validations
+- 200 runs = 4,000 validations
+- 500 runs = 10,000 validations
+
+Artifacts:
+
+- `validation_harness/run_transport_suite.py`
+- `validation_harness/suite_report_100.json`
+- `validation_harness/suite_report_200.json`
+- `validation_harness/suite_report_500.json`
+- `failure_library/io_failure_corpus.json`
+- `reports/io_transport_replay_viewer.html`
+
+The corpus covers USB, PCIe-style enumeration, DisplayPort-style link training, accessory reconnect behavior, timeout chains, retry storms, stale states, and expected failure detections.
+
+Safe scope: simulated I/O transport replay validation and QA workflows; not driver, firmware, kernel, or hardware-lab ownership.

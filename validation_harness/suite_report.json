@@ -1,0 +1,122 @@
+{
+  "workflow": "large-scale-io-transport-validation-harness",
+  "safe_claim": "repeatable simulated I/O transport replay validation; not hardware lab, driver, firmware, or kernel ownership",
+  "runs": 500,
+  "scenario_count": 20,
+  "total_validations": 10000,
+  "pass": 10000,
+  "validation_failures": 0,
+  "family_counts": {
+    "usb": 2000,
+    "pcie": 2000,
+    "displayport": 2000,
+    "accessory": 2000,
+    "transport": 2000
+  },
+  "expected_status_counts": {
+    "FAIL": 7500,
+    "PASS": 2500
+  },
+  "sample_results": [
+    {
+      "id": "usb_timeout_001",
+      "family": "usb",
+      "expected_event": "descriptor_read",
+      "actual_event": "timeout",
+      "expected_status": "FAIL",
+      "observed_status": "FAIL",
+      "validation_passed": true,
+      "run_id": 0
+    },
+    {
+      "id": "usb_disconnect_002",
+      "family": "usb",
+      "expected_event": "configuration_set",
+      "actual_event": "disconnect",
+      "expected_status": "FAIL",
+      "observed_status": "FAIL",
+      "validation_passed": true,
+      "run_id": 0
+    },
+    {
+      "id": "usb_reconnect_003",
+      "family": "usb",
+      "expected_event": "device_ready",
+      "actual_event": "device_ready",
+      "expected_status": "PASS",
+      "observed_status": "PASS",
+      "validation_passed": true,
+      "run_id": 0
+    },
+    {
+      "id": "usb_stale_state_004",
+      "family": "usb",
+      "expected_event": "state_refresh",
+      "actual_event": "stale_device_state",
+      "expected_status": "FAIL",
+      "observed_status": "FAIL",
+      "validation_passed": true,
+      "run_id": 0
+    },
+    {
+      "id": "pcie_enum_failure_005",
+      "family": "pcie",
+      "expected_event": "config_read",
+      "actual_event": "config_read_timeout",
+      "expected_status": "FAIL",
+      "observed_status": "FAIL",
+      "validation_passed": true,
+      "run_id": 0
+    },
+    {
+      "id": "pcie_partial_enum_006",
+      "family": "pcie",
+      "expected_event": "bar_assign",
+      "actual_event": "missing_bar_assignment",
+      "expected_status": "FAIL",
+      "observed_status": "FAIL",
+      "validation_passed": true,
+      "run_id": 0
+    },
+    {
+      "id": "pcie_retry_recovery_007",
+      "family": "pcie",
+      "expected_event": "device_ready",
+      "actual_event": "device_ready",
+      "expected_status": "PASS",
+      "observed_status": "PASS",
+      "validation_passed": true,
+      "run_id": 0
+    },
+    {
+      "id": "pcie_interrupt_route_008",
+      "family": "pcie",
+      "expected_event": "interrupt_route",
+      "actual_event": "interrupt_route_missing",
+      "expected_status": "FAIL",
+      "observed_status": "FAIL",
+      "validation_passed": true,
+      "run_id": 0
+    },
+    {
+      "id": "displayport_link_loss_009",
+      "family": "displayport",
+      "expected_event": "link_ready",
+      "actual_event": "link_loss",
+      "expected_status": "FAIL",
+      "observed_status": "FAIL",
+      "validation_passed": true,
+      "run_id": 0
+    },
+    {
+      "id": "displayport_recovery_010",
+      "family": "displayport",
+      "expected_event": "display_active",
+      "actual_event": "display_active",
+      "expected_status": "PASS",
+      "observed_status": "PASS",
+      "validation_passed": true,
+      "run_id": 0
+    }
+  ]
+}
