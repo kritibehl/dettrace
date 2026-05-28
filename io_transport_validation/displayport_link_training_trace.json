@@ -1,0 +1,16 @@
+{
+  "scenario": "displayport-style-link-training-recovery",
+  "safe_claim": "DisplayPort-style link training replay; not display driver or firmware development",
+  "expected_flow": ["hotplug_detect", "link_training_start", "lane_align", "link_ready", "display_active"],
+  "actual_flow": ["hotplug_detect", "link_training_start", "lane_align_timeout", "retry_link_training", "lane_align", "link_ready", "display_active"],
+  "expected_recovery": true,
+  "diagnosis": {
+    "first_divergence_index": 2,
+    "expected_event": "lane_align",
+    "actual_event": "lane_align_timeout",
+    "recovery_observed": true,
+    "final_state": "display_active",
+    "diagnostic_status": "PASS",
+    "reason": "link-training timeout recovered after retry and reached display_active"
+  }
+}

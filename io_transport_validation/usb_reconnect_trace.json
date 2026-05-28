@@ -1,0 +1,16 @@
+{
+  "scenario": "usb-reconnect-recovery",
+  "safe_claim": "USB-style transport replay; not USB driver development",
+  "expected_flow": ["usb_attach", "descriptor_read", "configuration_set", "device_ready"],
+  "actual_flow": ["usb_attach", "descriptor_read", "disconnect", "reconnect", "descriptor_read", "configuration_set", "device_ready"],
+  "expected_recovery": true,
+  "diagnosis": {
+    "first_divergence_index": 2,
+    "expected_event": "configuration_set",
+    "actual_event": "disconnect",
+    "recovery_observed": true,
+    "final_state": "device_ready",
+    "diagnostic_status": "PASS",
+    "reason": "disconnect was recovered through reconnect, descriptor re-read, configuration_set, and device_ready"
+  }
+}

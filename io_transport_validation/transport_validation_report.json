@@ -1,0 +1,79 @@
+{
+  "workflow": "io-transport-replay-validation",
+  "safe_claim": "I/O transport trace replay and diagnostics; not driver, firmware, or kernel development",
+  "trace_count": 5,
+  "validation_pass_count": 4,
+  "validation_fail_count": 1,
+  "results": [
+    {
+      "scenario": "usb-reconnect-recovery",
+      "file": "io_transport_validation/usb_reconnect_trace.json",
+      "safe_claim": "USB-style transport replay; not USB driver development",
+      "first_divergence_index": 2,
+      "expected_event": "configuration_set",
+      "actual_event": "disconnect",
+      "recovery_observed": true,
+      "final_state": "device_ready",
+      "declared_status": "PASS",
+      "computed_status": "PASS",
+      "reason": "disconnect was recovered through reconnect, descriptor re-read, configuration_set, and device_ready",
+      "validation_passed": true
+    },
+    {
+      "scenario": "pcie-style-enumeration-failure",
+      "file": "io_transport_validation/pcie_enumeration_trace.json",
+      "safe_claim": "PCIe-style enumeration replay; not PCIe driver or kernel development",
+      "first_divergence_index": 1,
+      "expected_event": "config_read",
+      "actual_event": "config_read_timeout",
+      "recovery_observed": false,
+      "final_state": "stale_device_state",
+      "declared_status": "FAIL",
+      "computed_status": "PASS",
+      "reason": "enumeration did not reach BAR assignment or ready state after config-read timeout",
+      "validation_passed": false
+    },
+    {
+      "scenario": "displayport-style-link-training-recovery",
+      "file": "io_transport_validation/displayport_link_training_trace.json",
+      "safe_claim": "DisplayPort-style link training replay; not display driver or firmware development",
+      "first_divergence_index": 2,
+      "expected_event": "lane_align",
+      "actual_event": "lane_align_timeout",
+      "recovery_observed": true,
+      "final_state": "display_active",
+      "declared_status": "PASS",
+      "computed_status": "PASS",
+      "reason": "link-training timeout recovered after retry and reached display_active",
+      "validation_passed": true
+    },
+    {
+      "scenario": "accessory-disconnect-recovery",
+      "file": "io_transport_validation/accessory_disconnect_recovery.json",
+      "safe_claim": "accessory lifecycle replay; not accessory firmware or driver development",
+      "first_divergence_index": 2,
+      "expected_event": "session_ready",
+      "actual_event": "disconnect",
+      "recovery_observed": true,
+      "final_state": "session_ready",
+      "declared_status": "PASS",
+      "computed_status": "PASS",
+      "reason": "accessory disconnect recovered through reconnect and capability re-read",
+      "validation_passed": true
+    },
+    {
+      "scenario": "transport-timeout-retry-chain",
+      "file": "io_transport_validation/timeout_retry_chain.json",
+      "safe_claim": "transport timeout/retry replay; not production transport stack ownership",
+      "first_divergence_index": 1,
+      "expected_event": "ack_received",
+      "actual_event": "timeout",
+      "recovery_observed": true,
+      "final_state": "transaction_complete",
+      "declared_status": "PASS",
+      "computed_status": "PASS",
+      "reason": "timeout chain recovered after retry_send and final ack_received",
+      "validation_passed": true
+    }
+  ]
+}

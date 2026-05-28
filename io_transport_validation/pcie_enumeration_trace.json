@@ -1,0 +1,16 @@
+{
+  "scenario": "pcie-style-enumeration-failure",
+  "safe_claim": "PCIe-style enumeration replay; not PCIe driver or kernel development",
+  "expected_flow": ["bus_scan", "config_read", "bar_assign", "interrupt_route", "device_ready"],
+  "actual_flow": ["bus_scan", "config_read_timeout", "retry_config_read", "stale_device_state"],
+  "expected_recovery": false,
+  "diagnosis": {
+    "first_divergence_index": 1,
+    "expected_event": "config_read",
+    "actual_event": "config_read_timeout",
+    "recovery_observed": false,
+    "final_state": "stale_device_state",
+    "diagnostic_status": "FAIL",
+    "reason": "enumeration did not reach BAR assignment or ready state after config-read timeout"
+  }
+}

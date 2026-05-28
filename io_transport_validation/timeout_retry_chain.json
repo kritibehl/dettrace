@@ -1,0 +1,16 @@
+{
+  "scenario": "transport-timeout-retry-chain",
+  "safe_claim": "transport timeout/retry replay; not production transport stack ownership",
+  "expected_flow": ["request_send", "ack_received", "transaction_complete"],
+  "actual_flow": ["request_send", "timeout", "retry_send", "timeout", "retry_send", "ack_received", "transaction_complete"],
+  "expected_recovery": true,
+  "diagnosis": {
+    "first_divergence_index": 1,
+    "expected_event": "ack_received",
+    "actual_event": "timeout",
+    "recovery_observed": true,
+    "final_state": "transaction_complete",
+    "diagnostic_status": "PASS",
+    "reason": "timeout chain recovered after retry_send and final ack_received"
+  }
+}

@@ -2015,3 +2015,28 @@ The workflow supports:
 - failure-family grouping
 
 Safe scope: structured diagnostic telemetry simulation, not production firmware telemetry ownership or Splunk deployment.
+
+---
+
+## I/O Transport Validation and Core I/O-Style QA Artifacts
+
+DetTrace includes I/O transport replay workflows under `io_transport_validation/`.
+
+The workflow validates:
+
+- USB reconnect recovery
+- PCIe-style enumeration failure isolation
+- DisplayPort-style link training recovery
+- accessory disconnect/reconnect behavior
+- timeout/retry chains
+- first-divergence reporting
+- PASS/FAIL diagnostic status with reason
+
+Quality artifacts under `quality_artifacts/` include:
+
+- Core I/O-style test plan
+- regression matrix
+- bug reproduction template
+- failure taxonomy
+
+Safe scope: replay-based diagnostics and QA workflows. This does not claim USB/PCIe/DisplayPort driver development, kernel engineering, or firmware ownership.

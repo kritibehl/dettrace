@@ -1,0 +1,16 @@
+{
+  "scenario": "accessory-disconnect-recovery",
+  "safe_claim": "accessory lifecycle replay; not accessory firmware or driver development",
+  "expected_flow": ["accessory_connected", "capability_read", "session_ready"],
+  "actual_flow": ["accessory_connected", "capability_read", "disconnect", "reconnect", "capability_read", "session_ready"],
+  "expected_recovery": true,
+  "diagnosis": {
+    "first_divergence_index": 2,
+    "expected_event": "session_ready",
+    "actual_event": "disconnect",
+    "recovery_observed": true,
+    "final_state": "session_ready",
+    "diagnostic_status": "PASS",
+    "reason": "accessory disconnect recovered through reconnect and capability re-read"
+  }
+}
