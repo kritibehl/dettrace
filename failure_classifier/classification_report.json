@@ -1,0 +1,11 @@
+{
+  "artifact": "failure_library/io_failure_corpus.json",
+  "safe_claim": "heuristic replay-failure classification for diagnostics; not trained ML",
+  "failure_family": "retry_storm",
+  "confidence": 0.92,
+  "matched_keywords": [
+    "retry_storm",
+    "retry",
+    "bounded_retry"
+  ]
+}

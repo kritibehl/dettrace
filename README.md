@@ -2065,3 +2065,33 @@ Artifacts:
 The corpus covers USB, PCIe-style enumeration, DisplayPort-style link training, accessory reconnect behavior, timeout chains, retry storms, stale states, and expected failure detections.
 
 Safe scope: simulated I/O transport replay validation and QA workflows; not driver, firmware, kernel, or hardware-lab ownership.
+
+---
+
+## Failure Classification and Incident Similarity
+
+DetTrace includes lightweight diagnostics intelligence workflows:
+
+### Failure classification
+
+`failure_classifier/classify_failure.py` classifies replay artifacts into heuristic failure families:
+
+- timeout
+- disconnect
+- retry_storm
+- enumeration_failure
+- state_corruption
+
+Example:
+
+    python3 failure_classifier/classify_failure.py failure_library/io_failure_corpus.json
+
+### Incident similarity
+
+`incident_similarity/find_similar_incident.py` compares a new replay artifact against the I/O failure corpus and returns the most similar replay scenario.
+
+Example:
+
+    python3 incident_similarity/find_similar_incident.py io_transport_validation/displayport_link_training_trace.json
+
+Safe scope: heuristic diagnostics tooling. This does not claim trained ML, production incident ranking, hardware-lab systems, driver development, firmware ownership, or kernel engineering.
