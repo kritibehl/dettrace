@@ -2,8 +2,8 @@
   "workflow": "io-transport-replay-validation",
   "safe_claim": "I/O transport trace replay and diagnostics; not driver, firmware, or kernel development",
   "trace_count": 5,
-  "validation_pass_count": 4,
-  "validation_fail_count": 1,
+  "validation_pass_count": 5,
+  "validation_fail_count": 0,
   "results": [
     {
       "scenario": "usb-reconnect-recovery",
@@ -17,6 +17,7 @@
       "declared_status": "PASS",
       "computed_status": "PASS",
       "reason": "disconnect was recovered through reconnect, descriptor re-read, configuration_set, and device_ready",
+      "replay_checks_passed": true,
       "validation_passed": true
     },
     {
@@ -29,9 +30,10 @@
       "recovery_observed": false,
       "final_state": "stale_device_state",
       "declared_status": "FAIL",
-      "computed_status": "PASS",
+      "computed_status": "FAIL",
       "reason": "enumeration did not reach BAR assignment or ready state after config-read timeout",
-      "validation_passed": false
+      "replay_checks_passed": true,
+      "validation_passed": true
     },
     {
       "scenario": "displayport-style-link-training-recovery",
@@ -45,6 +47,7 @@
       "declared_status": "PASS",
       "computed_status": "PASS",
       "reason": "link-training timeout recovered after retry and reached display_active",
+      "replay_checks_passed": true,
       "validation_passed": true
     },
     {
@@ -59,6 +62,7 @@
       "declared_status": "PASS",
       "computed_status": "PASS",
       "reason": "accessory disconnect recovered through reconnect and capability re-read",
+      "replay_checks_passed": true,
       "validation_passed": true
     },
     {
@@ -73,6 +77,7 @@
       "declared_status": "PASS",
       "computed_status": "PASS",
       "reason": "timeout chain recovered after retry_send and final ack_received",
+      "replay_checks_passed": true,
       "validation_passed": true
     }
   ]

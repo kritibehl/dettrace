@@ -7,8 +7,8 @@ I/O transport trace replay and diagnostics; not driver, firmware, or kernel deve
 ## Summary
 
 - trace count: `5`
-- validation pass count: `4`
-- validation fail count: `1`
+- validation pass count: `5`
+- validation fail count: `0`
 
 ## Results
 
@@ -32,8 +32,8 @@ I/O transport trace replay and diagnostics; not driver, firmware, or kernel deve
 - recovery observed: `False`
 - final state: `stale_device_state`
 - declared status: `FAIL`
-- computed status: `PASS`
-- validation passed: `False`
+- computed status: `FAIL`
+- validation passed: `True`
 - reason: enumeration did not reach BAR assignment or ready state after config-read timeout
 
 ### displayport-style-link-training-recovery
