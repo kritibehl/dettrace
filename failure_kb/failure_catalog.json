@@ -1,0 +1,114 @@
+{
+  "safe_claim": "heuristic diagnostics knowledge base for replay review; not AI, not production incident automation",
+  "failure_families": {
+    "retry_storm": {
+      "similar_failures": [
+        "transport_retry_storm_019",
+        "transport_timeout_chain_020",
+        "transport_retry_recovery_018"
+      ],
+      "likely_root_causes": [
+        "duplicate_retry_window",
+        "missing_ack",
+        "timeout_chain",
+        "unbounded_retry_policy"
+      ],
+      "recommended_actions": [
+        "inspect retry backoff and retry limits",
+        "validate ACK ordering before retry",
+        "check timeout thresholds",
+        "compare retry window against known-good replay"
+      ]
+    },
+    "timeout": {
+      "similar_failures": [
+        "usb_timeout_001",
+        "transport_timeout_017",
+        "displayport_lane_timeout_011"
+      ],
+      "likely_root_causes": [
+        "missed_deadline",
+        "slow_dependency_response",
+        "blocked_ready_state"
+      ],
+      "recommended_actions": [
+        "inspect first timeout event",
+        "compare expected vs observed deadline",
+        "check downstream recovery path",
+        "verify whether retry reached a stable final state"
+      ]
+    },
+    "disconnect": {
+      "similar_failures": [
+        "usb_disconnect_002",
+        "accessory_reconnect_013",
+        "accessory_stale_session_015"
+      ],
+      "likely_root_causes": [
+        "stale_device_state",
+        "session_refresh_missing",
+        "reconnect_ordering_issue"
+      ],
+      "recommended_actions": [
+        "verify reconnect sequence",
+        "check stale state cleanup",
+        "compare capability re-read behavior",
+        "confirm final ready/session state"
+      ]
+    },
+    "enumeration_failure": {
+      "similar_failures": [
+        "pcie_enum_failure_005",
+        "pcie_partial_enum_006",
+        "pcie_interrupt_route_008"
+      ],
+      "likely_root_causes": [
+        "config_read_timeout",
+        "missing_bar_assignment",
+        "interrupt_route_missing"
+      ],
+      "recommended_actions": [
+        "inspect config-read step",
+        "verify BAR assignment sequence",
+        "compare interrupt routing against expected replay",
+        "confirm device_ready was not falsely reported"
+      ]
+    },
+    "state_corruption": {
+      "similar_failures": [
+        "usb_stale_state_004",
+        "accessory_stale_session_015",
+        "transport_timeout_chain_020"
+      ],
+      "likely_root_causes": [
+        "stale_device_state",
+        "state_refresh_missing",
+        "out-of-order lifecycle transition"
+      ],
+      "recommended_actions": [
+        "inspect state transition ordering",
+        "compare expected vs observed lifecycle state",
+        "verify stale state cleanup",
+        "check for duplicate attach or stale session reuse"
+      ]
+    },
+    "calibration_drift": {
+      "similar_failures": [
+        "bringup_clock_enable_timeout",
+        "calibration_drift_warning",
+        "ready_blocked"
+      ],
+      "likely_root_causes": [
+        "calibration_drift_warning",
+        "blocked_ready_state",
+        "clock_enable_timeout"
+      ],
+      "recommended_actions": [
+        "inspect calibration status transition",
+        "compare pre/post bring-up trace",
+        "check clock-enable timeout before calibration",
+        "verify ready state was blocked intentionally"
+      ]
+    }
+  }
+}

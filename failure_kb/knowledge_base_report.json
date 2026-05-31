@@ -1,0 +1,21 @@
+{
+  "failure_family": "calibration_drift",
+  "found": true,
+  "safe_claim": "heuristic diagnostics knowledge base for replay review; not AI, not production incident automation",
+  "similar_failures": [
+    "bringup_clock_enable_timeout",
+    "calibration_drift_warning",
+    "ready_blocked"
+  ],
+  "likely_root_causes": [
+    "calibration_drift_warning",
+    "blocked_ready_state",
+    "clock_enable_timeout"
+  ],
+  "recommended_actions": [
+    "inspect calibration status transition",
+    "compare pre/post bring-up trace",
+    "check clock-enable timeout before calibration",
+    "verify ready state was blocked intentionally"
+  ]
+}

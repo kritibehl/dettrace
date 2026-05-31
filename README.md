@@ -2125,3 +2125,30 @@ The workflows support:
 - exportable diagnostics reports
 
 Safe scope: heuristic replay diagnostics and developer tooling. This does not claim trained ML, production incident ranking, USB/PCIe hardware testing, device drivers, RTOS, kernel development, firmware ownership, or real hardware emulation.
+
+---
+
+## Failure Knowledge Base
+
+DetTrace includes a small diagnostics knowledge base under `failure_kb/`.
+
+Given a failure family, it returns:
+
+- similar prior failures
+- likely root causes
+- recommended investigation actions
+
+Example:
+
+    python3 failure_kb/lookup_failure.py --family retry_storm
+
+The knowledge base covers:
+
+- retry storms
+- timeouts
+- disconnect/reconnect failures
+- enumeration failures
+- state corruption
+- calibration drift
+
+Safe scope: heuristic diagnostics knowledge base for replay review. This does not claim AI, trained ML, expert systems, production incident automation, hardware-lab ownership, drivers, firmware, kernel, or real hardware emulation.
