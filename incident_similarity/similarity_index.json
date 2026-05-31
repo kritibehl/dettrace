@@ -1,0 +1,314 @@
+[
+  {
+    "scenario_id": "displayport_recovery_010",
+    "family": "displayport",
+    "expected_event": "display_active",
+    "actual_event": "display_active",
+    "expected_status": "PASS",
+    "similarity": 0.2,
+    "shared_evidence": [
+      "active",
+      "actual",
+      "display",
+      "displayport",
+      "event",
+      "expected",
+      "pass",
+      "recovery",
+      "status"
+    ]
+  },
+  {
+    "scenario_id": "pcie_retry_recovery_007",
+    "family": "pcie",
+    "expected_event": "device_ready",
+    "actual_event": "device_ready",
+    "expected_status": "PASS",
+    "similarity": 0.17,
+    "shared_evidence": [
+      "actual",
+      "event",
+      "expected",
+      "pass",
+      "ready",
+      "recovery",
+      "retry",
+      "status"
+    ]
+  },
+  {
+    "scenario_id": "displayport_lane_timeout_011",
+    "family": "displayport",
+    "expected_event": "lane_align",
+    "actual_event": "lane_align_timeout",
+    "expected_status": "FAIL",
+    "similarity": 0.17,
+    "shared_evidence": [
+      "actual",
+      "align",
+      "displayport",
+      "event",
+      "expected",
+      "lane",
+      "status",
+      "timeout"
+    ]
+  },
+  {
+    "scenario_id": "displayport_link_loss_009",
+    "family": "displayport",
+    "expected_event": "link_ready",
+    "actual_event": "link_loss",
+    "expected_status": "FAIL",
+    "similarity": 0.15,
+    "shared_evidence": [
+      "actual",
+      "displayport",
+      "event",
+      "expected",
+      "link",
+      "ready",
+      "status"
+    ]
+  },
+  {
+    "scenario_id": "transport_retry_recovery_018",
+    "family": "transport",
+    "expected_event": "transaction_complete",
+    "actual_event": "transaction_complete",
+    "expected_status": "PASS",
+    "similarity": 0.15,
+    "shared_evidence": [
+      "actual",
+      "event",
+      "expected",
+      "pass",
+      "recovery",
+      "retry",
+      "status"
+    ]
+  },
+  {
+    "scenario_id": "usb_reconnect_003",
+    "family": "usb",
+    "expected_event": "device_ready",
+    "actual_event": "device_ready",
+    "expected_status": "PASS",
+    "similarity": 0.12,
+    "shared_evidence": [
+      "actual",
+      "event",
+      "expected",
+      "pass",
+      "ready",
+      "status"
+    ]
+  },
+  {
+    "scenario_id": "displayport_hotplug_flap_012",
+    "family": "displayport",
+    "expected_event": "stable_hotplug",
+    "actual_event": "hotplug_flap",
+    "expected_status": "FAIL",
+    "similarity": 0.12,
+    "shared_evidence": [
+      "actual",
+      "displayport",
+      "event",
+      "expected",
+      "hotplug",
+      "status"
+    ]
+  },
+  {
+    "scenario_id": "accessory_reconnect_013",
+    "family": "accessory",
+    "expected_event": "session_ready",
+    "actual_event": "session_ready",
+    "expected_status": "PASS",
+    "similarity": 0.12,
+    "shared_evidence": [
+      "actual",
+      "event",
+      "expected",
+      "pass",
+      "ready",
+      "status"
+    ]
+  },
+  {
+    "scenario_id": "usb_timeout_001",
+    "family": "usb",
+    "expected_event": "descriptor_read",
+    "actual_event": "timeout",
+    "expected_status": "FAIL",
+    "similarity": 0.1,
+    "shared_evidence": [
+      "actual",
+      "event",
+      "expected",
+      "status",
+      "timeout"
+    ]
+  },
+  {
+    "scenario_id": "usb_stale_state_004",
+    "family": "usb",
+    "expected_event": "state_refresh",
+    "actual_event": "stale_device_state",
+    "expected_status": "FAIL",
+    "similarity": 0.1,
+    "shared_evidence": [
+      "actual",
+      "event",
+      "expected",
+      "state",
+      "status"
+    ]
+  },
+  {
+    "scenario_id": "pcie_enum_failure_005",
+    "family": "pcie",
+    "expected_event": "config_read",
+    "actual_event": "config_read_timeout",
+    "expected_status": "FAIL",
+    "similarity": 0.1,
+    "shared_evidence": [
+      "actual",
+      "event",
+      "expected",
+      "status",
+      "timeout"
+    ]
+  },
+  {
+    "scenario_id": "accessory_capability_timeout_014",
+    "family": "accessory",
+    "expected_event": "capability_read",
+    "actual_event": "capability_timeout",
+    "expected_status": "FAIL",
+    "similarity": 0.1,
+    "shared_evidence": [
+      "actual",
+      "event",
+      "expected",
+      "status",
+      "timeout"
+    ]
+  },
+  {
+    "scenario_id": "transport_timeout_017",
+    "family": "transport",
+    "expected_event": "ack_received",
+    "actual_event": "timeout",
+    "expected_status": "FAIL",
+    "similarity": 0.1,
+    "shared_evidence": [
+      "actual",
+      "event",
+      "expected",
+      "status",
+      "timeout"
+    ]
+  },
+  {
+    "scenario_id": "transport_retry_storm_019",
+    "family": "transport",
+    "expected_event": "bounded_retry",
+    "actual_event": "retry_storm",
+    "expected_status": "FAIL",
+    "similarity": 0.1,
+    "shared_evidence": [
+      "actual",
+      "event",
+      "expected",
+      "retry",
+      "status"
+    ]
+  },
+  {
+    "scenario_id": "transport_timeout_chain_020",
+    "family": "transport",
+    "expected_event": "single_timeout",
+    "actual_event": "timeout_chain",
+    "expected_status": "FAIL",
+    "similarity": 0.1,
+    "shared_evidence": [
+      "actual",
+      "event",
+      "expected",
+      "status",
+      "timeout"
+    ]
+  },
+  {
+    "scenario_id": "usb_disconnect_002",
+    "family": "usb",
+    "expected_event": "configuration_set",
+    "actual_event": "disconnect",
+    "expected_status": "FAIL",
+    "similarity": 0.08,
+    "shared_evidence": [
+      "actual",
+      "event",
+      "expected",
+      "status"
+    ]
+  },
+  {
+    "scenario_id": "pcie_partial_enum_006",
+    "family": "pcie",
+    "expected_event": "bar_assign",
+    "actual_event": "missing_bar_assignment",
+    "expected_status": "FAIL",
+    "similarity": 0.08,
+    "shared_evidence": [
+      "actual",
+      "event",
+      "expected",
+      "status"
+    ]
+  },
+  {
+    "scenario_id": "pcie_interrupt_route_008",
+    "family": "pcie",
+    "expected_event": "interrupt_route",
+    "actual_event": "interrupt_route_missing",
+    "expected_status": "FAIL",
+    "similarity": 0.08,
+    "shared_evidence": [
+      "actual",
+      "event",
+      "expected",
+      "status"
+    ]
+  },
+  {
+    "scenario_id": "accessory_stale_session_015",
+    "family": "accessory",
+    "expected_event": "session_refresh",
+    "actual_event": "stale_session",
+    "expected_status": "FAIL",
+    "similarity": 0.08,
+    "shared_evidence": [
+      "actual",
+      "event",
+      "expected",
+      "status"
+    ]
+  },
+  {
+    "scenario_id": "accessory_duplicate_attach_016",
+    "family": "accessory",
+    "expected_event": "single_attach",
+    "actual_event": "duplicate_attach",
+    "expected_status": "FAIL",
+    "similarity": 0.08,
+    "shared_evidence": [
+      "actual",
+      "event",
+      "expected",
+      "status"
+    ]
+  }
+]

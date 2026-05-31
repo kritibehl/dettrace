@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>DetTrace I/O Transport Replay Viewer</title>
+  <style>
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f6f7fb; color: #111827; }
+    main { max-width: 1050px; margin: 42px auto; padding: 0 22px 60px; }
+    h1 { margin-bottom: 6px; font-size: 38px; }
+    .subtitle { color: #667085; margin-bottom: 28px; line-height: 1.5; }
+    .card { background: white; border: 1px solid #e5e7eb; border-radius: 20px; padding: 22px; margin-bottom: 18px; box-shadow: 0 10px 28px rgba(15,23,42,0.07); }
+    .timeline { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 14px 0; }
+    .event { padding: 10px 14px; border-radius: 999px; border: 1px solid #c7d2fe; background: #eef2ff; font-size: 14px; }
+    .bad { background: #fee2e2; border-color: #fca5a5; color: #991b1b; font-weight: 700; }
+    .good { background: #dcfce7; border-color: #86efac; color: #166534; font-weight: 700; }
+    .arrow { color: #64748b; font-weight: 700; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    code { background: #f8fafc; border: 1px solid #e2e8f0; padding: 2px 6px; border-radius: 6px; }
+    @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>DetTrace I/O Transport Replay Viewer</h1>
+    <p class="subtitle">Visual QA view for expected-vs-observed transport recovery and failure isolation.</p>
+
+    <section class="card">
+      <h2>USB Reconnect Recovery</h2>
+      <p><strong>Status:</strong> <span class="event good">PASS</span></p>
+      <div class="grid">
+        <div>
+          <h3>Expected</h3>
+          <div class="timeline"><span class="event">usb_attach</span><span class="arrow">→</span><span class="event">descriptor_read</span><span class="arrow">→</span><span class="event">configuration_set</span><span class="arrow">→</span><span class="event good">device_ready</span></div>
+        </div>
+        <div>
+          <h3>Observed</h3>
+          <div class="timeline"><span class="event">usb_attach</span><span class="arrow">→</span><span class="event">descriptor_read</span><span class="arrow">→</span><span class="event bad">disconnect</span><span class="arrow">→</span><span class="event">reconnect</span><span class="arrow">→</span><span class="event good">device_ready</span></div>
+        </div>
+      </div>
+      <p><strong>First divergence:</strong> <code>index=2, expected=configuration_set, observed=disconnect</code></p>
+    </section>
+
+    <section class="card">
+      <h2>PCIe-Style Enumeration Failure</h2>
+      <p><strong>Status:</strong> <span class="event bad">EXPECTED FAIL</span></p>
+      <div class="grid">
+        <div>
+          <h3>Expected</h3>
+          <div class="timeline"><span class="event">bus_scan</span><span class="arrow">→</span><span class="event">config_read</span><span class="arrow">→</span><span class="event">bar_assign</span><span class="arrow">→</span><span class="event good">device_ready</span></div>
+        </div>
+        <div>
+          <h3>Observed</h3>
+          <div class="timeline"><span class="event">bus_scan</span><span class="arrow">→</span><span class="event bad">config_read_timeout</span><span class="arrow">→</span><span class="event">retry_config_read</span><span class="arrow">→</span><span class="event bad">stale_device_state</span></div>
+        </div>
+      </div>
+      <p><strong>First divergence:</strong> <code>index=1, expected=config_read, observed=config_read_timeout</code></p>
+    </section>
+
+    <section class="card">
+      <h2>Large-Scale Validation Harness</h2>
+      <p><strong>Corpus:</strong> <code>20 scenarios</code></p>
+      <p><strong>500-run suite:</strong> <code>10,000 validations</code></p>
+      <p><strong>Validation failures:</strong> <code>0</code></p>
+      <p>Safe scope: simulated transport replay validation, not driver, firmware, kernel, or hardware-lab ownership.</p>
+    </section>
+  </main>
+</body>
+</html>

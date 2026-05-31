@@ -2095,3 +2095,33 @@ Example:
     python3 incident_similarity/find_similar_incident.py io_transport_validation/displayport_link_training_trace.json
 
 Safe scope: heuristic diagnostics tooling. This does not claim trained ML, production incident ranking, hardware-lab systems, driver development, firmware ownership, or kernel engineering.
+
+---
+
+## Root-Cause Ranking, Similarity, and Visual Replay Viewer
+
+DetTrace includes heuristic diagnostics workflows for Apple/systems-style debugging review.
+
+Artifacts:
+
+- `root_cause_ranker/rank_failures.py`
+- `root_cause_ranker/failure_signatures.json`
+- `root_cause_ranker/root_cause_reports/root_cause_report.md`
+- `incident_similarity/signature_extractor.py`
+- `incident_similarity/compare_incident.py`
+- `incident_similarity/similarity_index.json`
+- `viewer/trace_timeline.html`
+- `viewer/expected_vs_observed_panel.html`
+- `viewer/export_report.py`
+- `viewer/exported_diagnostics_report.md`
+
+The workflows support:
+
+- evidence-backed root-cause ranking
+- heuristic confidence scores
+- incident-similarity search across replay traces
+- nearest prior failure surfacing
+- expected-vs-observed replay panels
+- exportable diagnostics reports
+
+Safe scope: heuristic replay diagnostics and developer tooling. This does not claim trained ML, production incident ranking, USB/PCIe hardware testing, device drivers, RTOS, kernel development, firmware ownership, or real hardware emulation.

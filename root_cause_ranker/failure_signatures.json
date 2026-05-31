@@ -1,0 +1,35 @@
+{
+  "safe_claim": "heuristic replay root-cause ranking; not trained ML or production incident ranking",
+  "signatures": [
+    {
+      "cause": "retry_storm",
+      "keywords": ["retry_storm", "retry_send", "duplicate_retry_window", "bounded_retry", "retry"],
+      "confidence": 0.93
+    },
+    {
+      "cause": "timeout_chain",
+      "keywords": ["timeout_chain", "timeout", "deadline_exceeded", "timed out"],
+      "confidence": 0.91
+    },
+    {
+      "cause": "disconnect_recovery_failure",
+      "keywords": ["disconnect", "reconnect", "stale_device_state"],
+      "confidence": 0.89
+    },
+    {
+      "cause": "enumeration_failure",
+      "keywords": ["config_read_timeout", "missing_bar_assignment", "enumeration", "bar_assign"],
+      "confidence": 0.92
+    },
+    {
+      "cause": "state_corruption",
+      "keywords": ["stale_device_state", "stale_session", "state_refresh", "state_corruption"],
+      "confidence": 0.88
+    },
+    {
+      "cause": "calibration_drift",
+      "keywords": ["calibration_drift", "calibration_drift_warning", "calibration", "ready_blocked"],
+      "confidence": 0.90
+    }
+  ]
+}

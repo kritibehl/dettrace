@@ -1,0 +1,21 @@
+# Root-Cause Ranking Report
+
+## Safe claim
+
+heuristic root-cause ranking for replay diagnostics; not trained ML or production incident ranking
+
+## Result
+
+- incident: `io_failure_corpus`
+- artifact: `failure_library/io_failure_corpus.json`
+- likely cause: `retry_storm`
+- confidence: `0.93`
+- evidence: `['retry_storm', 'bounded_retry', 'retry']`
+
+## Ranked candidates
+
+- `retry_storm` confidence=`0.93` evidence=`['retry_storm', 'bounded_retry', 'retry']`
+- `enumeration_failure` confidence=`0.92` evidence=`['config_read_timeout', 'missing_bar_assignment', 'bar_assign']`
+- `timeout_chain` confidence=`0.91` evidence=`['timeout_chain', 'timeout']`
+- `disconnect_recovery_failure` confidence=`0.89` evidence=`['disconnect', 'reconnect', 'stale_device_state']`
+- `state_corruption` confidence=`0.88` evidence=`['stale_device_state', 'stale_session', 'state_refresh']`

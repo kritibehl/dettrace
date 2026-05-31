@@ -1,0 +1,114 @@
+{
+  "incident": "io_transport_validation/displayport_link_training_trace.json",
+  "safe_claim": "token-based incident similarity for replay diagnostics; not ML ranking",
+  "most_similar_replay": {
+    "scenario_id": "displayport_recovery_010",
+    "family": "displayport",
+    "expected_event": "display_active",
+    "actual_event": "display_active",
+    "expected_status": "PASS",
+    "similarity": 0.2,
+    "shared_evidence": [
+      "active",
+      "actual",
+      "display",
+      "displayport",
+      "event",
+      "expected",
+      "pass",
+      "recovery",
+      "status"
+    ]
+  },
+  "top_5": [
+    {
+      "scenario_id": "displayport_recovery_010",
+      "family": "displayport",
+      "expected_event": "display_active",
+      "actual_event": "display_active",
+      "expected_status": "PASS",
+      "similarity": 0.2,
+      "shared_evidence": [
+        "active",
+        "actual",
+        "display",
+        "displayport",
+        "event",
+        "expected",
+        "pass",
+        "recovery",
+        "status"
+      ]
+    },
+    {
+      "scenario_id": "pcie_retry_recovery_007",
+      "family": "pcie",
+      "expected_event": "device_ready",
+      "actual_event": "device_ready",
+      "expected_status": "PASS",
+      "similarity": 0.17,
+      "shared_evidence": [
+        "actual",
+        "event",
+        "expected",
+        "pass",
+        "ready",
+        "recovery",
+        "retry",
+        "status"
+      ]
+    },
+    {
+      "scenario_id": "displayport_lane_timeout_011",
+      "family": "displayport",
+      "expected_event": "lane_align",
+      "actual_event": "lane_align_timeout",
+      "expected_status": "FAIL",
+      "similarity": 0.17,
+      "shared_evidence": [
+        "actual",
+        "align",
+        "displayport",
+        "event",
+        "expected",
+        "lane",
+        "status",
+        "timeout"
+      ]
+    },
+    {
+      "scenario_id": "displayport_link_loss_009",
+      "family": "displayport",
+      "expected_event": "link_ready",
+      "actual_event": "link_loss",
+      "expected_status": "FAIL",
+      "similarity": 0.15,
+      "shared_evidence": [
+        "actual",
+        "displayport",
+        "event",
+        "expected",
+        "link",
+        "ready",
+        "status"
+      ]
+    },
+    {
+      "scenario_id": "transport_retry_recovery_018",
+      "family": "transport",
+      "expected_event": "transaction_complete",
+      "actual_event": "transaction_complete",
+      "expected_status": "PASS",
+      "similarity": 0.15,
+      "shared_evidence": [
+        "actual",
+        "event",
+        "expected",
+        "pass",
+        "recovery",
+        "retry",
+        "status"
+      ]
+    }
+  ]
+}

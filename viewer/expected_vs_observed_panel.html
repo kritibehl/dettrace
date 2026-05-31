@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Expected vs Observed Replay Panel</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f7f8fb; margin: 0; color: #111827; }
+    main { max-width: 1000px; margin: 40px auto; padding: 24px; }
+    .card { background: white; border: 1px solid #e5e7eb; border-radius: 20px; padding: 22px; box-shadow: 0 10px 25px rgba(15,23,42,.08); margin-bottom: 18px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .event { display: inline-block; padding: 10px 14px; border-radius: 999px; margin: 6px; background: #eef2ff; border: 1px solid #c7d2fe; }
+    .bad { background: #fee2e2; border-color: #fca5a5; color: #991b1b; font-weight: 700; }
+    .good { background: #dcfce7; border-color: #86efac; color: #166534; font-weight: 700; }
+    code { background: #f8fafc; border: 1px solid #e2e8f0; padding: 2px 6px; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Expected vs Observed Replay Panel</h1>
+    <section class="card grid">
+      <div>
+        <h2>Expected</h2>
+        <span class="event">bus_scan</span>
+        <span class="event">config_read</span>
+        <span class="event">bar_assign</span>
+        <span class="event good">device_ready</span>
+      </div>
+      <div>
+        <h2>Observed</h2>
+        <span class="event">bus_scan</span>
+        <span class="event bad">config_read_timeout</span>
+        <span class="event">retry_config_read</span>
+        <span class="event bad">stale_device_state</span>
+      </div>
+    </section>
+    <section class="card">
+      <h2>First Divergence</h2>
+      <p><code>index=1</code></p>
+      <p><strong>Expected:</strong> <code>config_read</code></p>
+      <p><strong>Observed:</strong> <code>config_read_timeout</code></p>
+      <p><strong>Diagnostic interpretation:</strong> PCIe-style enumeration did not reach BAR assignment or ready state after config-read timeout.</p>
+      <p><strong>Safe scope:</strong> replay diagnostics only; not PCIe driver, kernel, firmware, or hardware-lab ownership.</p>
+    </section>
+  </main>
+</body>
+</html>
