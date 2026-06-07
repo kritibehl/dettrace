@@ -1,0 +1,39 @@
+{
+  "candidate_build": "candidate_42",
+  "safe_claim": "heuristic replay-based build regression radar; not production release automation",
+  "input_signals": [
+    "config_read_timeout",
+    "duplicate_retry_window",
+    "retry_storm",
+    "timeout_chain"
+  ],
+  "risk_score": 100,
+  "risk_level": "high",
+  "matched_regressions": 2,
+  "historical_occurrences": 4,
+  "release_recommendation": "hold",
+  "matched_failures": [
+    {
+      "regression_id": "reg_retry_storm_001",
+      "family": "retry_storm",
+      "risk": "high",
+      "confidence": 0.91,
+      "matched_signals": [
+        "duplicate_retry_window",
+        "retry_storm",
+        "timeout_chain"
+      ],
+      "recommended_action": "block release until retry backoff and ACK ordering are reviewed"
+    },
+    {
+      "regression_id": "reg_enum_timeout_002",
+      "family": "enumeration_failure",
+      "risk": "high",
+      "confidence": 0.89,
+      "matched_signals": [
+        "config_read_timeout"
+      ],
+      "recommended_action": "rerun enumeration replay and verify device_ready is not falsely reported"
+    }
+  ]
+}
