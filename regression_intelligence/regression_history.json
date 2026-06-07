@@ -1,0 +1,19 @@
+{
+  "build_history": [
+    {
+      "build": "candidate_40",
+      "risk": "low",
+      "matched_failures": 0
+    },
+    {
+      "build": "candidate_41",
+      "risk": "medium",
+      "matched_failures": 1
+    },
+    {
+      "build": "candidate_42",
+      "risk": "high",
+      "matched_failures": 3
+    }
+  ]
+}

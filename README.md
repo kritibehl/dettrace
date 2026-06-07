@@ -2164,3 +2164,35 @@ It maps new build/replay signals to known regression families, risk levels, conf
 DetTrace also includes a protocol validation pack under `protocol_validation_pack/` with simulated I2C-style, UART-style, BLE-style, and TCP-style state-machine replay cases.
 
 Safe scope: heuristic diagnostics and protocol-state replay simulation. This does not claim production release automation, driver development, firmware ownership, kernel engineering, packet capture, protocol-stack ownership, or hardware-lab testing.
+
+---
+
+## Protocol Validation Pack
+
+DetTrace includes protocol-state replay validation artifacts.
+
+Protocols:
+
+- SPI-style replay
+- USB-style reconnect recovery
+- PCIe-style enumeration
+- DisplayPort-style link recovery
+- BLE-style reconnect lifecycle
+- UART-style frame validation
+- I2C-style acknowledgement handling
+- TCP-style retransmit sequences
+
+Artifacts:
+
+- protocol_validation_pack/protocol_matrix.md
+- quality_artifacts/protocol_test_matrix.md
+
+The validation pack highlights:
+
+- first-divergence isolation
+- protocol sequencing failures
+- timeout detection
+- reconnect recovery
+- replay-based diagnostics review
+
+Safe scope: protocol-state replay simulation for diagnostics and validation review.
