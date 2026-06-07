@@ -1,0 +1,12 @@
+{
+  "protocol": "UART-style",
+  "safe_claim": "protocol-state replay simulation; not driver or firmware development",
+  "expected_flow": ["frame_start", "payload_read", "checksum_ok", "frame_end"],
+  "observed_flow": ["frame_start", "payload_read", "checksum_error", "frame_drop"],
+  "diagnosis": {
+    "first_divergence_index": 2,
+    "expected_event": "checksum_ok",
+    "actual_event": "checksum_error",
+    "failure_family": "state_corruption"
+  }
+}

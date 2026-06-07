@@ -2152,3 +2152,15 @@ The knowledge base covers:
 - calibration drift
 
 Safe scope: heuristic diagnostics knowledge base for replay review. This does not claim AI, trained ML, expert systems, production incident automation, hardware-lab ownership, drivers, firmware, kernel, or real hardware emulation.
+
+---
+
+## Regression Intelligence and Protocol Validation Pack
+
+DetTrace includes heuristic regression-risk analysis under `regression_intelligence/`.
+
+It maps new build/replay signals to known regression families, risk levels, confidence scores, and recommended release/debugging actions.
+
+DetTrace also includes a protocol validation pack under `protocol_validation_pack/` with simulated I2C-style, UART-style, BLE-style, and TCP-style state-machine replay cases.
+
+Safe scope: heuristic diagnostics and protocol-state replay simulation. This does not claim production release automation, driver development, firmware ownership, kernel engineering, packet capture, protocol-stack ownership, or hardware-lab testing.

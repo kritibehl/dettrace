@@ -1,0 +1,29 @@
+{
+  "safe_claim": "heuristic regression-risk analysis for replay diagnostics; not production release automation",
+  "known_regressions": [
+    {
+      "id": "reg_retry_storm_001",
+      "family": "retry_storm",
+      "signals": ["retry_storm", "duplicate_retry_window", "timeout_chain"],
+      "risk": "high",
+      "confidence": 0.91,
+      "recommended_action": "block release until retry backoff and ACK ordering are reviewed"
+    },
+    {
+      "id": "reg_enum_timeout_002",
+      "family": "enumeration_failure",
+      "signals": ["config_read_timeout", "missing_bar_assignment", "stale_device_state"],
+      "risk": "high",
+      "confidence": 0.89,
+      "recommended_action": "rerun enumeration replay and verify device_ready is not falsely reported"
+    },
+    {
+      "id": "reg_link_recovery_003",
+      "family": "displayport_recovery",
+      "signals": ["lane_align_timeout", "retry_link_training", "display_active"],
+      "risk": "medium",
+      "confidence": 0.84,
+      "recommended_action": "verify link-training retry reaches stable display_active state"
+    }
+  ]
+}

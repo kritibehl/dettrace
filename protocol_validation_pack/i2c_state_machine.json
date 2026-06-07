@@ -1,0 +1,12 @@
+{
+  "protocol": "I2C-style",
+  "safe_claim": "protocol-state replay simulation; not driver or firmware development",
+  "expected_flow": ["start", "address_ack", "register_write", "data_ack", "stop"],
+  "observed_flow": ["start", "address_ack", "register_write", "timeout", "stop"],
+  "diagnosis": {
+    "first_divergence_index": 3,
+    "expected_event": "data_ack",
+    "actual_event": "timeout",
+    "failure_family": "timeout"
+  }
+}

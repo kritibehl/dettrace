@@ -1,0 +1,12 @@
+{
+  "protocol": "TCP-style",
+  "safe_claim": "protocol-state replay simulation; not packet capture or TCP stack development",
+  "expected_flow": ["syn", "syn_ack", "ack", "data_send", "ack_received"],
+  "observed_flow": ["syn", "syn_ack", "ack", "data_send", "timeout", "retransmit", "ack_received"],
+  "diagnosis": {
+    "first_divergence_index": 4,
+    "expected_event": "ack_received",
+    "actual_event": "timeout",
+    "failure_family": "timeout"
+  }
+}

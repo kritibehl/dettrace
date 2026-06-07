@@ -1,0 +1,20 @@
+{
+  "build": "candidate_42",
+  "safe_claim": "heuristic regression-risk analysis for replay diagnostics; not production release automation",
+  "known_regression_risk": "high",
+  "matched_failures": [
+    {
+      "regression_id": "reg_retry_storm_001",
+      "family": "retry_storm",
+      "risk": "high",
+      "confidence": 0.91,
+      "matched_signals": [
+        "duplicate_retry_window",
+        "retry_storm",
+        "timeout_chain"
+      ],
+      "recommended_action": "block release until retry backoff and ACK ordering are reviewed"
+    }
+  ],
+  "release_recommendation": "hold"
+}

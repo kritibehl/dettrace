@@ -1,0 +1,12 @@
+{
+  "protocol": "BLE-style",
+  "safe_claim": "protocol-state replay simulation; not BLE stack or firmware development",
+  "expected_flow": ["advertise", "connect", "pair", "service_discovery", "ready"],
+  "observed_flow": ["advertise", "connect", "disconnect", "reconnect", "service_discovery", "ready"],
+  "diagnosis": {
+    "first_divergence_index": 2,
+    "expected_event": "pair",
+    "actual_event": "disconnect",
+    "failure_family": "disconnect"
+  }
+}
