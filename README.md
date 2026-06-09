@@ -86,8 +86,6 @@ This is especially acute in firmware traces, where a device reports a single fau
 
 ## Architecture
 
-![DetTrace Replay Pipeline](docs/architecture.png)
-
 ```
 I/O trace input  (SPI · I2C · UART · GPIO · OTEL spans · JSONL)
       │
