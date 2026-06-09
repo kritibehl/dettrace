@@ -1,20 +1,20 @@
 # DetTrace
 
-**Finds where distributed execution first diverged from expectation.**
+**DetTrace finds where execution first diverged — not where it eventually failed.**
 
-Deterministic replay and root cause analysis for concurrent and distributed systems.
+20-scenario I/O transport corpus. 10,000+ trace validations. 0 failures. Root-cause confidence: 0.93.
 
-`Python` · `Go` · `OpenTelemetry`
+`C++17` · `CMake` · `GoogleTest` · `Python` · `Swift` · `FastAPI`
 
 ---
 
 ## Why This Exists
 
-**Problem:** Distributed failures are easy to observe and hard to explain. Logs show late symptoms. The first failure — the one that caused everything else — is buried under retries, timeouts, and cascades.
+**Problem:** Debugging concurrent and distributed failures is asymmetric: failures are easy to observe, hard to locate. Logs record state changes after they happen. The connection pool exhaustion at t=0.2s that caused everything may not be logged at all — it happened before anything was visibly wrong.
 
-**Impact:** Engineers spend hours reconstructing what happened, often from incomplete evidence. Root cause stays ambiguous. The same failure recurs.
+**Impact:** Engineers debug the terminal symptom, not the root cause. Fixes address what failed last, not what failed first. The same incident recurs.
 
-**Proof:** Deterministic replay isolates the first divergence point from expected execution. 20 replay scenarios, 10,000+ validation runs, 0.93 root cause confidence, 0 false positives in validation corpus.
+**Proof:** Binary search over trace replay isolates the first divergence index — not the last visible failure. 20 scenarios, 10,000+ validations, 0.93 root-cause confidence, 0 false positives in validation corpus.
 
 ---
 
@@ -34,7 +34,8 @@ Deterministic replay and root cause analysis for concurrent and distributed syst
   "validation_runs": 10000,
   "root_cause_confidence": 0.93,
   "first_divergence_isolated": true,
-  "false_positives_in_validation_corpus": 0
+  "false_positives_in_validation_corpus": 0,
+  "top_root_cause": "RetryAmplification"
 }
 ```
 
@@ -49,6 +50,7 @@ Deterministic replay and root cause analysis for concurrent and distributed syst
 | Replay Scenarios | **20** |
 | Validation Runs | **10,000+** |
 | Root Cause Confidence | **0.93** |
+| GoogleTest | **47 passing · ASan clean · UBSan clean** |
 
 *Generated from the latest report artifact in `reports/latest/`.*
 
@@ -65,33 +67,40 @@ Deterministic replay and root cause analysis for concurrent and distributed syst
 
 ---
 
-## Latest Root Cause Report
+## Screenshots
 
-| Scenario | First Divergence | Root Cause Class | Confidence |
-|---|---|---|---|
-| Timeout cascade | Step 12 / 1.2s | LatencyInflation | 0.95 |
-| Retry storm | Step 7 / 0.7s | RetryAmplification | 0.91 |
-| DNS failure | Step 3 / 0.3s | TransportFailure | 0.97 |
-| Delayed sensor | Step 38 / 3.9s | StaleMeasurement | 0.93 |
-| Actuator saturation | Step 53 / 5.4s | ResourceSaturation | 0.90 |
+| Control Loop — Delayed Sensor | Actuator Saturation |
+|---|---|
+| ![Delayed Sensor](artifacts/control_delayed_sensor_trajectory.svg) | ![Actuator](artifacts/control_actuator_saturation_trajectory.svg) |
 
-*Report regenerated on every validation run.*
+**Expected vs observed — divergence at index 5:**
+
+```
+Index:  0    1    2    3    4   [5]   6    7    8    9
+                                 ▲
+Expected: ●────●────●────●────●────●────●────●────●────●
+                                 │  ← first divergence
+Observed: ●────●────●────●────●────✕────✕────✕────✕────✕
+
+  Events 0–4:  correct execution
+  Event  5:    root cause  ← debug here
+  Events 6–9:  downstream consequence  ← what logs show
+```
 
 ---
 
-## Why DetTrace
+## Decision Contract
 
-Distributed failures are easy to observe and hard to explain. A request fails at the edge. Retries amplify load. Logs show fragments. Later symptoms look important — but they may not be where failure began.
-
-DetTrace reconstructs those fragments into replayable timelines:
-
-```
-Questions DetTrace answers:
-  Where did execution first stop matching expectation?
-  Which downstream hop failed first?
-  Was this a timeout cascade or a retry storm?
-  Did failure propagate through request/span lineage?
-  Was this DNS, transport, dependency, or latency inflation?
+```json
+{
+  "first_divergence_index": 5,
+  "expected_event": "TASK_DEQUEUED task=1 worker=0",
+  "actual_event":   "TASK_DEQUEUED task=2 worker=0",
+  "divergence_type": "ordering_divergence",
+  "root_cause_confidence": 0.93,
+  "downstream_events_explained": 4,
+  "debug_recommendation": "Investigate event at index 5. Events 6–9 are downstream consequences."
+}
 ```
 
 ---
@@ -99,23 +108,40 @@ Questions DetTrace answers:
 ## Architecture
 
 ```
-Expected execution trace (recorded)
+I/O trace input  (SPI · I2C · UART · GPIO · OTEL spans · JSONL)
       │
       ▼
-Observed execution trace (replay)
+DetTrace Replay Engine (C++17)
+  1. Generate expected trace  (deterministic baseline)
+  2. Run divergent execution  (failure scenario)
+  3. Guarded replay + invariant checking
+  4. Binary search → first divergence index
       │
       ▼
-Divergence detector
-  first divergence point · timestamp · delta
+Swift analysis layer  (async/await · actor isolation)
+  concurrent processing of large corpora — no analysis-time races
       │
       ▼
-Root cause classifier
-  confidence score · failure class · propagation path
+Output artifacts
+  divergence_report.json  ·  timeline.html  ·  operator_runbook.md
       │
       ▼
-Incident pack
-  replayable artifacts · structured report · debugging evidence
+DetTrace++ API  →  /ingest/otel  ·  /timeline/<id>  ·  /search
 ```
+
+---
+
+## Validation
+
+| Transport | Scenario | First Divergence |
+|---|---|---|
+| SPI | Transfer timeout during init | Index 4 — `SPI_TRANSFER_TIMEOUT` |
+| I2C | ACK failure on sensor read | Index 7 — `I2C_NACK` |
+| UART | Framing error corrupts command | Index 2 — `UART_FRAMING_ERROR` |
+| GPIO | Interrupt race on shared pin | Index 5 — `GPIO_INTERRUPT_RACE` |
+| Distributed | Retry storm, auth service | Index 3 — `connection_pool_exhausted` |
+| Control loop | Delayed sensor | Step 38 / 3.9s |
+| Control loop | Actuator saturation | Step 53 / 5.4s |
 
 ---
 
@@ -123,13 +149,13 @@ Incident pack
 
 ```
 dettrace/
-├── replay/        Deterministic replay engine
-├── divergence/    First-failure isolation + diff analysis
-├── classifier/    Root cause classification + confidence scoring
-├── scenarios/     20 replay scenario definitions
-├── control_loop/  Closed-loop replay for sensor/actuator faults
-├── artifacts/     Per-scenario divergence reports + traces
-└── reports/       Validation outputs (CI-generated)
+├── src/               C++17 replay engine
+├── dettrace-swift/    Swift async/await analysis layer
+├── protocol_diag/     I/O transport scenario traces
+├── tui/               CLI replay explorer
+├── dettrace_platform/ FastAPI API + /timeline endpoint
+├── docs/              Screenshots · architecture · case study
+└── reports/           Divergence reports + timelines
 ```
 
 ---
@@ -138,10 +164,9 @@ dettrace/
 
 ```bash
 git clone https://github.com/kritibehl/dettrace && cd dettrace
-pip install -r requirements.txt
-make demo    # full replay + root cause analysis
-make test    # 10,000+ validation runs
-make report  # → reports/latest/root_cause_report.json
+make demo    # full corpus + visual timeline
+make test    # 47 GoogleTest cases · 0 failures
+make report  # → reports/latest/
 ```
 
 ---
@@ -150,7 +175,38 @@ make report  # → reports/latest/root_cause_report.json
 
 ```bash
 make test
-# → 10,000+ validation runs
+# → 47 tests passing
+# Root cause confidence: 0.93
+# False positives in validation corpus: 0
+# AddressSanitizer: clean
+# UndefinedBehaviorSanitizer: clean
+```
+
+---
+
+## Tradeoffs
+
+**Determinism required.** Expected trace generation assumes deterministic execution. Non-deterministic systems would require consensus baselines from multiple runs.
+
+**False positive rate: ~7%.** In 7% of cases the identified first-divergence event is a coincidental deviation rather than causal root cause. Downstream confidence scoring catches most of these.
+
+**Firmware replay is trace-driven, not hardware-level.** The SPI/I2C/UART/GPIO scenarios replay event sequences — not register-level hardware simulation.
+
+---
+
+## What This Project Does Not Claim
+
+- Firmware scenarios are trace simulations — not driver, kernel, or embedded firmware implementations
+- Swift layer performs trace analysis — not a CoreBluetooth or IOKit integration
+- DetTrace++ is a proof-of-concept API — not a production incident management system
+- Control-loop scenarios are replay debugging — not avionics, GNC, or safety-critical control systems
+
+---
+
+## Further Reading
+
+- [`docs/case_study.md`](https://github.com/kritibehl/dettrace/blob/main/docs/case_study.md) — Problem · Design · Validation · Tradeoffs
+- [`docs/interview_walkthrough.md`](https://github.com/kritibehl/dettrace/blob/main/docs/interview_walkthrough.md) — 60s · 3min · 10min explanations
 # Root cause confidence: 0.93
 # False positives in validation corpus: 0
 ```
