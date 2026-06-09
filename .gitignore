@@ -50,3 +50,5 @@ device_replay/replay_c_api_demo
 device_replay/replay_device_trace
 device_replay/build/
 device_replay/reports/
+!reports/
+!reports/**
