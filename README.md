@@ -23,9 +23,6 @@
 
 ## Screenshots
 
-| First Divergence — GPIO Race | Timer Missed Tick |
-|---|---|
-| ![GPIO Divergence](docs/screenshots/dettrace-divergence-gpio-interrupt.png) | ![Timer](docs/screenshots/dettrace-divergence-timer-missed-tick.png) |
 
 | Control Loop — Delayed Sensor | Actuator Saturation |
 |---|---|
