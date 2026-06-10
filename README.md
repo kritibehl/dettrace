@@ -2217,3 +2217,24 @@ Example:
     python3 regression_intelligence/build_regression_radar.py --build candidate_42 --signals retry_storm,timeout_chain,duplicate_retry_window,config_read_timeout
 
 Safe scope: heuristic replay-based build regression analysis for diagnostics review. This does not claim production release automation, CI ownership, hardware-lab testing, drivers, firmware, kernel, or real hardware emulation.
+
+---
+
+## Build Regression Radar
+
+DetTrace includes a replay-based build regression radar under `regression_intelligence/`.
+
+The radar maps new build signals to:
+
+- matched known regressions
+- risk score
+- risk level
+- historical occurrences
+- release recommendation
+- recommended debugging actions
+
+Example:
+
+    python3 regression_intelligence/build_regression_radar.py --build candidate_42 --signals retry_storm,timeout_chain,duplicate_retry_window,config_read_timeout
+
+Safe scope: heuristic replay-based build regression analysis for diagnostics review. This does not claim production release automation, CI ownership, hardware-lab testing, drivers, firmware, kernel, or real hardware emulation.
