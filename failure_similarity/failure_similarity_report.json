@@ -1,0 +1,36 @@
+{
+  "input_trace": "io_transport_validation/timeout_retry_chain.json",
+  "safe_claim": "heuristic replay failure-similarity search; not ML or production incident ranking",
+  "most_similar_failure": {
+    "pattern_id": "timeout_pattern",
+    "failure_family": "timeout",
+    "similarity": 0.25,
+    "confidence": 0.69,
+    "matched_evidence": [
+      "timeout"
+    ],
+    "likely_root_cause": "timeout_chain"
+  },
+  "top_matches": [
+    {
+      "pattern_id": "timeout_pattern",
+      "failure_family": "timeout",
+      "similarity": 0.25,
+      "confidence": 0.69,
+      "matched_evidence": [
+        "timeout"
+      ],
+      "likely_root_cause": "timeout_chain"
+    },
+    {
+      "pattern_id": "retry_storm_pattern",
+      "failure_family": "retry_storm",
+      "similarity": 0.25,
+      "confidence": 0.69,
+      "matched_evidence": [
+        "retry_send"
+      ],
+      "likely_root_cause": "unbounded_or_duplicate_retry"
+    }
+  ]
+}

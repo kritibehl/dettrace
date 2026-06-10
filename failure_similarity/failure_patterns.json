@@ -1,0 +1,35 @@
+{
+  "safe_claim": "heuristic replay failure-similarity search; not ML or production incident ranking",
+  "patterns": [
+    {
+      "id": "timeout_pattern",
+      "family": "timeout",
+      "signals": ["timeout", "deadline_exceeded", "ack_missing", "missed_deadline"],
+      "likely_root_cause": "timeout_chain"
+    },
+    {
+      "id": "disconnect_pattern",
+      "family": "disconnect",
+      "signals": ["disconnect", "reconnect", "session_ready", "device_ready"],
+      "likely_root_cause": "reconnect_ordering_issue"
+    },
+    {
+      "id": "retry_storm_pattern",
+      "family": "retry_storm",
+      "signals": ["retry_storm", "retry_send", "duplicate_retry_window", "bounded_retry"],
+      "likely_root_cause": "unbounded_or_duplicate_retry"
+    },
+    {
+      "id": "state_corruption_pattern",
+      "family": "state_corruption",
+      "signals": ["stale_device_state", "stale_session", "state_refresh", "checksum_error"],
+      "likely_root_cause": "stale_or_corrupt_state"
+    },
+    {
+      "id": "enumeration_failure_pattern",
+      "family": "enumeration_failure",
+      "signals": ["config_read_timeout", "missing_bar_assignment", "interrupt_route_missing"],
+      "likely_root_cause": "enumeration_sequence_failure"
+    }
+  ]
+}

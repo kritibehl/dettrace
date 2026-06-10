@@ -2238,3 +2238,31 @@ Example:
     python3 regression_intelligence/build_regression_radar.py --build candidate_42 --signals retry_storm,timeout_chain,duplicate_retry_window,config_read_timeout
 
 Safe scope: heuristic replay-based build regression analysis for diagnostics review. This does not claim production release automation, CI ownership, hardware-lab testing, drivers, firmware, kernel, or real hardware emulation.
+
+---
+
+## Failure Similarity Search
+
+DetTrace includes replay failure-similarity search under `failure_similarity/`.
+
+The search compares a new trace against historical failure patterns:
+
+- timeout
+- disconnect
+- retry storm
+- state corruption
+- enumeration failure
+
+Output includes:
+
+- most similar failure family
+- similarity score
+- confidence score
+- matched evidence
+- likely root cause
+
+Example:
+
+    python3 failure_similarity/search_similar_failures.py io_transport_validation/timeout_retry_chain.json
+
+Safe scope: heuristic replay failure-similarity search for diagnostics review. This does not claim ML, production incident ranking, hardware-lab testing, drivers, firmware, kernel, or real hardware emulation.
