@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>DetTrace Sample Replay Timeline</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f8fafc; color: #111827; margin: 0; }
+    main { max-width: 980px; margin: 40px auto; padding: 24px; }
+    .card { background: white; border: 1px solid #e5e7eb; border-radius: 20px; padding: 22px; margin-bottom: 18px; box-shadow: 0 10px 28px rgba(15,23,42,.08); }
+    .timeline { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    .event { padding: 10px 14px; border-radius: 999px; border: 1px solid #c7d2fe; background: #eef2ff; }
+    .bad { background: #fee2e2; border-color: #fca5a5; color: #991b1b; font-weight: 700; }
+    .good { background: #dcfce7; border-color: #86efac; color: #166534; font-weight: 700; }
+    code { background: #f8fafc; border: 1px solid #e2e8f0; padding: 2px 6px; border-radius: 6px; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>DetTrace Sample Replay Timeline</h1>
+  <p>Expected-vs-observed replay timeline for timeout/retry diagnostics.</p>
+
+  <section class="card">
+    <h2>Expected</h2>
+    <div class="timeline">
+      <span class="event">request_send</span>
+      <span>→</span>
+      <span class="event good">ack_received</span>
+      <span>→</span>
+      <span class="event good">transaction_complete</span>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Observed</h2>
+    <div class="timeline">
+      <span class="event">request_send</span>
+      <span>→</span>
+      <span class="event bad">timeout</span>
+      <span>→</span>
+      <span class="event">retry_send</span>
+      <span>→</span>
+      <span class="event bad">timeout</span>
+      <span>→</span>
+      <span class="event">retry_send</span>
+      <span>→</span>
+      <span class="event good">ack_received</span>
+      <span>→</span>
+      <span class="event good">transaction_complete</span>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>First Divergence</h2>
+    <p><strong>Index:</strong> <code>1</code></p>
+    <p><strong>Expected:</strong> <code>ack_received</code></p>
+    <p><strong>Observed:</strong> <code>timeout</code></p>
+    <p><strong>Likely root cause:</strong> <code>timeout_chain</code></p>
+    <p><strong>Recommended action:</strong> inspect retry backoff, ACK ordering, and timeout thresholds.</p>
+  </section>
+</main>
+</body>
+</html>

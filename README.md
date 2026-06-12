@@ -1,3 +1,8 @@
+![C++ Replay Regression](https://github.com/kritibehl/dettrace/actions/workflows/cpp-replay-regression.yml/badge.svg)
+![CMake](https://img.shields.io/badge/build-CMake-blue)
+![CTest](https://img.shields.io/badge/tests-CTest-green)
+![Replay Validation](https://img.shields.io/badge/replay-validation-success)
+
 # DetTrace
 
 > First-failure isolation through deterministic replay and incident forensics.
@@ -2266,3 +2271,27 @@ Example:
     python3 failure_similarity/search_similar_failures.py io_transport_validation/timeout_retry_chain.json
 
 Safe scope: heuristic replay failure-similarity search for diagnostics review. This does not claim ML, production incident ranking, hardware-lab testing, drivers, firmware, kernel, or real hardware emulation.
+
+---
+
+## Test Infrastructure Mode
+
+DetTrace includes a test-infrastructure mode for reliability and diagnostics workflows.
+
+Artifacts:
+
+- `test_infrastructure_mode/README.md`
+- `reports/sample_replay_timeline_report.html`
+- `docs/debugging/first_divergence_walkthrough.md`
+- `docs/testing/cmake_ctest_badges.md`
+
+This mode shows:
+
+- CMake/CTest-backed replay checks
+- first-divergence debugging methodology
+- sample HTML replay timeline report
+- build regression radar
+- failure-similarity search
+- protocol validation matrices
+
+Safe scope: replay-based test infrastructure and diagnostics tooling. This does not claim production CI ownership, hardware-lab testing, drivers, firmware, kernel engineering, or real hardware emulation.
