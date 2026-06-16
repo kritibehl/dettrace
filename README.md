@@ -2295,3 +2295,39 @@ This mode shows:
 - protocol validation matrices
 
 Safe scope: replay-based test infrastructure and diagnostics tooling. This does not claim production CI ownership, hardware-lab testing, drivers, firmware, kernel engineering, or real hardware emulation.
+
+---
+
+## Systems Validation Mode
+
+DetTrace supports replay-based validation workflows for:
+
+- reproducing failure traces
+- isolating first-divergence behavior
+- validating runtime-state invariants
+- classifying failure modes
+- generating regression reports
+- documenting UNIX-style debugging workflows
+
+Artifacts:
+
+- `system_validation/test_plan.md`
+- `system_validation/bug_reproduction_matrix.md`
+- `system_validation/regression_report.md`
+- `system_validation/performance_test_report.md`
+- `system_validation/failure_triage_summary.md`
+- `system_validation/unix_debugging_workflow.md`
+- `runtime_diagnostics/first_divergence_report.md`
+- `runtime_diagnostics/trace_state_invariant_report.md`
+- `runtime_diagnostics/memory_state_validation.md`
+- `runtime_diagnostics/thread_ordering_validation.md`
+
+C++ validation tests:
+
+- `tests/test_trace_replay_consistency.cpp`
+- `tests/test_first_divergence_detection.cpp`
+- `tests/test_thread_ordering.cpp`
+- `tests/test_state_invariant_validation.cpp`
+- `tests/test_replay_regression.cpp`
+
+Safe scope: replay-based systems validation and diagnostics tooling. This does not claim Core OS ownership, kernel engineering, driver development, firmware ownership, hardware-lab testing, or production runtime implementation.
