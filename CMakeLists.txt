@@ -21,3 +21,15 @@ add_executable(replay_regression_tests
 
 enable_testing()
 add_test(NAME replay_regression_tests COMMAND replay_regression_tests)
+
+add_executable(test_trace_replay_consistency tests/test_trace_replay_consistency.cpp)
+add_executable(test_first_divergence_detection tests/test_first_divergence_detection.cpp)
+add_executable(test_thread_ordering tests/test_thread_ordering.cpp)
+add_executable(test_state_invariant_validation tests/test_state_invariant_validation.cpp)
+add_executable(test_replay_regression tests/test_replay_regression.cpp)
+
+add_test(NAME test_trace_replay_consistency COMMAND test_trace_replay_consistency)
+add_test(NAME test_first_divergence_detection COMMAND test_first_divergence_detection)
+add_test(NAME test_thread_ordering COMMAND test_thread_ordering)
+add_test(NAME test_state_invariant_validation COMMAND test_state_invariant_validation)
+add_test(NAME test_replay_regression COMMAND test_replay_regression)
