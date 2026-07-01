@@ -2331,3 +2331,16 @@ C++ validation tests:
 - `tests/test_replay_regression.cpp`
 
 Safe scope: replay-based systems validation and diagnostics tooling. This does not claim Core OS ownership, kernel engineering, driver development, firmware ownership, hardware-lab testing, or production runtime implementation.
+
+---
+
+## Multithreaded Replay Ordering
+
+DetTrace includes a C++ multithreaded replay-ordering validation test:
+
+- `tests/test_multithreaded_replay_ordering.cpp`
+- `reports/runtime_replay_consistency_report.md`
+
+The test records events from multiple worker threads, normalizes replay order by logical timestamp, and isolates first divergence against an expected runtime trace.
+
+Safe scope: simulated runtime replay ordering validation. This does not claim production runtime implementation, kernel scheduler work, or OS thread-library ownership.

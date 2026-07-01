@@ -33,3 +33,6 @@ add_test(NAME test_first_divergence_detection COMMAND test_first_divergence_dete
 add_test(NAME test_thread_ordering COMMAND test_thread_ordering)
 add_test(NAME test_state_invariant_validation COMMAND test_state_invariant_validation)
 add_test(NAME test_replay_regression COMMAND test_replay_regression)
+
+add_executable(test_multithreaded_replay_ordering tests/test_multithreaded_replay_ordering.cpp)
+add_test(NAME test_multithreaded_replay_ordering COMMAND test_multithreaded_replay_ordering)
