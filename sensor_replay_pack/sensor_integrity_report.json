@@ -1,0 +1,43 @@
+{
+  "workflow": "synthetic-gps-imu-sensor-replay",
+  "safe_claim": "synthetic GPS/IMU-style trajectory data validation; not production autonomy or map creation",
+  "expected_event_count": 6,
+  "observed_event_count": 6,
+  "first_divergence": {
+    "index": 3,
+    "expected_event_id": "imu_002",
+    "observed_event_id": "gps_002",
+    "expected_timestamp_ms": 300,
+    "observed_timestamp_ms": 200
+  },
+  "dropped_events": [
+    "imu_002"
+  ],
+  "duplicated_events": [
+    {
+      "index": 3,
+      "event_id": "gps_002"
+    }
+  ],
+  "delayed_events": [
+    {
+      "index": 4,
+      "event_id": "gps_003",
+      "interval_ms": 270,
+      "threshold_ms": 150
+    }
+  ],
+  "out_of_order_events": [
+    {
+      "index": 5,
+      "previous_timestamp_ms": 470,
+      "current_timestamp_ms": 450,
+      "event_id": "imu_003"
+    }
+  ],
+  "invalid_trajectory_segment": {
+    "start_index": 3,
+    "end_index": 5
+  },
+  "trajectory_valid_for_downstream_mapping": false
+}

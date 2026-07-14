@@ -1,0 +1,24 @@
+{
+  "scenario": "synthetic-gps-imu-trajectory-integrity",
+  "safe_claim": "synthetic GPS/IMU-style sensor-stream replay; not production autonomy, mapping, lidar, radar, or camera processing",
+  "expected_events": [
+    {"index": 0, "timestamp_ms": 0, "sensor": "GPS", "event_id": "gps_001", "x_m": 0.0, "y_m": 0.0, "heading_deg": 0.0},
+    {"index": 1, "timestamp_ms": 100, "sensor": "IMU", "event_id": "imu_001", "accel_x": 0.1, "gyro_z": 0.02},
+    {"index": 2, "timestamp_ms": 200, "sensor": "GPS", "event_id": "gps_002", "x_m": 1.0, "y_m": 0.1, "heading_deg": 5.0},
+    {"index": 3, "timestamp_ms": 300, "sensor": "IMU", "event_id": "imu_002", "accel_x": 0.2, "gyro_z": 0.03},
+    {"index": 4, "timestamp_ms": 400, "sensor": "GPS", "event_id": "gps_003", "x_m": 2.0, "y_m": 0.2, "heading_deg": 8.0},
+    {"index": 5, "timestamp_ms": 500, "sensor": "IMU", "event_id": "imu_003", "accel_x": 0.1, "gyro_z": 0.01}
+  ],
+  "observed_events": [
+    {"index": 0, "timestamp_ms": 0, "sensor": "GPS", "event_id": "gps_001", "x_m": 0.0, "y_m": 0.0, "heading_deg": 0.0},
+    {"index": 1, "timestamp_ms": 100, "sensor": "IMU", "event_id": "imu_001", "accel_x": 0.1, "gyro_z": 0.02},
+    {"index": 2, "timestamp_ms": 200, "sensor": "GPS", "event_id": "gps_002", "x_m": 1.0, "y_m": 0.1, "heading_deg": 5.0},
+    {"index": 3, "timestamp_ms": 200, "sensor": "GPS", "event_id": "gps_002", "x_m": 1.0, "y_m": 0.1, "heading_deg": 5.0},
+    {"index": 4, "timestamp_ms": 470, "sensor": "GPS", "event_id": "gps_003", "x_m": 2.0, "y_m": 0.2, "heading_deg": 8.0},
+    {"index": 5, "timestamp_ms": 450, "sensor": "IMU", "event_id": "imu_003", "accel_x": 0.1, "gyro_z": 0.01}
+  ],
+  "thresholds": {
+    "max_expected_interval_ms": 150,
+    "max_jitter_ms": 50
+  }
+}

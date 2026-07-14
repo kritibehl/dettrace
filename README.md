@@ -2344,3 +2344,27 @@ DetTrace includes a C++ multithreaded replay-ordering validation test:
 The test records events from multiple worker threads, normalizes replay order by logical timestamp, and isolates first divergence against an expected runtime trace.
 
 Safe scope: simulated runtime replay ordering validation. This does not claim production runtime implementation, kernel scheduler work, or OS thread-library ownership.
+
+---
+
+## Sensor Stream Replay and Trajectory Integrity
+
+DetTrace includes a synthetic GPS/IMU-style sensor replay pack under `sensor_replay_pack/`.
+
+The workflow validates:
+
+- timestamp ordering
+- dropped sensor records
+- duplicated sensor records
+- jitter and delayed events
+- first-divergence points
+- invalid trajectory segments before downstream mapping use
+
+Artifacts:
+
+- `sensor_replay_pack/synthetic_gps_imu_trace.json`
+- `sensor_replay_pack/run_sensor_replay.py`
+- `sensor_replay_pack/sensor_integrity_report.json`
+- `sensor_replay_pack/sensor_integrity_report.md`
+
+Safe scope: synthetic trajectory-stream data validation. This does not claim autonomous-driving systems, real sensor ingestion, localization, mapping, sensor fusion, lidar, radar, camera perception, or production hardware ownership.
