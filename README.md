@@ -2368,3 +2368,28 @@ Artifacts:
 - `sensor_replay_pack/sensor_integrity_report.md`
 
 Safe scope: synthetic trajectory-stream data validation. This does not claim autonomous-driving systems, real sensor ingestion, localization, mapping, sensor fusion, lidar, radar, camera perception, or production hardware ownership.
+
+---
+
+## Deterministic Replay Performance
+
+DetTrace includes synthetic deterministic replay benchmarks under `performance_benchmarks/`.
+
+The benchmark evaluates:
+
+- 10K, 100K, and 1M event traces
+- replay throughput in events per second
+- memory use by trace length
+- deterministic SHA-256 checksum validation
+- linear first-divergence scanning
+- prefix-hash indexed divergence lookup
+- reproducible divergence results
+
+Artifacts:
+
+- `performance_benchmarks/benchmark_replay.py`
+- `performance_benchmarks/replay_benchmark_report.json`
+- `performance_benchmarks/README.md`
+- `reports/replay_performance_report.md`
+
+Safe scope: synthetic deterministic replay performance testing. This does not claim production runtime profiling, kernel tracing, hardware benchmarking, or profiler integration.
