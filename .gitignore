@@ -52,3 +52,13 @@ device_replay/build/
 device_replay/reports/
 !reports/
 !reports/**
+
+# Local Python environment
+.venv/
+
+# macOS
+.DS_Store
+
+# Python bytecode
+__pycache__/
+*.py[cod]

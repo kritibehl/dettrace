@@ -1,0 +1,72 @@
+{
+  "baseline_trace_count": 30,
+  "candidate_trace_count": 30,
+  "threshold_pct": 50.0,
+  "added_spans": [
+    {
+      "service": "redis",
+      "span": "redis.lookup",
+      "parent": "inventory.reserve"
+    }
+  ],
+  "removed_spans": [],
+  "regressions": [
+    {
+      "semantic_key": [
+        "checkout",
+        "checkout.request",
+        "ROOT"
+      ],
+      "service": "checkout",
+      "span": "checkout.request",
+      "parent": "ROOT",
+      "baseline_p95_ms": 57.7582,
+      "candidate_p95_ms": 166.48784999999998,
+      "delta_ms": 108.72964999999998,
+      "delta_pct": 188.24972038602306
+    },
+    {
+      "semantic_key": [
+        "inventory",
+        "inventory.reserve",
+        "checkout.request"
+      ],
+      "service": "inventory",
+      "span": "inventory.reserve",
+      "parent": "checkout.request",
+      "baseline_p95_ms": 27.900299999999998,
+      "candidate_p95_ms": 135.52299999999997,
+      "delta_ms": 107.62269999999997,
+      "delta_pct": 385.74029669931855
+    }
+  ],
+  "primary_localized_regression": {
+    "semantic_key": [
+      "inventory",
+      "inventory.reserve",
+      "checkout.request"
+    ],
+    "service": "inventory",
+    "span": "inventory.reserve",
+    "parent": "checkout.request",
+    "baseline_p95_ms": 27.900299999999998,
+    "candidate_p95_ms": 135.52299999999997,
+    "delta_ms": 107.62269999999997,
+    "delta_pct": 385.74029669931855
+  },
+  "end_to_end_regression": {
+    "semantic_key": [
+      "checkout",
+      "checkout.request",
+      "ROOT"
+    ],
+    "service": "checkout",
+    "span": "checkout.request",
+    "parent": "ROOT",
+    "baseline_p95_ms": 57.7582,
+    "candidate_p95_ms": 166.48784999999998,
+    "delta_ms": 108.72964999999998,
+    "delta_pct": 188.24972038602306
+  },
+  "decision": "FAIL"
+}

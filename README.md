@@ -1,9 +1,104 @@
+# DetTrace
+
+> **OpenTelemetry trace regression analysis for CI.**
+
+DetTrace compares baseline and candidate distributed executions, normalizes unstable trace identifiers, detects service/span latency regressions and structural changes, and returns a CI pass/fail decision when a candidate introduces a significant trace regression.
+
+## Current Product Direction
+
+```text
+baseline OpenTelemetry traces
+             +
+candidate OpenTelemetry traces
+             |
+             v
+        normalization
+             |
+             v
+      semantic span identity
+             |
+             v
+ structural + latency diff
+             |
+             v
+ localized regression
+             |
+             v
+        CI PASS / FAIL
+Real Captured Execution Demo
+
+The demo_checkout/ workload creates spans through the OpenTelemetry SDK for baseline and candidate executions.
+
+The candidate deliberately introduces:
+
+additional latency in inventory.reserve
+a new inventory.reserve -> redis.lookup downstream edge
+
+DetTrace compares the captured executions and reports both the end-to-end regression and the strongest localized non-root regression.
+
+Latest demo result
+baseline traces:  30
+candidate traces: 30
+
+STRUCTURAL CHANGE
+inventory.reserve -> redis.lookup
+
+END-TO-END REGRESSION
+checkout.request
+57.76 ms -> 166.49 ms p95
++188.2%
+
+PRIMARY LOCALIZED REGRESSION
+inventory.reserve
+27.90 ms -> 135.52 ms p95
++385.7%
+
+CI DECISION: FAIL
+
+The term localized regression is intentional. DetTrace does not yet claim causal root-cause attribution; explicit span-DAG and critical-path analysis are the next implementation milestone.
+
+Run
+python3 demo_checkout/run_demo.py \
+  --mode baseline \
+  --requests 30 \
+  --output artifacts/traces/baseline/checkout.json
+
+python3 demo_checkout/run_demo.py \
+  --mode candidate \
+  --requests 30 \
+  --output artifacts/traces/candidate/checkout.json
+
+python3 -m trace_regression.cli \
+  --baseline artifacts/traces/baseline/checkout.json \
+  --candidate artifacts/traces/candidate/checkout.json \
+  --regression-threshold-pct 50
+Current Analyzer
+
+The active trace-regression path includes:
+
+OpenTelemetry SDK span capture
+baseline/candidate execution sets
+unstable trace/span ID normalization
+semantic span matching
+p50/p95/p99 aggregation
+added-span / downstream-edge detection
+configurable p95 regression thresholds
+end-to-end regression reporting
+localized non-root regression reporting
+machine-readable JSON reports
+non-zero exit status for failed CI gates
+Legacy Replay Research
+
+Earlier deterministic replay, protocol, sensor-stream, concurrency, incident-forensics, and replay-performance experiments remain in this repository as historical research artifacts.
+
+They are supporting experiments rather than the active product direction.
+
 ![C++ Replay Regression](https://github.com/kritibehl/dettrace/actions/workflows/cpp-replay-regression.yml/badge.svg)
 ![CMake](https://img.shields.io/badge/build-CMake-blue)
 ![CTest](https://img.shields.io/badge/tests-CTest-green)
 ![Replay Validation](https://img.shields.io/badge/replay-validation-success)
 
-# DetTrace
+### Historical replay implementation
 
 > First-failure isolation through deterministic replay and incident forensics.
 

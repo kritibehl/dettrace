@@ -4,6 +4,5 @@
   "validation_runs": 10000,
   "root_cause_confidence": 0.93,
   "first_divergence_isolated": true,
-  "false_positives_in_validation_corpus": 0,
   "top_root_cause": "RetryAmplification"
 }
