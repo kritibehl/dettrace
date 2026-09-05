@@ -1,12 +1,12 @@
 [
   {
-    "trace_id": "bdd640fb06671ad11c80317fa3b1799d",
-    "span_id": "23b8c1e9392456de",
-    "parent_span_id": "3eb13b9046685257",
+    "trace_id": "4ab10659fc56b375a0ab74cb3c9c9f01",
+    "span_id": "efde3cb8b14699c0",
+    "parent_span_id": "14fb0d869f341eb3",
     "name": "auth.validate",
-    "start_time_unix_nano": 1788632823891652000,
-    "end_time_unix_nano": 1788632823897594000,
-    "duration_ms": 5.942,
+    "start_time_unix_nano": 1788644618798866000,
+    "end_time_unix_nano": 1788644618805483000,
+    "duration_ms": 6.617,
     "status": "UNSET",
     "attributes": {
       "service.name": "auth"
@@ -15,19 +15,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "bdd640fb06671ad11c80317fa3b1799d",
-    "span_id": "8b9d2434e465e150",
-    "parent_span_id": "bd9c66b3ad3c2d6d",
+    "trace_id": "4ab10659fc56b375a0ab74cb3c9c9f01",
+    "span_id": "2072e1930c30e414",
+    "parent_span_id": "cb3b58e065279f36",
     "name": "inventory.database",
-    "start_time_unix_nano": 1788632823897981000,
-    "end_time_unix_nano": 1788632823909207000,
-    "duration_ms": 11.226,
+    "start_time_unix_nano": 1788644618805973000,
+    "end_time_unix_nano": 1788644618816727000,
+    "duration_ms": 10.754,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory-db",
@@ -37,19 +37,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "bdd640fb06671ad11c80317fa3b1799d",
-    "span_id": "bd9c66b3ad3c2d6d",
-    "parent_span_id": "3eb13b9046685257",
+    "trace_id": "4ab10659fc56b375a0ab74cb3c9c9f01",
+    "span_id": "cb3b58e065279f36",
+    "parent_span_id": "14fb0d869f341eb3",
     "name": "inventory.reserve",
-    "start_time_unix_nano": 1788632823897964000,
-    "end_time_unix_nano": 1788632823916277000,
-    "duration_ms": 18.313,
+    "start_time_unix_nano": 1788644618805957000,
+    "end_time_unix_nano": 1788644618823148000,
+    "duration_ms": 17.191,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory"
@@ -58,19 +58,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "bdd640fb06671ad11c80317fa3b1799d",
-    "span_id": "17fc695a07a0ca6e",
-    "parent_span_id": "3eb13b9046685257",
+    "trace_id": "4ab10659fc56b375a0ab74cb3c9c9f01",
+    "span_id": "f9e6fd6fadb1c09a",
+    "parent_span_id": "14fb0d869f341eb3",
     "name": "payment.authorize",
-    "start_time_unix_nano": 1788632823916570000,
-    "end_time_unix_nano": 1788632823925857000,
-    "duration_ms": 9.287,
+    "start_time_unix_nano": 1788644618823401000,
+    "end_time_unix_nano": 1788644618834268000,
+    "duration_ms": 10.867,
     "status": "UNSET",
     "attributes": {
       "service.name": "payment"
@@ -79,41 +79,44 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "bdd640fb06671ad11c80317fa3b1799d",
-    "span_id": "3eb13b9046685257",
+    "trace_id": "4ab10659fc56b375a0ab74cb3c9c9f01",
+    "span_id": "14fb0d869f341eb3",
     "parent_span_id": null,
     "name": "checkout.request",
-    "start_time_unix_nano": 1788632823891620000,
-    "end_time_unix_nano": 1788632823926088000,
-    "duration_ms": 34.468,
+    "start_time_unix_nano": 1788644618798835000,
+    "end_time_unix_nano": 1788644618834567000,
+    "duration_ms": 35.732,
     "status": "UNSET",
     "attributes": {
       "service.name": "checkout",
-      "request.number": 0
+      "request.number": 0,
+      "http.request.method": "POST",
+      "http.route": "/checkout",
+      "dettrace.request_shape": "checkout"
     },
     "resource": {
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "8fadc1a606cb0fb39a1de644815ef6d1",
-    "span_id": "b38a088ca65ed389",
-    "parent_span_id": "b74d0fb132e70629",
+    "trace_id": "6419abe448b62df969ac1a32ddc1df68",
+    "span_id": "b75ac5ecb64bd5ab",
+    "parent_span_id": "5fa6c4fecae08914",
     "name": "auth.validate",
-    "start_time_unix_nano": 1788632823926345000,
-    "end_time_unix_nano": 1788632823932723000,
-    "duration_ms": 6.378,
+    "start_time_unix_nano": 1788644618834854000,
+    "end_time_unix_nano": 1788644618839963000,
+    "duration_ms": 5.109,
     "status": "UNSET",
     "attributes": {
       "service.name": "auth"
@@ -122,19 +125,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "8fadc1a606cb0fb39a1de644815ef6d1",
-    "span_id": "4737819096da1dac",
-    "parent_span_id": "72ff5d2a386ecbe0",
+    "trace_id": "6419abe448b62df969ac1a32ddc1df68",
+    "span_id": "564fc0f4dba21aac",
+    "parent_span_id": "feb55b7951c0453e",
     "name": "inventory.database",
-    "start_time_unix_nano": 1788632823933082000,
-    "end_time_unix_nano": 1788632823949662000,
-    "duration_ms": 16.58,
+    "start_time_unix_nano": 1788644618840297000,
+    "end_time_unix_nano": 1788644618856300000,
+    "duration_ms": 16.003,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory-db",
@@ -144,19 +147,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "8fadc1a606cb0fb39a1de644815ef6d1",
-    "span_id": "72ff5d2a386ecbe0",
-    "parent_span_id": "b74d0fb132e70629",
+    "trace_id": "6419abe448b62df969ac1a32ddc1df68",
+    "span_id": "feb55b7951c0453e",
+    "parent_span_id": "5fa6c4fecae08914",
     "name": "inventory.reserve",
-    "start_time_unix_nano": 1788632823933066000,
-    "end_time_unix_nano": 1788632823955061000,
-    "duration_ms": 21.995,
+    "start_time_unix_nano": 1788644618840281000,
+    "end_time_unix_nano": 1788644618862272000,
+    "duration_ms": 21.991,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory"
@@ -165,19 +168,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "8fadc1a606cb0fb39a1de644815ef6d1",
-    "span_id": "28df6ec4ce4a2bbd",
-    "parent_span_id": "b74d0fb132e70629",
+    "trace_id": "6419abe448b62df969ac1a32ddc1df68",
+    "span_id": "f18f0bf0e48cdcbd",
+    "parent_span_id": "5fa6c4fecae08914",
     "name": "payment.authorize",
-    "start_time_unix_nano": 1788632823955457000,
-    "end_time_unix_nano": 1788632823967648000,
-    "duration_ms": 12.191,
+    "start_time_unix_nano": 1788644618862701000,
+    "end_time_unix_nano": 1788644618874464000,
+    "duration_ms": 11.763,
     "status": "UNSET",
     "attributes": {
       "service.name": "payment"
@@ -186,41 +189,44 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "8fadc1a606cb0fb39a1de644815ef6d1",
-    "span_id": "b74d0fb132e70629",
+    "trace_id": "6419abe448b62df969ac1a32ddc1df68",
+    "span_id": "5fa6c4fecae08914",
     "parent_span_id": null,
     "name": "checkout.request",
-    "start_time_unix_nano": 1788632823926328000,
-    "end_time_unix_nano": 1788632823968161000,
-    "duration_ms": 41.833,
+    "start_time_unix_nano": 1788644618834835000,
+    "end_time_unix_nano": 1788644618875224000,
+    "duration_ms": 40.389,
     "status": "UNSET",
     "attributes": {
       "service.name": "checkout",
-      "request.number": 1
+      "request.number": 1,
+      "http.request.method": "POST",
+      "http.route": "/checkout",
+      "dettrace.request_shape": "checkout"
     },
     "resource": {
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "371ecd7b27cd813047229389571aa876",
-    "span_id": "1a2a73ed562b0f79",
-    "parent_span_id": "c37459eef50bea63",
+    "trace_id": "7b944f761d125ad81a7a6b763f9d550f",
+    "span_id": "98f82124bfa86ad7",
+    "parent_span_id": "a7eea840b8c1da1f",
     "name": "auth.validate",
-    "start_time_unix_nano": 1788632823968816000,
-    "end_time_unix_nano": 1788632823973312000,
-    "duration_ms": 4.496,
+    "start_time_unix_nano": 1788644618875868000,
+    "end_time_unix_nano": 1788644618881125000,
+    "duration_ms": 5.257,
     "status": "UNSET",
     "attributes": {
       "service.name": "auth"
@@ -229,19 +235,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "371ecd7b27cd813047229389571aa876",
-    "span_id": "580d7b71d8f56413",
-    "parent_span_id": "5be6128e18c26797",
+    "trace_id": "7b944f761d125ad81a7a6b763f9d550f",
+    "span_id": "3de3e1ae8c2f8cad",
+    "parent_span_id": "22d79fcb3d90d378",
     "name": "inventory.database",
-    "start_time_unix_nano": 1788632823974102000,
-    "end_time_unix_nano": 1788632823989658000,
-    "duration_ms": 15.556,
+    "start_time_unix_nano": 1788644618882254000,
+    "end_time_unix_nano": 1788644618897527000,
+    "duration_ms": 15.273,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory-db",
@@ -251,19 +257,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "371ecd7b27cd813047229389571aa876",
-    "span_id": "5be6128e18c26797",
-    "parent_span_id": "c37459eef50bea63",
+    "trace_id": "7b944f761d125ad81a7a6b763f9d550f",
+    "span_id": "22d79fcb3d90d378",
+    "parent_span_id": "a7eea840b8c1da1f",
     "name": "inventory.reserve",
-    "start_time_unix_nano": 1788632823974077000,
-    "end_time_unix_nano": 1788632823998740000,
-    "duration_ms": 24.663,
+    "start_time_unix_nano": 1788644618882216000,
+    "end_time_unix_nano": 1788644618909786000,
+    "duration_ms": 27.57,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory"
@@ -272,19 +278,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "371ecd7b27cd813047229389571aa876",
-    "span_id": "759cde66bacfb3d0",
-    "parent_span_id": "c37459eef50bea63",
+    "trace_id": "7b944f761d125ad81a7a6b763f9d550f",
+    "span_id": "584cb094c0e0affd",
+    "parent_span_id": "a7eea840b8c1da1f",
     "name": "payment.authorize",
-    "start_time_unix_nano": 1788632823999590000,
-    "end_time_unix_nano": 1788632824011644000,
-    "duration_ms": 12.054,
+    "start_time_unix_nano": 1788644618917149000,
+    "end_time_unix_nano": 1788644618929733000,
+    "duration_ms": 12.584,
     "status": "UNSET",
     "attributes": {
       "service.name": "payment"
@@ -293,41 +299,44 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "371ecd7b27cd813047229389571aa876",
-    "span_id": "c37459eef50bea63",
+    "trace_id": "7b944f761d125ad81a7a6b763f9d550f",
+    "span_id": "a7eea840b8c1da1f",
     "parent_span_id": null,
     "name": "checkout.request",
-    "start_time_unix_nano": 1788632823968784000,
-    "end_time_unix_nano": 1788632824012323000,
-    "duration_ms": 43.539,
+    "start_time_unix_nano": 1788644618875838000,
+    "end_time_unix_nano": 1788644618931323000,
+    "duration_ms": 55.485,
     "status": "UNSET",
     "attributes": {
       "service.name": "checkout",
-      "request.number": 2
+      "request.number": 2,
+      "http.request.method": "POST",
+      "http.route": "/checkout",
+      "dettrace.request_shape": "checkout"
     },
     "resource": {
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "142c3fe860e7a113ec1b8ca1f91e1d4c",
-    "span_id": "a0ee89aed453dd32",
-    "parent_span_id": "4b0dbb418d5288f1",
+    "trace_id": "c1054dc376c8f5c5a7276d041abe4973",
+    "span_id": "59fef96afb72c961",
+    "parent_span_id": "20203d5d7d59ada3",
     "name": "auth.validate",
-    "start_time_unix_nano": 1788632824012877000,
-    "end_time_unix_nano": 1788632824019037000,
-    "duration_ms": 6.16,
+    "start_time_unix_nano": 1788644618935563000,
+    "end_time_unix_nano": 1788644618941290000,
+    "duration_ms": 5.727,
     "status": "UNSET",
     "attributes": {
       "service.name": "auth"
@@ -336,19 +345,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "142c3fe860e7a113ec1b8ca1f91e1d4c",
-    "span_id": "3139d32c93cd59bf",
-    "parent_span_id": "5c941cf0dc98d2c1",
+    "trace_id": "c1054dc376c8f5c5a7276d041abe4973",
+    "span_id": "a67d967c9facf240",
+    "parent_span_id": "67042f538f4b5dc0",
     "name": "inventory.database",
-    "start_time_unix_nano": 1788632824021069000,
-    "end_time_unix_nano": 1788632824037149000,
-    "duration_ms": 16.08,
+    "start_time_unix_nano": 1788644618944600000,
+    "end_time_unix_nano": 1788644618959629000,
+    "duration_ms": 15.029,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory-db",
@@ -358,19 +367,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "142c3fe860e7a113ec1b8ca1f91e1d4c",
-    "span_id": "5c941cf0dc98d2c1",
-    "parent_span_id": "4b0dbb418d5288f1",
+    "trace_id": "c1054dc376c8f5c5a7276d041abe4973",
+    "span_id": "67042f538f4b5dc0",
+    "parent_span_id": "20203d5d7d59ada3",
     "name": "inventory.reserve",
-    "start_time_unix_nano": 1788632824020652000,
-    "end_time_unix_nano": 1788632824043964000,
-    "duration_ms": 23.312,
+    "start_time_unix_nano": 1788644618944435000,
+    "end_time_unix_nano": 1788644618965822000,
+    "duration_ms": 21.387,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory"
@@ -379,19 +388,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "142c3fe860e7a113ec1b8ca1f91e1d4c",
-    "span_id": "c5e7ce8a3a578a8e",
-    "parent_span_id": "4b0dbb418d5288f1",
+    "trace_id": "c1054dc376c8f5c5a7276d041abe4973",
+    "span_id": "141afd56d191dda8",
+    "parent_span_id": "20203d5d7d59ada3",
     "name": "payment.authorize",
-    "start_time_unix_nano": 1788632824046646000,
-    "end_time_unix_nano": 1788632824057834000,
-    "duration_ms": 11.188,
+    "start_time_unix_nano": 1788644618967514000,
+    "end_time_unix_nano": 1788644618978911000,
+    "duration_ms": 11.397,
     "status": "UNSET",
     "attributes": {
       "service.name": "payment"
@@ -400,41 +409,44 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "142c3fe860e7a113ec1b8ca1f91e1d4c",
-    "span_id": "4b0dbb418d5288f1",
+    "trace_id": "c1054dc376c8f5c5a7276d041abe4973",
+    "span_id": "20203d5d7d59ada3",
     "parent_span_id": null,
     "name": "checkout.request",
-    "start_time_unix_nano": 1788632824012848000,
-    "end_time_unix_nano": 1788632824058664000,
-    "duration_ms": 45.816,
+    "start_time_unix_nano": 1788644618935498000,
+    "end_time_unix_nano": 1788644618980378000,
+    "duration_ms": 44.88,
     "status": "UNSET",
     "attributes": {
       "service.name": "checkout",
-      "request.number": 3
+      "request.number": 3,
+      "http.request.method": "POST",
+      "http.route": "/checkout",
+      "dettrace.request_shape": "checkout"
     },
     "resource": {
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "ddd1dfb23b982ef8daf61a26146d3f31",
-    "span_id": "7412b29347294739",
-    "parent_span_id": "614ff3d719db3ad0",
+    "trace_id": "d39447052ef5859fd3d9befd442b7359",
+    "span_id": "36167a9bf299cbe8",
+    "parent_span_id": "646e94dc5d0821ce",
     "name": "auth.validate",
-    "start_time_unix_nano": 1788632824060230000,
-    "end_time_unix_nano": 1788632824068325000,
-    "duration_ms": 8.095,
+    "start_time_unix_nano": 1788644618982007000,
+    "end_time_unix_nano": 1788644618987916000,
+    "duration_ms": 5.909,
     "status": "UNSET",
     "attributes": {
       "service.name": "auth"
@@ -443,19 +455,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "ddd1dfb23b982ef8daf61a26146d3f31",
-    "span_id": "5af305535ec42e08",
-    "parent_span_id": "29a3b2e95d65a441",
+    "trace_id": "d39447052ef5859fd3d9befd442b7359",
+    "span_id": "e992a1017334cbd3",
+    "parent_span_id": "e0f2ce2601c1e9b2",
     "name": "inventory.database",
-    "start_time_unix_nano": 1788632824070796000,
-    "end_time_unix_nano": 1788632824085346000,
-    "duration_ms": 14.55,
+    "start_time_unix_nano": 1788644618989884000,
+    "end_time_unix_nano": 1788644619004173000,
+    "duration_ms": 14.289,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory-db",
@@ -465,19 +477,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "ddd1dfb23b982ef8daf61a26146d3f31",
-    "span_id": "29a3b2e95d65a441",
-    "parent_span_id": "614ff3d719db3ad0",
+    "trace_id": "d39447052ef5859fd3d9befd442b7359",
+    "span_id": "e0f2ce2601c1e9b2",
+    "parent_span_id": "646e94dc5d0821ce",
     "name": "inventory.reserve",
-    "start_time_unix_nano": 1788632824070773000,
-    "end_time_unix_nano": 1788632824105012000,
-    "duration_ms": 34.239,
+    "start_time_unix_nano": 1788644618989864000,
+    "end_time_unix_nano": 1788644619011890000,
+    "duration_ms": 22.026,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory"
@@ -486,19 +498,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "ddd1dfb23b982ef8daf61a26146d3f31",
-    "span_id": "aefcfad8efc89849",
-    "parent_span_id": "614ff3d719db3ad0",
+    "trace_id": "d39447052ef5859fd3d9befd442b7359",
+    "span_id": "5086d68a64f79f57",
+    "parent_span_id": "646e94dc5d0821ce",
     "name": "payment.authorize",
-    "start_time_unix_nano": 1788632824106201000,
-    "end_time_unix_nano": 1788632824122050000,
-    "duration_ms": 15.849,
+    "start_time_unix_nano": 1788644619016402000,
+    "end_time_unix_nano": 1788644619067241000,
+    "duration_ms": 50.839,
     "status": "UNSET",
     "attributes": {
       "service.name": "payment"
@@ -507,41 +519,44 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "ddd1dfb23b982ef8daf61a26146d3f31",
-    "span_id": "614ff3d719db3ad0",
+    "trace_id": "d39447052ef5859fd3d9befd442b7359",
+    "span_id": "646e94dc5d0821ce",
     "parent_span_id": null,
     "name": "checkout.request",
-    "start_time_unix_nano": 1788632824060176000,
-    "end_time_unix_nano": 1788632824124507000,
-    "duration_ms": 64.331,
+    "start_time_unix_nano": 1788644618981914000,
+    "end_time_unix_nano": 1788644619093376000,
+    "duration_ms": 111.462,
     "status": "UNSET",
     "attributes": {
       "service.name": "checkout",
-      "request.number": 4
+      "request.number": 4,
+      "http.request.method": "POST",
+      "http.route": "/checkout",
+      "dettrace.request_shape": "checkout"
     },
     "resource": {
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "88bd64072bcfbe01a28defe39bf00273",
-    "span_id": "7656af7229d4beef",
-    "parent_span_id": "3eabedcbbaa80dd4",
+    "trace_id": "656698e19806e49f1612bcfbfd253c77",
+    "span_id": "82bcec14f209c2a0",
+    "parent_span_id": "bb5aeda31efce684",
     "name": "auth.validate",
-    "start_time_unix_nano": 1788632824126229000,
-    "end_time_unix_nano": 1788632824132253000,
-    "duration_ms": 6.024,
+    "start_time_unix_nano": 1788644619100327000,
+    "end_time_unix_nano": 1788644619107182000,
+    "duration_ms": 6.855,
     "status": "UNSET",
     "attributes": {
       "service.name": "auth"
@@ -550,19 +565,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "88bd64072bcfbe01a28defe39bf00273",
-    "span_id": "b02b61c4a3d70628",
-    "parent_span_id": "ece66fa2fd5166e6",
+    "trace_id": "656698e19806e49f1612bcfbfd253c77",
+    "span_id": "63c2bb47dddce8e9",
+    "parent_span_id": "07f51faf61d501d8",
     "name": "inventory.database",
-    "start_time_unix_nano": 1788632824135707000,
-    "end_time_unix_nano": 1788632824148168000,
-    "duration_ms": 12.461,
+    "start_time_unix_nano": 1788644619113236000,
+    "end_time_unix_nano": 1788644619128967000,
+    "duration_ms": 15.731,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory-db",
@@ -572,19 +587,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "88bd64072bcfbe01a28defe39bf00273",
-    "span_id": "ece66fa2fd5166e6",
-    "parent_span_id": "3eabedcbbaa80dd4",
+    "trace_id": "656698e19806e49f1612bcfbfd253c77",
+    "span_id": "07f51faf61d501d8",
+    "parent_span_id": "bb5aeda31efce684",
     "name": "inventory.reserve",
-    "start_time_unix_nano": 1788632824135685000,
-    "end_time_unix_nano": 1788632824160016000,
-    "duration_ms": 24.331,
+    "start_time_unix_nano": 1788644619113214000,
+    "end_time_unix_nano": 1788644619137549000,
+    "duration_ms": 24.335,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory"
@@ -593,19 +608,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "88bd64072bcfbe01a28defe39bf00273",
-    "span_id": "c4b032ccd7c524a5",
-    "parent_span_id": "3eabedcbbaa80dd4",
+    "trace_id": "656698e19806e49f1612bcfbfd253c77",
+    "span_id": "ad5f2b9c631e8ad6",
+    "parent_span_id": "bb5aeda31efce684",
     "name": "payment.authorize",
-    "start_time_unix_nano": 1788632824160721000,
-    "end_time_unix_nano": 1788632824173667000,
-    "duration_ms": 12.946,
+    "start_time_unix_nano": 1788644619140928000,
+    "end_time_unix_nano": 1788644619151045000,
+    "duration_ms": 10.117,
     "status": "UNSET",
     "attributes": {
       "service.name": "payment"
@@ -614,41 +629,44 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "88bd64072bcfbe01a28defe39bf00273",
-    "span_id": "3eabedcbbaa80dd4",
+    "trace_id": "656698e19806e49f1612bcfbfd253c77",
+    "span_id": "bb5aeda31efce684",
     "parent_span_id": null,
     "name": "checkout.request",
-    "start_time_unix_nano": 1788632824126036000,
-    "end_time_unix_nano": 1788632824174381000,
-    "duration_ms": 48.345,
+    "start_time_unix_nano": 1788644619100300000,
+    "end_time_unix_nano": 1788644619159871000,
+    "duration_ms": 59.571,
     "status": "UNSET",
     "attributes": {
       "service.name": "checkout",
-      "request.number": 5
+      "request.number": 5,
+      "http.request.method": "POST",
+      "http.route": "/checkout",
+      "dettrace.request_shape": "checkout"
     },
     "resource": {
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "ce177b4e0837b8a3d261a7ab3aa2e4f9",
-    "span_id": "10f1bc81448aaa9e",
-    "parent_span_id": "66b2bc5b50c187fc",
+    "trace_id": "064a39d10994c5061f95d26a355a7b21",
+    "span_id": "3ca7201922e5b293",
+    "parent_span_id": "197a33fe12ddf65d",
     "name": "auth.validate",
-    "start_time_unix_nano": 1788632824175027000,
-    "end_time_unix_nano": 1788632824180587000,
-    "duration_ms": 5.56,
+    "start_time_unix_nano": 1788644619162163000,
+    "end_time_unix_nano": 1788644619167575000,
+    "duration_ms": 5.412,
     "status": "UNSET",
     "attributes": {
       "service.name": "auth"
@@ -657,19 +675,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "ce177b4e0837b8a3d261a7ab3aa2e4f9",
-    "span_id": "b7c93acfe059a0ee",
-    "parent_span_id": "9132b63ef16287e4",
+    "trace_id": "064a39d10994c5061f95d26a355a7b21",
+    "span_id": "909d64f0e8252420",
+    "parent_span_id": "664ddf00e43f0044",
     "name": "inventory.database",
-    "start_time_unix_nano": 1788632824181532000,
-    "end_time_unix_nano": 1788632824195631000,
-    "duration_ms": 14.099,
+    "start_time_unix_nano": 1788644619172601000,
+    "end_time_unix_nano": 1788644619184825000,
+    "duration_ms": 12.224,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory-db",
@@ -679,19 +697,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "ce177b4e0837b8a3d261a7ab3aa2e4f9",
-    "span_id": "9132b63ef16287e4",
-    "parent_span_id": "66b2bc5b50c187fc",
+    "trace_id": "064a39d10994c5061f95d26a355a7b21",
+    "span_id": "664ddf00e43f0044",
+    "parent_span_id": "197a33fe12ddf65d",
     "name": "inventory.reserve",
-    "start_time_unix_nano": 1788632824181515000,
-    "end_time_unix_nano": 1788632824203833000,
-    "duration_ms": 22.318,
+    "start_time_unix_nano": 1788644619172564000,
+    "end_time_unix_nano": 1788644619208738000,
+    "duration_ms": 36.174,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory"
@@ -700,19 +718,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "ce177b4e0837b8a3d261a7ab3aa2e4f9",
-    "span_id": "e27a984d654821d0",
-    "parent_span_id": "66b2bc5b50c187fc",
+    "trace_id": "064a39d10994c5061f95d26a355a7b21",
+    "span_id": "868add7d6109b890",
+    "parent_span_id": "197a33fe12ddf65d",
     "name": "payment.authorize",
-    "start_time_unix_nano": 1788632824204550000,
-    "end_time_unix_nano": 1788632824218072000,
-    "duration_ms": 13.522,
+    "start_time_unix_nano": 1788644619210576000,
+    "end_time_unix_nano": 1788644619221312000,
+    "duration_ms": 10.736,
     "status": "UNSET",
     "attributes": {
       "service.name": "payment"
@@ -721,41 +739,44 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "ce177b4e0837b8a3d261a7ab3aa2e4f9",
-    "span_id": "66b2bc5b50c187fc",
+    "trace_id": "064a39d10994c5061f95d26a355a7b21",
+    "span_id": "197a33fe12ddf65d",
     "parent_span_id": null,
     "name": "checkout.request",
-    "start_time_unix_nano": 1788632824175006000,
-    "end_time_unix_nano": 1788632824219109000,
-    "duration_ms": 44.103,
+    "start_time_unix_nano": 1788644619162095000,
+    "end_time_unix_nano": 1788644619224488000,
+    "duration_ms": 62.393,
     "status": "UNSET",
     "attributes": {
       "service.name": "checkout",
-      "request.number": 6
+      "request.number": 6,
+      "http.request.method": "POST",
+      "http.route": "/checkout",
+      "dettrace.request_shape": "checkout"
     },
     "resource": {
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "23bed01d43cf2fde24933b83757750a9",
-    "span_id": "89fa6a688fb5d27b",
-    "parent_span_id": "beb799193f22faf8",
+    "trace_id": "cc6938487234149ab1d861a769c8631b",
+    "span_id": "a1d0df1554ffd1c6",
+    "parent_span_id": "ee229402d57b7206",
     "name": "auth.validate",
-    "start_time_unix_nano": 1788632824219989000,
-    "end_time_unix_nano": 1788632824225691000,
-    "duration_ms": 5.702,
+    "start_time_unix_nano": 1788644619225616000,
+    "end_time_unix_nano": 1788644619231410000,
+    "duration_ms": 5.794,
     "status": "UNSET",
     "attributes": {
       "service.name": "auth"
@@ -764,19 +785,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "23bed01d43cf2fde24933b83757750a9",
-    "span_id": "956269f0e5d7b875",
-    "parent_span_id": "6dadd6c795a76d79",
+    "trace_id": "cc6938487234149ab1d861a769c8631b",
+    "span_id": "ea9bbcca3ebb5c33",
+    "parent_span_id": "05fecd770ce9dad7",
     "name": "inventory.database",
-    "start_time_unix_nano": 1788632824226824000,
-    "end_time_unix_nano": 1788632824240350000,
-    "duration_ms": 13.526,
+    "start_time_unix_nano": 1788644619239420000,
+    "end_time_unix_nano": 1788644619254046000,
+    "duration_ms": 14.626,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory-db",
@@ -786,19 +807,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "23bed01d43cf2fde24933b83757750a9",
-    "span_id": "6dadd6c795a76d79",
-    "parent_span_id": "beb799193f22faf8",
+    "trace_id": "cc6938487234149ab1d861a769c8631b",
+    "span_id": "05fecd770ce9dad7",
+    "parent_span_id": "ee229402d57b7206",
     "name": "inventory.reserve",
-    "start_time_unix_nano": 1788632824226807000,
-    "end_time_unix_nano": 1788632824248078000,
-    "duration_ms": 21.271,
+    "start_time_unix_nano": 1788644619239368000,
+    "end_time_unix_nano": 1788644619262956000,
+    "duration_ms": 23.588,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory"
@@ -807,19 +828,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "23bed01d43cf2fde24933b83757750a9",
-    "span_id": "2369b584ff5e9ff0",
-    "parent_span_id": "beb799193f22faf8",
+    "trace_id": "cc6938487234149ab1d861a769c8631b",
+    "span_id": "59e2795995e7368f",
+    "parent_span_id": "ee229402d57b7206",
     "name": "payment.authorize",
-    "start_time_unix_nano": 1788632824248818000,
-    "end_time_unix_nano": 1788632824260783000,
-    "duration_ms": 11.965,
+    "start_time_unix_nano": 1788644619264558000,
+    "end_time_unix_nano": 1788644619277085000,
+    "duration_ms": 12.527,
     "status": "UNSET",
     "attributes": {
       "service.name": "payment"
@@ -828,41 +849,44 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "23bed01d43cf2fde24933b83757750a9",
-    "span_id": "beb799193f22faf8",
+    "trace_id": "cc6938487234149ab1d861a769c8631b",
+    "span_id": "ee229402d57b7206",
     "parent_span_id": null,
     "name": "checkout.request",
-    "start_time_unix_nano": 1788632824219967000,
-    "end_time_unix_nano": 1788632824261596000,
-    "duration_ms": 41.629,
+    "start_time_unix_nano": 1788644619225592000,
+    "end_time_unix_nano": 1788644619280739000,
+    "duration_ms": 55.147,
     "status": "UNSET",
     "attributes": {
       "service.name": "checkout",
-      "request.number": 7
+      "request.number": 7,
+      "http.request.method": "POST",
+      "http.route": "/checkout",
+      "dettrace.request_shape": "checkout"
     },
     "resource": {
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "dc713d960c0fd195c17af08a1745d6d8",
-    "span_id": "28f49481a0a04dc4",
-    "parent_span_id": "27209bdf1c11f735",
+    "trace_id": "dfae55ade5396f24dc2197b9875e78cb",
+    "span_id": "0faae08009f5a3e6",
+    "parent_span_id": "d633e251b8ca4f30",
     "name": "auth.validate",
-    "start_time_unix_nano": 1788632824262348000,
-    "end_time_unix_nano": 1788632824268178000,
-    "duration_ms": 5.83,
+    "start_time_unix_nano": 1788644619281993000,
+    "end_time_unix_nano": 1788644619288275000,
+    "duration_ms": 6.282,
     "status": "UNSET",
     "attributes": {
       "service.name": "auth"
@@ -871,19 +895,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "dc713d960c0fd195c17af08a1745d6d8",
-    "span_id": "62801c4510435a10",
-    "parent_span_id": "98ae43346c12ace8",
+    "trace_id": "dfae55ade5396f24dc2197b9875e78cb",
+    "span_id": "d94cd71c104625ec",
+    "parent_span_id": "01ed7af7befcb134",
     "name": "inventory.database",
-    "start_time_unix_nano": 1788632824269695000,
-    "end_time_unix_nano": 1788632824284149000,
-    "duration_ms": 14.454,
+    "start_time_unix_nano": 1788644619289742000,
+    "end_time_unix_nano": 1788644619301183000,
+    "duration_ms": 11.441,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory-db",
@@ -893,19 +917,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "dc713d960c0fd195c17af08a1745d6d8",
-    "span_id": "98ae43346c12ace8",
-    "parent_span_id": "27209bdf1c11f735",
+    "trace_id": "dfae55ade5396f24dc2197b9875e78cb",
+    "span_id": "01ed7af7befcb134",
+    "parent_span_id": "d633e251b8ca4f30",
     "name": "inventory.reserve",
-    "start_time_unix_nano": 1788632824269677000,
-    "end_time_unix_nano": 1788632824293713000,
-    "duration_ms": 24.036,
+    "start_time_unix_nano": 1788644619289604000,
+    "end_time_unix_nano": 1788644619310631000,
+    "duration_ms": 21.027,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory"
@@ -914,19 +938,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "dc713d960c0fd195c17af08a1745d6d8",
-    "span_id": "405cacec877409a9",
-    "parent_span_id": "27209bdf1c11f735",
+    "trace_id": "dfae55ade5396f24dc2197b9875e78cb",
+    "span_id": "aed6910474773d66",
+    "parent_span_id": "d633e251b8ca4f30",
     "name": "payment.authorize",
-    "start_time_unix_nano": 1788632824294683000,
-    "end_time_unix_nano": 1788632824307329000,
-    "duration_ms": 12.646,
+    "start_time_unix_nano": 1788644619312486000,
+    "end_time_unix_nano": 1788644619323427000,
+    "duration_ms": 10.941,
     "status": "UNSET",
     "attributes": {
       "service.name": "payment"
@@ -935,41 +959,44 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "dc713d960c0fd195c17af08a1745d6d8",
-    "span_id": "27209bdf1c11f735",
+    "trace_id": "dfae55ade5396f24dc2197b9875e78cb",
+    "span_id": "d633e251b8ca4f30",
     "parent_span_id": null,
     "name": "checkout.request",
-    "start_time_unix_nano": 1788632824262326000,
-    "end_time_unix_nano": 1788632824308161000,
-    "duration_ms": 45.835,
+    "start_time_unix_nano": 1788644619281971000,
+    "end_time_unix_nano": 1788644619325359000,
+    "duration_ms": 43.388,
     "status": "UNSET",
     "attributes": {
       "service.name": "checkout",
-      "request.number": 8
+      "request.number": 8,
+      "http.request.method": "POST",
+      "http.route": "/checkout",
+      "dettrace.request_shape": "checkout"
     },
     "resource": {
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "ae270da702f06b90f143262fdc5c0eed",
-    "span_id": "e2817efdae849217",
-    "parent_span_id": "1d53434bb88139b9",
+    "trace_id": "984a4588c21ccb0788f35e0ba06cb0ea",
+    "span_id": "f42b551c8a6df515",
+    "parent_span_id": "d7b7f7e186658449",
     "name": "auth.validate",
-    "start_time_unix_nano": 1788632824308864000,
-    "end_time_unix_nano": 1788632824314242000,
-    "duration_ms": 5.378,
+    "start_time_unix_nano": 1788644619326556000,
+    "end_time_unix_nano": 1788644619332214000,
+    "duration_ms": 5.658,
     "status": "UNSET",
     "attributes": {
       "service.name": "auth"
@@ -978,19 +1005,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "ae270da702f06b90f143262fdc5c0eed",
-    "span_id": "5715bd6fa4161293",
-    "parent_span_id": "c4c2e2e3444ea7c8",
+    "trace_id": "984a4588c21ccb0788f35e0ba06cb0ea",
+    "span_id": "16b7217c59a70900",
+    "parent_span_id": "376f6d1843194bba",
     "name": "inventory.database",
-    "start_time_unix_nano": 1788632824318697000,
-    "end_time_unix_nano": 1788632824330913000,
-    "duration_ms": 12.216,
+    "start_time_unix_nano": 1788644619347523000,
+    "end_time_unix_nano": 1788644619360881000,
+    "duration_ms": 13.358,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory-db",
@@ -1000,19 +1027,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "ae270da702f06b90f143262fdc5c0eed",
-    "span_id": "c4c2e2e3444ea7c8",
-    "parent_span_id": "1d53434bb88139b9",
+    "trace_id": "984a4588c21ccb0788f35e0ba06cb0ea",
+    "span_id": "376f6d1843194bba",
+    "parent_span_id": "d7b7f7e186658449",
     "name": "inventory.reserve",
-    "start_time_unix_nano": 1788632824318677000,
-    "end_time_unix_nano": 1788632824338571000,
-    "duration_ms": 19.894,
+    "start_time_unix_nano": 1788644619347502000,
+    "end_time_unix_nano": 1788644619367523000,
+    "duration_ms": 20.021,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory"
@@ -1021,19 +1048,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "ae270da702f06b90f143262fdc5c0eed",
-    "span_id": "00d4af5974273ca3",
-    "parent_span_id": "1d53434bb88139b9",
+    "trace_id": "984a4588c21ccb0788f35e0ba06cb0ea",
+    "span_id": "647458ac29e49bf3",
+    "parent_span_id": "d7b7f7e186658449",
     "name": "payment.authorize",
-    "start_time_unix_nano": 1788632824339515000,
-    "end_time_unix_nano": 1788632824351410000,
-    "duration_ms": 11.895,
+    "start_time_unix_nano": 1788644619368592000,
+    "end_time_unix_nano": 1788644619379733000,
+    "duration_ms": 11.141,
     "status": "UNSET",
     "attributes": {
       "service.name": "payment"
@@ -1042,41 +1069,44 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "ae270da702f06b90f143262fdc5c0eed",
-    "span_id": "1d53434bb88139b9",
+    "trace_id": "984a4588c21ccb0788f35e0ba06cb0ea",
+    "span_id": "d7b7f7e186658449",
     "parent_span_id": null,
     "name": "checkout.request",
-    "start_time_unix_nano": 1788632824308842000,
-    "end_time_unix_nano": 1788632824352860000,
-    "duration_ms": 44.018,
+    "start_time_unix_nano": 1788644619326528000,
+    "end_time_unix_nano": 1788644619381029000,
+    "duration_ms": 54.501,
     "status": "UNSET",
     "attributes": {
       "service.name": "checkout",
-      "request.number": 9
+      "request.number": 9,
+      "http.request.method": "POST",
+      "http.route": "/checkout",
+      "dettrace.request_shape": "checkout"
     },
     "resource": {
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "f8cda88b436d76e2b83cfe0be037e5ed",
-    "span_id": "81f76d1c2dbc2134",
-    "parent_span_id": "c30ff46e8026695f",
+    "trace_id": "16b42edca532445ff1bfa630d48e86f7",
+    "span_id": "5bd7dfc0622b31a7",
+    "parent_span_id": "ef15317095335e2e",
     "name": "auth.validate",
-    "start_time_unix_nano": 1788632824353785000,
-    "end_time_unix_nano": 1788632824361083000,
-    "duration_ms": 7.298,
+    "start_time_unix_nano": 1788644619382107000,
+    "end_time_unix_nano": 1788644619389608000,
+    "duration_ms": 7.501,
     "status": "UNSET",
     "attributes": {
       "service.name": "auth"
@@ -1085,19 +1115,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "f8cda88b436d76e2b83cfe0be037e5ed",
-    "span_id": "d777a4774c66e0a8",
-    "parent_span_id": "a013ac6ededa4e16",
+    "trace_id": "16b42edca532445ff1bfa630d48e86f7",
+    "span_id": "06093f961909a10a",
+    "parent_span_id": "26ac59e8e590f466",
     "name": "inventory.database",
-    "start_time_unix_nano": 1788632824362052000,
-    "end_time_unix_nano": 1788632824377812000,
-    "duration_ms": 15.76,
+    "start_time_unix_nano": 1788644619391106000,
+    "end_time_unix_nano": 1788644619403916000,
+    "duration_ms": 12.81,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory-db",
@@ -1107,19 +1137,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "f8cda88b436d76e2b83cfe0be037e5ed",
-    "span_id": "a013ac6ededa4e16",
-    "parent_span_id": "c30ff46e8026695f",
+    "trace_id": "16b42edca532445ff1bfa630d48e86f7",
+    "span_id": "26ac59e8e590f466",
+    "parent_span_id": "ef15317095335e2e",
     "name": "inventory.reserve",
-    "start_time_unix_nano": 1788632824362037000,
-    "end_time_unix_nano": 1788632824387380000,
-    "duration_ms": 25.343,
+    "start_time_unix_nano": 1788644619391088000,
+    "end_time_unix_nano": 1788644619411414000,
+    "duration_ms": 20.326,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory"
@@ -1128,19 +1158,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "f8cda88b436d76e2b83cfe0be037e5ed",
-    "span_id": "5fb8d16c2720797d",
-    "parent_span_id": "c30ff46e8026695f",
+    "trace_id": "16b42edca532445ff1bfa630d48e86f7",
+    "span_id": "96f09432531c97db",
+    "parent_span_id": "ef15317095335e2e",
     "name": "payment.authorize",
-    "start_time_unix_nano": 1788632824388552000,
-    "end_time_unix_nano": 1788632824401368000,
-    "duration_ms": 12.816,
+    "start_time_unix_nano": 1788644619412694000,
+    "end_time_unix_nano": 1788644619424545000,
+    "duration_ms": 11.851,
     "status": "UNSET",
     "attributes": {
       "service.name": "payment"
@@ -1149,41 +1179,44 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "f8cda88b436d76e2b83cfe0be037e5ed",
-    "span_id": "c30ff46e8026695f",
+    "trace_id": "16b42edca532445ff1bfa630d48e86f7",
+    "span_id": "ef15317095335e2e",
     "parent_span_id": null,
     "name": "checkout.request",
-    "start_time_unix_nano": 1788632824353762000,
-    "end_time_unix_nano": 1788632824410984000,
-    "duration_ms": 57.222,
+    "start_time_unix_nano": 1788644619382084000,
+    "end_time_unix_nano": 1788644619425652000,
+    "duration_ms": 43.568,
     "status": "UNSET",
     "attributes": {
       "service.name": "checkout",
-      "request.number": 10
+      "request.number": 10,
+      "http.request.method": "POST",
+      "http.route": "/checkout",
+      "dettrace.request_shape": "checkout"
     },
     "resource": {
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "ec24a3c5c754108ff4188f3f8a14be62",
-    "span_id": "99546eb400257ad1",
-    "parent_span_id": "eb2263dd87c5421e",
+    "trace_id": "dd7341f542bbf35e14fd8199334bae95",
+    "span_id": "f32a663752e3d66f",
+    "parent_span_id": "63db87d15da45750",
     "name": "auth.validate",
-    "start_time_unix_nano": 1788632824412287000,
-    "end_time_unix_nano": 1788632824418066000,
-    "duration_ms": 5.779,
+    "start_time_unix_nano": 1788644619426628000,
+    "end_time_unix_nano": 1788644619432959000,
+    "duration_ms": 6.331,
     "status": "UNSET",
     "attributes": {
       "service.name": "auth"
@@ -1192,19 +1225,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "ec24a3c5c754108ff4188f3f8a14be62",
-    "span_id": "5cec4eb5edd96831",
-    "parent_span_id": "1ca35cfb04fc6d82",
+    "trace_id": "dd7341f542bbf35e14fd8199334bae95",
+    "span_id": "f45afa7d88b43bca",
+    "parent_span_id": "7e6c5bff07a18f24",
     "name": "inventory.database",
-    "start_time_unix_nano": 1788632824420079000,
-    "end_time_unix_nano": 1788632824437008000,
-    "duration_ms": 16.929,
+    "start_time_unix_nano": 1788644619434247000,
+    "end_time_unix_nano": 1788644619448838000,
+    "duration_ms": 14.591,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory-db",
@@ -1214,19 +1247,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "ec24a3c5c754108ff4188f3f8a14be62",
-    "span_id": "1ca35cfb04fc6d82",
-    "parent_span_id": "eb2263dd87c5421e",
+    "trace_id": "dd7341f542bbf35e14fd8199334bae95",
+    "span_id": "7e6c5bff07a18f24",
+    "parent_span_id": "63db87d15da45750",
     "name": "inventory.reserve",
-    "start_time_unix_nano": 1788632824419984000,
-    "end_time_unix_nano": 1788632824446776000,
-    "duration_ms": 26.792,
+    "start_time_unix_nano": 1788644619434225000,
+    "end_time_unix_nano": 1788644619456905000,
+    "duration_ms": 22.68,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory"
@@ -1235,19 +1268,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "ec24a3c5c754108ff4188f3f8a14be62",
-    "span_id": "3d4cbf374eb93eff",
-    "parent_span_id": "eb2263dd87c5421e",
+    "trace_id": "dd7341f542bbf35e14fd8199334bae95",
+    "span_id": "c9a9912f9762d5f3",
+    "parent_span_id": "63db87d15da45750",
     "name": "payment.authorize",
-    "start_time_unix_nano": 1788632824448789000,
-    "end_time_unix_nano": 1788632824459062000,
-    "duration_ms": 10.273,
+    "start_time_unix_nano": 1788644619458398000,
+    "end_time_unix_nano": 1788644619469370000,
+    "duration_ms": 10.972,
     "status": "UNSET",
     "attributes": {
       "service.name": "payment"
@@ -1256,41 +1289,44 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "ec24a3c5c754108ff4188f3f8a14be62",
-    "span_id": "eb2263dd87c5421e",
+    "trace_id": "dd7341f542bbf35e14fd8199334bae95",
+    "span_id": "63db87d15da45750",
     "parent_span_id": null,
     "name": "checkout.request",
-    "start_time_unix_nano": 1788632824412246000,
-    "end_time_unix_nano": 1788632824460443000,
-    "duration_ms": 48.197,
+    "start_time_unix_nano": 1788644619426605000,
+    "end_time_unix_nano": 1788644619470663000,
+    "duration_ms": 44.058,
     "status": "UNSET",
     "attributes": {
       "service.name": "checkout",
-      "request.number": 11
+      "request.number": 11,
+      "http.request.method": "POST",
+      "http.route": "/checkout",
+      "dettrace.request_shape": "checkout"
     },
     "resource": {
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "14296c07f26b4776913e4de2e0c53cb8",
-    "span_id": "d0e6e6607c69dee1",
-    "parent_span_id": "bb5e4bcf15ed6269",
+    "trace_id": "9dfefc346e547e856b62b75f019b7114",
+    "span_id": "583f00df77520ff6",
+    "parent_span_id": "57bc8e923b60aec4",
     "name": "auth.validate",
-    "start_time_unix_nano": 1788632824461790000,
-    "end_time_unix_nano": 1788632824466998000,
-    "duration_ms": 5.208,
+    "start_time_unix_nano": 1788644619471916000,
+    "end_time_unix_nano": 1788644619478052000,
+    "duration_ms": 6.136,
     "status": "UNSET",
     "attributes": {
       "service.name": "auth"
@@ -1299,19 +1335,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "14296c07f26b4776913e4de2e0c53cb8",
-    "span_id": "2031d750c40db9b4",
-    "parent_span_id": "885f6e66c2b6d2c5",
+    "trace_id": "9dfefc346e547e856b62b75f019b7114",
+    "span_id": "fa964e4ff4fc1bc6",
+    "parent_span_id": "a1d29cd425f26b2c",
     "name": "inventory.database",
-    "start_time_unix_nano": 1788632824470107000,
-    "end_time_unix_nano": 1788632824483289000,
-    "duration_ms": 13.182,
+    "start_time_unix_nano": 1788644619480024000,
+    "end_time_unix_nano": 1788644619490874000,
+    "duration_ms": 10.85,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory-db",
@@ -1321,19 +1357,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "14296c07f26b4776913e4de2e0c53cb8",
-    "span_id": "885f6e66c2b6d2c5",
-    "parent_span_id": "bb5e4bcf15ed6269",
+    "trace_id": "9dfefc346e547e856b62b75f019b7114",
+    "span_id": "a1d29cd425f26b2c",
+    "parent_span_id": "57bc8e923b60aec4",
     "name": "inventory.reserve",
-    "start_time_unix_nano": 1788632824470081000,
-    "end_time_unix_nano": 1788632824492054000,
-    "duration_ms": 21.973,
+    "start_time_unix_nano": 1788644619479999000,
+    "end_time_unix_nano": 1788644619499247000,
+    "duration_ms": 19.248,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory"
@@ -1342,19 +1378,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "14296c07f26b4776913e4de2e0c53cb8",
-    "span_id": "2a45c2ab8cbfedb0",
-    "parent_span_id": "bb5e4bcf15ed6269",
+    "trace_id": "9dfefc346e547e856b62b75f019b7114",
+    "span_id": "52532cf4eb237ff4",
+    "parent_span_id": "57bc8e923b60aec4",
     "name": "payment.authorize",
-    "start_time_unix_nano": 1788632824493988000,
-    "end_time_unix_nano": 1788632824505016000,
-    "duration_ms": 11.028,
+    "start_time_unix_nano": 1788644619500618000,
+    "end_time_unix_nano": 1788644619510421000,
+    "duration_ms": 9.803,
     "status": "UNSET",
     "attributes": {
       "service.name": "payment"
@@ -1363,41 +1399,44 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "14296c07f26b4776913e4de2e0c53cb8",
-    "span_id": "bb5e4bcf15ed6269",
+    "trace_id": "9dfefc346e547e856b62b75f019b7114",
+    "span_id": "57bc8e923b60aec4",
     "parent_span_id": null,
     "name": "checkout.request",
-    "start_time_unix_nano": 1788632824461762000,
-    "end_time_unix_nano": 1788632824506418000,
-    "duration_ms": 44.656,
+    "start_time_unix_nano": 1788644619471882000,
+    "end_time_unix_nano": 1788644619512155000,
+    "duration_ms": 40.273,
     "status": "UNSET",
     "attributes": {
       "service.name": "checkout",
-      "request.number": 12
+      "request.number": 12,
+      "http.request.method": "POST",
+      "http.route": "/checkout",
+      "dettrace.request_shape": "checkout"
     },
     "resource": {
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "f6e07cc06c52c49f9b49bd26df57c59a",
-    "span_id": "c1590f538a0f4efb",
-    "parent_span_id": "edcd465e36386821",
+    "trace_id": "39bd1b350db525ddfaa4731734dfeade",
+    "span_id": "ea6ffb7a028e8866",
+    "parent_span_id": "a214c265cbd87c46",
     "name": "auth.validate",
-    "start_time_unix_nano": 1788632824507721000,
-    "end_time_unix_nano": 1788632824514575000,
-    "duration_ms": 6.854,
+    "start_time_unix_nano": 1788644619513434000,
+    "end_time_unix_nano": 1788644619518274000,
+    "duration_ms": 4.84,
     "status": "UNSET",
     "attributes": {
       "service.name": "auth"
@@ -1406,19 +1445,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "f6e07cc06c52c49f9b49bd26df57c59a",
-    "span_id": "66245bfa4fcca39a",
-    "parent_span_id": "b683d2e6337ea2df",
+    "trace_id": "39bd1b350db525ddfaa4731734dfeade",
+    "span_id": "bc8ef670d94dfa74",
+    "parent_span_id": "895b830ddaddbaf5",
     "name": "inventory.database",
-    "start_time_unix_nano": 1788632824515749000,
-    "end_time_unix_nano": 1788632824533290000,
-    "duration_ms": 17.541,
+    "start_time_unix_nano": 1788644619519576000,
+    "end_time_unix_nano": 1788644619535675000,
+    "duration_ms": 16.099,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory-db",
@@ -1428,19 +1467,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "f6e07cc06c52c49f9b49bd26df57c59a",
-    "span_id": "b683d2e6337ea2df",
-    "parent_span_id": "edcd465e36386821",
+    "trace_id": "39bd1b350db525ddfaa4731734dfeade",
+    "span_id": "895b830ddaddbaf5",
+    "parent_span_id": "a214c265cbd87c46",
     "name": "inventory.reserve",
-    "start_time_unix_nano": 1788632824515731000,
-    "end_time_unix_nano": 1788632824541835000,
-    "duration_ms": 26.104,
+    "start_time_unix_nano": 1788644619519558000,
+    "end_time_unix_nano": 1788644619542659000,
+    "duration_ms": 23.101,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory"
@@ -1449,19 +1488,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "f6e07cc06c52c49f9b49bd26df57c59a",
-    "span_id": "e64d1bcb702753a1",
-    "parent_span_id": "edcd465e36386821",
+    "trace_id": "39bd1b350db525ddfaa4731734dfeade",
+    "span_id": "1a08c6e8a6be2a24",
+    "parent_span_id": "a214c265cbd87c46",
     "name": "payment.authorize",
-    "start_time_unix_nano": 1788632824543283000,
-    "end_time_unix_nano": 1788632824555259000,
-    "duration_ms": 11.976,
+    "start_time_unix_nano": 1788644619543994000,
+    "end_time_unix_nano": 1788644619554691000,
+    "duration_ms": 10.697,
     "status": "UNSET",
     "attributes": {
       "service.name": "payment"
@@ -1470,41 +1509,44 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "f6e07cc06c52c49f9b49bd26df57c59a",
-    "span_id": "edcd465e36386821",
+    "trace_id": "39bd1b350db525ddfaa4731734dfeade",
+    "span_id": "a214c265cbd87c46",
     "parent_span_id": null,
     "name": "checkout.request",
-    "start_time_unix_nano": 1788632824507698000,
-    "end_time_unix_nano": 1788632824556367000,
-    "duration_ms": 48.669,
+    "start_time_unix_nano": 1788644619513412000,
+    "end_time_unix_nano": 1788644619556533000,
+    "duration_ms": 43.121,
     "status": "UNSET",
     "attributes": {
       "service.name": "checkout",
-      "request.number": 13
+      "request.number": 13,
+      "http.request.method": "POST",
+      "http.route": "/checkout",
+      "dettrace.request_shape": "checkout"
     },
     "resource": {
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "1064005c3985c3cf3f76be1d1efa2197",
-    "span_id": "8dcdcd03969b6662",
-    "parent_span_id": "05628059568cc69b",
+    "trace_id": "4be69eca94aa6303d7bfb552bf19128a",
+    "span_id": "d0134eafaac149d1",
+    "parent_span_id": "744e5622d92846d5",
     "name": "auth.validate",
-    "start_time_unix_nano": 1788632824557262000,
-    "end_time_unix_nano": 1788632824562873000,
-    "duration_ms": 5.611,
+    "start_time_unix_nano": 1788644619557995000,
+    "end_time_unix_nano": 1788644619565437000,
+    "duration_ms": 7.442,
     "status": "UNSET",
     "attributes": {
       "service.name": "auth"
@@ -1513,19 +1555,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "1064005c3985c3cf3f76be1d1efa2197",
-    "span_id": "b535106e122c9a56",
-    "parent_span_id": "01d7425638602ab6",
+    "trace_id": "4be69eca94aa6303d7bfb552bf19128a",
+    "span_id": "5708f514004351c2",
+    "parent_span_id": "8c4bcef9480178de",
     "name": "inventory.database",
-    "start_time_unix_nano": 1788632824564121000,
-    "end_time_unix_nano": 1788632824577841000,
-    "duration_ms": 13.72,
+    "start_time_unix_nano": 1788644619566819000,
+    "end_time_unix_nano": 1788644619580924000,
+    "duration_ms": 14.105,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory-db",
@@ -1535,19 +1577,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "1064005c3985c3cf3f76be1d1efa2197",
-    "span_id": "01d7425638602ab6",
-    "parent_span_id": "05628059568cc69b",
+    "trace_id": "4be69eca94aa6303d7bfb552bf19128a",
+    "span_id": "8c4bcef9480178de",
+    "parent_span_id": "744e5622d92846d5",
     "name": "inventory.reserve",
-    "start_time_unix_nano": 1788632824564104000,
-    "end_time_unix_nano": 1788632824584727000,
-    "duration_ms": 20.623,
+    "start_time_unix_nano": 1788644619566803000,
+    "end_time_unix_nano": 1788644619590098000,
+    "duration_ms": 23.295,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory"
@@ -1556,19 +1598,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "1064005c3985c3cf3f76be1d1efa2197",
-    "span_id": "080aadfbe7c99b26",
-    "parent_span_id": "05628059568cc69b",
+    "trace_id": "4be69eca94aa6303d7bfb552bf19128a",
+    "span_id": "3eec3c3da294b631",
+    "parent_span_id": "744e5622d92846d5",
     "name": "payment.authorize",
-    "start_time_unix_nano": 1788632824586462000,
-    "end_time_unix_nano": 1788632824599716000,
-    "duration_ms": 13.254,
+    "start_time_unix_nano": 1788644619597389000,
+    "end_time_unix_nano": 1788644619610628000,
+    "duration_ms": 13.239,
     "status": "UNSET",
     "attributes": {
       "service.name": "payment"
@@ -1577,41 +1619,44 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "1064005c3985c3cf3f76be1d1efa2197",
-    "span_id": "05628059568cc69b",
+    "trace_id": "4be69eca94aa6303d7bfb552bf19128a",
+    "span_id": "744e5622d92846d5",
     "parent_span_id": null,
     "name": "checkout.request",
-    "start_time_unix_nano": 1788632824557242000,
-    "end_time_unix_nano": 1788632824601038000,
-    "duration_ms": 43.796,
+    "start_time_unix_nano": 1788644619557966000,
+    "end_time_unix_nano": 1788644619615938000,
+    "duration_ms": 57.972,
     "status": "UNSET",
     "attributes": {
       "service.name": "checkout",
-      "request.number": 14
+      "request.number": 14,
+      "http.request.method": "POST",
+      "http.route": "/checkout",
+      "dettrace.request_shape": "checkout"
     },
     "resource": {
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "474a493b3ceddf2d839fbc501223b513",
-    "span_id": "8a0b3c3336d8393a",
-    "parent_span_id": "7c441fe7ab4220a7",
+    "trace_id": "ff87be9cf99196d42a374a7ef1ad2300",
+    "span_id": "95efa0813f735bfe",
+    "parent_span_id": "8da8e29104b38435",
     "name": "auth.validate",
-    "start_time_unix_nano": 1788632824602761000,
-    "end_time_unix_nano": 1788632824608148000,
-    "duration_ms": 5.387,
+    "start_time_unix_nano": 1788644619621383000,
+    "end_time_unix_nano": 1788644619626692000,
+    "duration_ms": 5.309,
     "status": "UNSET",
     "attributes": {
       "service.name": "auth"
@@ -1620,19 +1665,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "474a493b3ceddf2d839fbc501223b513",
-    "span_id": "93829b43922fe15a",
-    "parent_span_id": "e1e3db63ef7ddc76",
+    "trace_id": "ff87be9cf99196d42a374a7ef1ad2300",
+    "span_id": "46d29ec4a8af27ef",
+    "parent_span_id": "f81b5ee459954590",
     "name": "inventory.database",
-    "start_time_unix_nano": 1788632824609493000,
-    "end_time_unix_nano": 1788632824624395000,
-    "duration_ms": 14.902,
+    "start_time_unix_nano": 1788644619633090000,
+    "end_time_unix_nano": 1788644619645911000,
+    "duration_ms": 12.821,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory-db",
@@ -1642,19 +1687,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "474a493b3ceddf2d839fbc501223b513",
-    "span_id": "e1e3db63ef7ddc76",
-    "parent_span_id": "7c441fe7ab4220a7",
+    "trace_id": "ff87be9cf99196d42a374a7ef1ad2300",
+    "span_id": "f81b5ee459954590",
+    "parent_span_id": "8da8e29104b38435",
     "name": "inventory.reserve",
-    "start_time_unix_nano": 1788632824609478000,
-    "end_time_unix_nano": 1788632824633830000,
-    "duration_ms": 24.352,
+    "start_time_unix_nano": 1788644619633040000,
+    "end_time_unix_nano": 1788644619653143000,
+    "duration_ms": 20.103,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory"
@@ -1663,19 +1708,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "474a493b3ceddf2d839fbc501223b513",
-    "span_id": "683514f2ceb81f9d",
-    "parent_span_id": "7c441fe7ab4220a7",
+    "trace_id": "ff87be9cf99196d42a374a7ef1ad2300",
+    "span_id": "0dbff988b0c6c79d",
+    "parent_span_id": "8da8e29104b38435",
     "name": "payment.authorize",
-    "start_time_unix_nano": 1788632824635734000,
-    "end_time_unix_nano": 1788632824646478000,
-    "duration_ms": 10.744,
+    "start_time_unix_nano": 1788644619655177000,
+    "end_time_unix_nano": 1788644619667155000,
+    "duration_ms": 11.978,
     "status": "UNSET",
     "attributes": {
       "service.name": "payment"
@@ -1684,41 +1729,44 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "474a493b3ceddf2d839fbc501223b513",
-    "span_id": "7c441fe7ab4220a7",
+    "trace_id": "ff87be9cf99196d42a374a7ef1ad2300",
+    "span_id": "8da8e29104b38435",
     "parent_span_id": null,
     "name": "checkout.request",
-    "start_time_unix_nano": 1788632824602741000,
-    "end_time_unix_nano": 1788632824647769000,
-    "duration_ms": 45.028,
+    "start_time_unix_nano": 1788644619621220000,
+    "end_time_unix_nano": 1788644619668444000,
+    "duration_ms": 47.224,
     "status": "UNSET",
     "attributes": {
       "service.name": "checkout",
-      "request.number": 15
+      "request.number": 15,
+      "http.request.method": "POST",
+      "http.route": "/checkout",
+      "dettrace.request_shape": "checkout"
     },
     "resource": {
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "5ab33edf6e595ed3a8b317fa18d0752b",
-    "span_id": "dd2467ac778eedb3",
-    "parent_span_id": "693dffbc6c6fa611",
+    "trace_id": "147ab8d04431ded0baae9e12252b31c3",
+    "span_id": "773d1f1e99933935",
+    "parent_span_id": "6129ccbef40f4c68",
     "name": "auth.validate",
-    "start_time_unix_nano": 1788632824648937000,
-    "end_time_unix_nano": 1788632824655815000,
-    "duration_ms": 6.878,
+    "start_time_unix_nano": 1788644619669691000,
+    "end_time_unix_nano": 1788644619676176000,
+    "duration_ms": 6.485,
     "status": "UNSET",
     "attributes": {
       "service.name": "auth"
@@ -1727,19 +1775,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "5ab33edf6e595ed3a8b317fa18d0752b",
-    "span_id": "a56c0941fbf24050",
-    "parent_span_id": "a748dbcfac619e63",
+    "trace_id": "147ab8d04431ded0baae9e12252b31c3",
+    "span_id": "c9e1397489fa8070",
+    "parent_span_id": "25338eb8db15b3c8",
     "name": "inventory.database",
-    "start_time_unix_nano": 1788632824657395000,
-    "end_time_unix_nano": 1788632824668067000,
-    "duration_ms": 10.672,
+    "start_time_unix_nano": 1788644619677573000,
+    "end_time_unix_nano": 1788644619690382000,
+    "duration_ms": 12.809,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory-db",
@@ -1749,19 +1797,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "5ab33edf6e595ed3a8b317fa18d0752b",
-    "span_id": "a748dbcfac619e63",
-    "parent_span_id": "693dffbc6c6fa611",
+    "trace_id": "147ab8d04431ded0baae9e12252b31c3",
+    "span_id": "25338eb8db15b3c8",
+    "parent_span_id": "6129ccbef40f4c68",
     "name": "inventory.reserve",
-    "start_time_unix_nano": 1788632824657375000,
-    "end_time_unix_nano": 1788632824676617000,
-    "duration_ms": 19.242,
+    "start_time_unix_nano": 1788644619677556000,
+    "end_time_unix_nano": 1788644619699109000,
+    "duration_ms": 21.553,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory"
@@ -1770,19 +1818,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "5ab33edf6e595ed3a8b317fa18d0752b",
-    "span_id": "ccf3a17156dc8907",
-    "parent_span_id": "693dffbc6c6fa611",
+    "trace_id": "147ab8d04431ded0baae9e12252b31c3",
+    "span_id": "b505ca52d361f5df",
+    "parent_span_id": "6129ccbef40f4c68",
     "name": "payment.authorize",
-    "start_time_unix_nano": 1788632824678146000,
-    "end_time_unix_nano": 1788632824691408000,
-    "duration_ms": 13.262,
+    "start_time_unix_nano": 1788644619700325000,
+    "end_time_unix_nano": 1788644619711283000,
+    "duration_ms": 10.958,
     "status": "UNSET",
     "attributes": {
       "service.name": "payment"
@@ -1791,41 +1839,44 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "5ab33edf6e595ed3a8b317fa18d0752b",
-    "span_id": "693dffbc6c6fa611",
+    "trace_id": "147ab8d04431ded0baae9e12252b31c3",
+    "span_id": "6129ccbef40f4c68",
     "parent_span_id": null,
     "name": "checkout.request",
-    "start_time_unix_nano": 1788632824648917000,
-    "end_time_unix_nano": 1788632824692818000,
-    "duration_ms": 43.901,
+    "start_time_unix_nano": 1788644619669671000,
+    "end_time_unix_nano": 1788644619713312000,
+    "duration_ms": 43.641,
     "status": "UNSET",
     "attributes": {
       "service.name": "checkout",
-      "request.number": 16
+      "request.number": 16,
+      "http.request.method": "POST",
+      "http.route": "/checkout",
+      "dettrace.request_shape": "checkout"
     },
     "resource": {
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "894a05e430b187ef310c0c003fa7f104",
-    "span_id": "2ef912766c006f61",
-    "parent_span_id": "23e2fcb472d8567d",
+    "trace_id": "a886b96ec48d8b6983105bd583379546",
+    "span_id": "80b7fac96822684f",
+    "parent_span_id": "95eed1bf2f3bdefe",
     "name": "auth.validate",
-    "start_time_unix_nano": 1788632824694094000,
-    "end_time_unix_nano": 1788632824699809000,
-    "duration_ms": 5.715,
+    "start_time_unix_nano": 1788644619714478000,
+    "end_time_unix_nano": 1788644619720055000,
+    "duration_ms": 5.577,
     "status": "UNSET",
     "attributes": {
       "service.name": "auth"
@@ -1834,19 +1885,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "894a05e430b187ef310c0c003fa7f104",
-    "span_id": "134c6c92ec5b227c",
-    "parent_span_id": "dfde4fbf3ff350bf",
+    "trace_id": "a886b96ec48d8b6983105bd583379546",
+    "span_id": "2c25d91b881385b8",
+    "parent_span_id": "c0cac063971f743a",
     "name": "inventory.database",
-    "start_time_unix_nano": 1788632824701351000,
-    "end_time_unix_nano": 1788632824716105000,
-    "duration_ms": 14.754,
+    "start_time_unix_nano": 1788644619721222000,
+    "end_time_unix_nano": 1788644619738409000,
+    "duration_ms": 17.187,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory-db",
@@ -1856,19 +1907,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "894a05e430b187ef310c0c003fa7f104",
-    "span_id": "dfde4fbf3ff350bf",
-    "parent_span_id": "23e2fcb472d8567d",
+    "trace_id": "a886b96ec48d8b6983105bd583379546",
+    "span_id": "c0cac063971f743a",
+    "parent_span_id": "95eed1bf2f3bdefe",
     "name": "inventory.reserve",
-    "start_time_unix_nano": 1788632824701331000,
-    "end_time_unix_nano": 1788632824726002000,
-    "duration_ms": 24.671,
+    "start_time_unix_nano": 1788644619721209000,
+    "end_time_unix_nano": 1788644619748207000,
+    "duration_ms": 26.998,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory"
@@ -1877,19 +1928,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "894a05e430b187ef310c0c003fa7f104",
-    "span_id": "19108be58ce21ea3",
-    "parent_span_id": "23e2fcb472d8567d",
+    "trace_id": "a886b96ec48d8b6983105bd583379546",
+    "span_id": "1b91c115169fc745",
+    "parent_span_id": "95eed1bf2f3bdefe",
     "name": "payment.authorize",
-    "start_time_unix_nano": 1788632824727679000,
-    "end_time_unix_nano": 1788632824736307000,
-    "duration_ms": 8.628,
+    "start_time_unix_nano": 1788644619749547000,
+    "end_time_unix_nano": 1788644619759691000,
+    "duration_ms": 10.144,
     "status": "UNSET",
     "attributes": {
       "service.name": "payment"
@@ -1898,41 +1949,44 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "894a05e430b187ef310c0c003fa7f104",
-    "span_id": "23e2fcb472d8567d",
+    "trace_id": "a886b96ec48d8b6983105bd583379546",
+    "span_id": "95eed1bf2f3bdefe",
     "parent_span_id": null,
     "name": "checkout.request",
-    "start_time_unix_nano": 1788632824694073000,
-    "end_time_unix_nano": 1788632824738379000,
-    "duration_ms": 44.306,
+    "start_time_unix_nano": 1788644619714459000,
+    "end_time_unix_nano": 1788644619763486000,
+    "duration_ms": 49.027,
     "status": "UNSET",
     "attributes": {
       "service.name": "checkout",
-      "request.number": 17
+      "request.number": 17,
+      "http.request.method": "POST",
+      "http.route": "/checkout",
+      "dettrace.request_shape": "checkout"
     },
     "resource": {
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "03c72ba8d605e7708a63f881ffd0f9d5",
-    "span_id": "c0e9ab30ed2662e9",
-    "parent_span_id": "17e011b7f8102383",
+    "trace_id": "9d8953ae6e1e25467ce5f274f5e605fc",
+    "span_id": "e381c77e5bb2c6f0",
+    "parent_span_id": "feb733830407071d",
     "name": "auth.validate",
-    "start_time_unix_nano": 1788632824740088000,
-    "end_time_unix_nano": 1788632824746229000,
-    "duration_ms": 6.141,
+    "start_time_unix_nano": 1788644619767355000,
+    "end_time_unix_nano": 1788644619773190000,
+    "duration_ms": 5.835,
     "status": "UNSET",
     "attributes": {
       "service.name": "auth"
@@ -1941,19 +1995,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "03c72ba8d605e7708a63f881ffd0f9d5",
-    "span_id": "7b3a4e3e7c52fa17",
-    "parent_span_id": "680ac07a2a935d62",
+    "trace_id": "9d8953ae6e1e25467ce5f274f5e605fc",
+    "span_id": "bad17b91fdb5851a",
+    "parent_span_id": "82b9bf87abdea9a3",
     "name": "inventory.database",
-    "start_time_unix_nano": 1788632824747781000,
-    "end_time_unix_nano": 1788632824760485000,
-    "duration_ms": 12.704,
+    "start_time_unix_nano": 1788644619775160000,
+    "end_time_unix_nano": 1788644619790609000,
+    "duration_ms": 15.449,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory-db",
@@ -1963,19 +2017,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "03c72ba8d605e7708a63f881ffd0f9d5",
-    "span_id": "680ac07a2a935d62",
-    "parent_span_id": "17e011b7f8102383",
+    "trace_id": "9d8953ae6e1e25467ce5f274f5e605fc",
+    "span_id": "82b9bf87abdea9a3",
+    "parent_span_id": "feb733830407071d",
     "name": "inventory.reserve",
-    "start_time_unix_nano": 1788632824747760000,
-    "end_time_unix_nano": 1788632824768078000,
-    "duration_ms": 20.318,
+    "start_time_unix_nano": 1788644619775137000,
+    "end_time_unix_nano": 1788644619797662000,
+    "duration_ms": 22.525,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory"
@@ -1984,19 +2038,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "03c72ba8d605e7708a63f881ffd0f9d5",
-    "span_id": "2a25a8880f02bad0",
-    "parent_span_id": "17e011b7f8102383",
+    "trace_id": "9d8953ae6e1e25467ce5f274f5e605fc",
+    "span_id": "58c8c544e49ca012",
+    "parent_span_id": "feb733830407071d",
     "name": "payment.authorize",
-    "start_time_unix_nano": 1788632824770071000,
-    "end_time_unix_nano": 1788632824779696000,
-    "duration_ms": 9.625,
+    "start_time_unix_nano": 1788644619799104000,
+    "end_time_unix_nano": 1788644619811692000,
+    "duration_ms": 12.588,
     "status": "UNSET",
     "attributes": {
       "service.name": "payment"
@@ -2005,41 +2059,44 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "03c72ba8d605e7708a63f881ffd0f9d5",
-    "span_id": "17e011b7f8102383",
+    "trace_id": "9d8953ae6e1e25467ce5f274f5e605fc",
+    "span_id": "feb733830407071d",
     "parent_span_id": null,
     "name": "checkout.request",
-    "start_time_unix_nano": 1788632824740061000,
-    "end_time_unix_nano": 1788632824781939000,
-    "duration_ms": 41.878,
+    "start_time_unix_nano": 1788644619767328000,
+    "end_time_unix_nano": 1788644619813095000,
+    "duration_ms": 45.767,
     "status": "UNSET",
     "attributes": {
       "service.name": "checkout",
-      "request.number": 18
+      "request.number": 18,
+      "http.request.method": "POST",
+      "http.route": "/checkout",
+      "dettrace.request_shape": "checkout"
     },
     "resource": {
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "ed3049cf43e458fc63f2ae24fc3d3348",
-    "span_id": "490617f2747b6dba",
-    "parent_span_id": "c8fe3ccdc8b8d9c6",
+    "trace_id": "190cbbb541c1e3e7afeeac4f5388f053",
+    "span_id": "5d078a1c2cc04dbe",
+    "parent_span_id": "df2cb68cb409a117",
     "name": "auth.validate",
-    "start_time_unix_nano": 1788632824785926000,
-    "end_time_unix_nano": 1788632824792019000,
-    "duration_ms": 6.093,
+    "start_time_unix_nano": 1788644619814354000,
+    "end_time_unix_nano": 1788644619819927000,
+    "duration_ms": 5.573,
     "status": "UNSET",
     "attributes": {
       "service.name": "auth"
@@ -2048,19 +2105,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "ed3049cf43e458fc63f2ae24fc3d3348",
-    "span_id": "c88a618efed4057d",
-    "parent_span_id": "bb026576f512c4c3",
+    "trace_id": "190cbbb541c1e3e7afeeac4f5388f053",
+    "span_id": "6721afe960e5218e",
+    "parent_span_id": "5ef5c5d425983001",
     "name": "inventory.database",
-    "start_time_unix_nano": 1788632824794185000,
-    "end_time_unix_nano": 1788632824806778000,
-    "duration_ms": 12.593,
+    "start_time_unix_nano": 1788644619821733000,
+    "end_time_unix_nano": 1788644619837044000,
+    "duration_ms": 15.311,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory-db",
@@ -2070,19 +2127,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "ed3049cf43e458fc63f2ae24fc3d3348",
-    "span_id": "bb026576f512c4c3",
-    "parent_span_id": "c8fe3ccdc8b8d9c6",
+    "trace_id": "190cbbb541c1e3e7afeeac4f5388f053",
+    "span_id": "5ef5c5d425983001",
+    "parent_span_id": "df2cb68cb409a117",
     "name": "inventory.reserve",
-    "start_time_unix_nano": 1788632824794161000,
-    "end_time_unix_nano": 1788632824816772000,
-    "duration_ms": 22.611,
+    "start_time_unix_nano": 1788644619821715000,
+    "end_time_unix_nano": 1788644619845620000,
+    "duration_ms": 23.905,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory"
@@ -2091,19 +2148,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "ed3049cf43e458fc63f2ae24fc3d3348",
-    "span_id": "309d258c27a0c3d7",
-    "parent_span_id": "c8fe3ccdc8b8d9c6",
+    "trace_id": "190cbbb541c1e3e7afeeac4f5388f053",
+    "span_id": "e4c29421736b1fe1",
+    "parent_span_id": "df2cb68cb409a117",
     "name": "payment.authorize",
-    "start_time_unix_nano": 1788632824819463000,
-    "end_time_unix_nano": 1788632824830616000,
-    "duration_ms": 11.153,
+    "start_time_unix_nano": 1788644619847098000,
+    "end_time_unix_nano": 1788644619856171000,
+    "duration_ms": 9.073,
     "status": "UNSET",
     "attributes": {
       "service.name": "payment"
@@ -2112,41 +2169,44 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "ed3049cf43e458fc63f2ae24fc3d3348",
-    "span_id": "c8fe3ccdc8b8d9c6",
+    "trace_id": "190cbbb541c1e3e7afeeac4f5388f053",
+    "span_id": "df2cb68cb409a117",
     "parent_span_id": null,
     "name": "checkout.request",
-    "start_time_unix_nano": 1788632824785893000,
-    "end_time_unix_nano": 1788632824832210000,
-    "duration_ms": 46.317,
+    "start_time_unix_nano": 1788644619814321000,
+    "end_time_unix_nano": 1788644619857519000,
+    "duration_ms": 43.198,
     "status": "UNSET",
     "attributes": {
       "service.name": "checkout",
-      "request.number": 19
+      "request.number": 19,
+      "http.request.method": "POST",
+      "http.route": "/checkout",
+      "dettrace.request_shape": "checkout"
     },
     "resource": {
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "bc594585944528c00ef8c2d6f7fd5646",
-    "span_id": "504867babf7b539b",
-    "parent_span_id": "0f9aea4b8acd4e10",
+    "trace_id": "cddfa4e13fb9bc86bb304e925c2e2e4f",
+    "span_id": "c2262d842a603121",
+    "parent_span_id": "202e055dd92b088a",
     "name": "auth.validate",
-    "start_time_unix_nano": 1788632824833658000,
-    "end_time_unix_nano": 1788632824838846000,
-    "duration_ms": 5.188,
+    "start_time_unix_nano": 1788644619858759000,
+    "end_time_unix_nano": 1788644619864968000,
+    "duration_ms": 6.209,
     "status": "UNSET",
     "attributes": {
       "service.name": "auth"
@@ -2155,19 +2215,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "bc594585944528c00ef8c2d6f7fd5646",
-    "span_id": "eb5cf46780bacd64",
-    "parent_span_id": "7a0ecfea958ca9ba",
+    "trace_id": "cddfa4e13fb9bc86bb304e925c2e2e4f",
+    "span_id": "fde043b271c861b6",
+    "parent_span_id": "321ad7693ab7dc87",
     "name": "inventory.database",
-    "start_time_unix_nano": 1788632824840554000,
-    "end_time_unix_nano": 1788632824857353000,
-    "duration_ms": 16.799,
+    "start_time_unix_nano": 1788644619866898000,
+    "end_time_unix_nano": 1788644619877745000,
+    "duration_ms": 10.847,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory-db",
@@ -2177,19 +2237,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "bc594585944528c00ef8c2d6f7fd5646",
-    "span_id": "7a0ecfea958ca9ba",
-    "parent_span_id": "0f9aea4b8acd4e10",
+    "trace_id": "cddfa4e13fb9bc86bb304e925c2e2e4f",
+    "span_id": "321ad7693ab7dc87",
+    "parent_span_id": "202e055dd92b088a",
     "name": "inventory.reserve",
-    "start_time_unix_nano": 1788632824840535000,
-    "end_time_unix_nano": 1788632824864701000,
-    "duration_ms": 24.166,
+    "start_time_unix_nano": 1788644619866855000,
+    "end_time_unix_nano": 1788644619888223000,
+    "duration_ms": 21.368,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory"
@@ -2198,19 +2258,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "bc594585944528c00ef8c2d6f7fd5646",
-    "span_id": "82010c62f5f59b22",
-    "parent_span_id": "0f9aea4b8acd4e10",
+    "trace_id": "cddfa4e13fb9bc86bb304e925c2e2e4f",
+    "span_id": "3ad7c2eaade54808",
+    "parent_span_id": "202e055dd92b088a",
     "name": "payment.authorize",
-    "start_time_unix_nano": 1788632824866281000,
-    "end_time_unix_nano": 1788632824874729000,
-    "duration_ms": 8.448,
+    "start_time_unix_nano": 1788644619889948000,
+    "end_time_unix_nano": 1788644619899174000,
+    "duration_ms": 9.226,
     "status": "UNSET",
     "attributes": {
       "service.name": "payment"
@@ -2219,41 +2279,44 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "bc594585944528c00ef8c2d6f7fd5646",
-    "span_id": "0f9aea4b8acd4e10",
+    "trace_id": "cddfa4e13fb9bc86bb304e925c2e2e4f",
+    "span_id": "202e055dd92b088a",
     "parent_span_id": null,
     "name": "checkout.request",
-    "start_time_unix_nano": 1788632824833636000,
-    "end_time_unix_nano": 1788632824876625000,
-    "duration_ms": 42.989,
+    "start_time_unix_nano": 1788644619858744000,
+    "end_time_unix_nano": 1788644619901485000,
+    "duration_ms": 42.741,
     "status": "UNSET",
     "attributes": {
       "service.name": "checkout",
-      "request.number": 20
+      "request.number": 20,
+      "http.request.method": "POST",
+      "http.route": "/checkout",
+      "dettrace.request_shape": "checkout"
     },
     "resource": {
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "1165e21098543881118a9d292f923996",
-    "span_id": "675dd5af3c365296",
-    "parent_span_id": "dca02eecacdabacc",
+    "trace_id": "a0b1edfae89f745b0756d42410090846",
+    "span_id": "03b8e3374372e7b6",
+    "parent_span_id": "7bb77f431cafff24",
     "name": "auth.validate",
-    "start_time_unix_nano": 1788632824878360000,
-    "end_time_unix_nano": 1788632824883683000,
-    "duration_ms": 5.323,
+    "start_time_unix_nano": 1788644619903163000,
+    "end_time_unix_nano": 1788644619909294000,
+    "duration_ms": 6.131,
     "status": "UNSET",
     "attributes": {
       "service.name": "auth"
@@ -2262,19 +2325,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "1165e21098543881118a9d292f923996",
-    "span_id": "94340a033f07f814",
-    "parent_span_id": "91d63f78e3e9de99",
+    "trace_id": "a0b1edfae89f745b0756d42410090846",
+    "span_id": "519c5d05fef081c3",
+    "parent_span_id": "1a262bb92671ce10",
     "name": "inventory.database",
-    "start_time_unix_nano": 1788632824885537000,
-    "end_time_unix_nano": 1788632824898194000,
-    "duration_ms": 12.657,
+    "start_time_unix_nano": 1788644619911078000,
+    "end_time_unix_nano": 1788644619922516000,
+    "duration_ms": 11.438,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory-db",
@@ -2284,19 +2347,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "1165e21098543881118a9d292f923996",
-    "span_id": "91d63f78e3e9de99",
-    "parent_span_id": "dca02eecacdabacc",
+    "trace_id": "a0b1edfae89f745b0756d42410090846",
+    "span_id": "1a262bb92671ce10",
+    "parent_span_id": "7bb77f431cafff24",
     "name": "inventory.reserve",
-    "start_time_unix_nano": 1788632824885518000,
-    "end_time_unix_nano": 1788632824907575000,
-    "duration_ms": 22.057,
+    "start_time_unix_nano": 1788644619911063000,
+    "end_time_unix_nano": 1788644619932098000,
+    "duration_ms": 21.035,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory"
@@ -2305,19 +2368,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "1165e21098543881118a9d292f923996",
-    "span_id": "a8499b926b5252e3",
-    "parent_span_id": "dca02eecacdabacc",
+    "trace_id": "a0b1edfae89f745b0756d42410090846",
+    "span_id": "cbb38dbda874c24d",
+    "parent_span_id": "7bb77f431cafff24",
     "name": "payment.authorize",
-    "start_time_unix_nano": 1788632824909766000,
-    "end_time_unix_nano": 1788632824919757000,
-    "duration_ms": 9.991,
+    "start_time_unix_nano": 1788644619933714000,
+    "end_time_unix_nano": 1788644619945045000,
+    "duration_ms": 11.331,
     "status": "UNSET",
     "attributes": {
       "service.name": "payment"
@@ -2326,41 +2389,44 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "1165e21098543881118a9d292f923996",
-    "span_id": "dca02eecacdabacc",
+    "trace_id": "a0b1edfae89f745b0756d42410090846",
+    "span_id": "7bb77f431cafff24",
     "parent_span_id": null,
     "name": "checkout.request",
-    "start_time_unix_nano": 1788632824878335000,
-    "end_time_unix_nano": 1788632824921992000,
-    "duration_ms": 43.657,
+    "start_time_unix_nano": 1788644619903139000,
+    "end_time_unix_nano": 1788644619946629000,
+    "duration_ms": 43.49,
     "status": "UNSET",
     "attributes": {
       "service.name": "checkout",
-      "request.number": 21
+      "request.number": 21,
+      "http.request.method": "POST",
+      "http.route": "/checkout",
+      "dettrace.request_shape": "checkout"
     },
     "resource": {
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "42c18a62ef48e8d550fd9d3f85d51695",
-    "span_id": "506e5a9ab758588d",
-    "parent_span_id": "ab73295b344a54b8",
+    "trace_id": "bfa368a8ae54c6a7bbd8debdb95d5a6f",
+    "span_id": "557e04dfab287075",
+    "parent_span_id": "a5fa887ddef50d85",
     "name": "auth.validate",
-    "start_time_unix_nano": 1788632824924067000,
-    "end_time_unix_nano": 1788632824929682000,
-    "duration_ms": 5.615,
+    "start_time_unix_nano": 1788644619948004000,
+    "end_time_unix_nano": 1788644619954210000,
+    "duration_ms": 6.206,
     "status": "UNSET",
     "attributes": {
       "service.name": "auth"
@@ -2369,19 +2435,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "42c18a62ef48e8d550fd9d3f85d51695",
-    "span_id": "a53f8a28abf3e3fc",
-    "parent_span_id": "21813d25655238a6",
+    "trace_id": "bfa368a8ae54c6a7bbd8debdb95d5a6f",
+    "span_id": "ea9c60fd9fe2f55e",
+    "parent_span_id": "cf2c03d79b2a40bb",
     "name": "inventory.database",
-    "start_time_unix_nano": 1788632824931702000,
-    "end_time_unix_nano": 1788632824945265000,
-    "duration_ms": 13.563,
+    "start_time_unix_nano": 1788644619955566000,
+    "end_time_unix_nano": 1788644619969191000,
+    "duration_ms": 13.625,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory-db",
@@ -2391,19 +2457,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "42c18a62ef48e8d550fd9d3f85d51695",
-    "span_id": "21813d25655238a6",
-    "parent_span_id": "ab73295b344a54b8",
+    "trace_id": "bfa368a8ae54c6a7bbd8debdb95d5a6f",
+    "span_id": "cf2c03d79b2a40bb",
+    "parent_span_id": "a5fa887ddef50d85",
     "name": "inventory.reserve",
-    "start_time_unix_nano": 1788632824931684000,
-    "end_time_unix_nano": 1788632824953883000,
-    "duration_ms": 22.199,
+    "start_time_unix_nano": 1788644619955554000,
+    "end_time_unix_nano": 1788644619980671000,
+    "duration_ms": 25.117,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory"
@@ -2412,19 +2478,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "42c18a62ef48e8d550fd9d3f85d51695",
-    "span_id": "ef8c485bc07a30f2",
-    "parent_span_id": "ab73295b344a54b8",
+    "trace_id": "bfa368a8ae54c6a7bbd8debdb95d5a6f",
+    "span_id": "145fffe39dfb214a",
+    "parent_span_id": "a5fa887ddef50d85",
     "name": "payment.authorize",
-    "start_time_unix_nano": 1788632824956258000,
-    "end_time_unix_nano": 1788632824966572000,
-    "duration_ms": 10.314,
+    "start_time_unix_nano": 1788644619984347000,
+    "end_time_unix_nano": 1788644619996489000,
+    "duration_ms": 12.142,
     "status": "UNSET",
     "attributes": {
       "service.name": "payment"
@@ -2433,41 +2499,44 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "42c18a62ef48e8d550fd9d3f85d51695",
-    "span_id": "ab73295b344a54b8",
+    "trace_id": "bfa368a8ae54c6a7bbd8debdb95d5a6f",
+    "span_id": "a5fa887ddef50d85",
     "parent_span_id": null,
     "name": "checkout.request",
-    "start_time_unix_nano": 1788632824924038000,
-    "end_time_unix_nano": 1788632824969513000,
-    "duration_ms": 45.475,
+    "start_time_unix_nano": 1788644619947985000,
+    "end_time_unix_nano": 1788644619998014000,
+    "duration_ms": 50.029,
     "status": "UNSET",
     "attributes": {
       "service.name": "checkout",
-      "request.number": 22
+      "request.number": 22,
+      "http.request.method": "POST",
+      "http.route": "/checkout",
+      "dettrace.request_shape": "checkout"
     },
     "resource": {
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "902059e4ff9ab5c29f044aed75523327",
-    "span_id": "89a2688b12c136e0",
-    "parent_span_id": "19985f15ff002d4d",
+    "trace_id": "853b0412ce460bd0164d883667511245",
+    "span_id": "62481252390a8f67",
+    "parent_span_id": "04d284f2ad08b2d5",
     "name": "auth.validate",
-    "start_time_unix_nano": 1788632824971901000,
-    "end_time_unix_nano": 1788632824977449000,
-    "duration_ms": 5.548,
+    "start_time_unix_nano": 1788644619999486000,
+    "end_time_unix_nano": 1788644620005118000,
+    "duration_ms": 5.632,
     "status": "UNSET",
     "attributes": {
       "service.name": "auth"
@@ -2476,19 +2545,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "902059e4ff9ab5c29f044aed75523327",
-    "span_id": "5958a499eeea163e",
-    "parent_span_id": "21e8ac6843e42caf",
+    "trace_id": "853b0412ce460bd0164d883667511245",
+    "span_id": "b8712215bfa698e2",
+    "parent_span_id": "c55820798cec2f9f",
     "name": "inventory.database",
-    "start_time_unix_nano": 1788632824979853000,
-    "end_time_unix_nano": 1788632824996792000,
-    "duration_ms": 16.939,
+    "start_time_unix_nano": 1788644620007858000,
+    "end_time_unix_nano": 1788644620021848000,
+    "duration_ms": 13.99,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory-db",
@@ -2498,19 +2567,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "902059e4ff9ab5c29f044aed75523327",
-    "span_id": "21e8ac6843e42caf",
-    "parent_span_id": "19985f15ff002d4d",
+    "trace_id": "853b0412ce460bd0164d883667511245",
+    "span_id": "c55820798cec2f9f",
+    "parent_span_id": "04d284f2ad08b2d5",
     "name": "inventory.reserve",
-    "start_time_unix_nano": 1788632824979835000,
-    "end_time_unix_nano": 1788632825008314000,
-    "duration_ms": 28.479,
+    "start_time_unix_nano": 1788644620007836000,
+    "end_time_unix_nano": 1788644620034776000,
+    "duration_ms": 26.94,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory"
@@ -2519,19 +2588,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "902059e4ff9ab5c29f044aed75523327",
-    "span_id": "48f4ef125e9953d2",
-    "parent_span_id": "19985f15ff002d4d",
+    "trace_id": "853b0412ce460bd0164d883667511245",
+    "span_id": "80187db6238738d8",
+    "parent_span_id": "04d284f2ad08b2d5",
     "name": "payment.authorize",
-    "start_time_unix_nano": 1788632825011754000,
-    "end_time_unix_nano": 1788632825022394000,
-    "duration_ms": 10.64,
+    "start_time_unix_nano": 1788644620037285000,
+    "end_time_unix_nano": 1788644620046663000,
+    "duration_ms": 9.378,
     "status": "UNSET",
     "attributes": {
       "service.name": "payment"
@@ -2540,41 +2609,44 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "902059e4ff9ab5c29f044aed75523327",
-    "span_id": "19985f15ff002d4d",
+    "trace_id": "853b0412ce460bd0164d883667511245",
+    "span_id": "04d284f2ad08b2d5",
     "parent_span_id": null,
     "name": "checkout.request",
-    "start_time_unix_nano": 1788632824971878000,
-    "end_time_unix_nano": 1788632825025952000,
-    "duration_ms": 54.074,
+    "start_time_unix_nano": 1788644619999466000,
+    "end_time_unix_nano": 1788644620048913000,
+    "duration_ms": 49.447,
     "status": "UNSET",
     "attributes": {
       "service.name": "checkout",
-      "request.number": 23
+      "request.number": 23,
+      "http.request.method": "POST",
+      "http.route": "/checkout",
+      "dettrace.request_shape": "checkout"
     },
     "resource": {
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "4d71c366b41b31438b10550cd5704f32",
-    "span_id": "ce9e1a11fcbb4e59",
-    "parent_span_id": "fbddcf7c9c96e9ec",
+    "trace_id": "6a2c8f391518a41f5335469714048d29",
+    "span_id": "a84652c1c61a0b5a",
+    "parent_span_id": "fe77351fc7019b84",
     "name": "auth.validate",
-    "start_time_unix_nano": 1788632825029090000,
-    "end_time_unix_nano": 1788632825034688000,
-    "duration_ms": 5.598,
+    "start_time_unix_nano": 1788644620050565000,
+    "end_time_unix_nano": 1788644620055823000,
+    "duration_ms": 5.258,
     "status": "UNSET",
     "attributes": {
       "service.name": "auth"
@@ -2583,19 +2655,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "4d71c366b41b31438b10550cd5704f32",
-    "span_id": "8dfa6a56d12dbc9a",
-    "parent_span_id": "aaf915310200b1f0",
+    "trace_id": "6a2c8f391518a41f5335469714048d29",
+    "span_id": "47107ad5bc94b09f",
+    "parent_span_id": "d0b8c5eae83bdca3",
     "name": "inventory.database",
-    "start_time_unix_nano": 1788632825037980000,
-    "end_time_unix_nano": 1788632825051335000,
-    "duration_ms": 13.355,
+    "start_time_unix_nano": 1788644620057591000,
+    "end_time_unix_nano": 1788644620072314000,
+    "duration_ms": 14.723,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory-db",
@@ -2605,19 +2677,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "4d71c366b41b31438b10550cd5704f32",
-    "span_id": "aaf915310200b1f0",
-    "parent_span_id": "fbddcf7c9c96e9ec",
+    "trace_id": "6a2c8f391518a41f5335469714048d29",
+    "span_id": "d0b8c5eae83bdca3",
+    "parent_span_id": "fe77351fc7019b84",
     "name": "inventory.reserve",
-    "start_time_unix_nano": 1788632825037950000,
-    "end_time_unix_nano": 1788632825061336000,
-    "duration_ms": 23.386,
+    "start_time_unix_nano": 1788644620057575000,
+    "end_time_unix_nano": 1788644620083576000,
+    "duration_ms": 26.001,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory"
@@ -2626,19 +2698,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "4d71c366b41b31438b10550cd5704f32",
-    "span_id": "e0ccedc5f05db76e",
-    "parent_span_id": "fbddcf7c9c96e9ec",
+    "trace_id": "6a2c8f391518a41f5335469714048d29",
+    "span_id": "5a283d2d31ebd63f",
+    "parent_span_id": "fe77351fc7019b84",
     "name": "payment.authorize",
-    "start_time_unix_nano": 1788632825064958000,
-    "end_time_unix_nano": 1788632825075359000,
-    "duration_ms": 10.401,
+    "start_time_unix_nano": 1788644620085209000,
+    "end_time_unix_nano": 1788644620094725000,
+    "duration_ms": 9.516,
     "status": "UNSET",
     "attributes": {
       "service.name": "payment"
@@ -2647,41 +2719,44 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "4d71c366b41b31438b10550cd5704f32",
-    "span_id": "fbddcf7c9c96e9ec",
+    "trace_id": "6a2c8f391518a41f5335469714048d29",
+    "span_id": "fe77351fc7019b84",
     "parent_span_id": null,
     "name": "checkout.request",
-    "start_time_unix_nano": 1788632825029057000,
-    "end_time_unix_nano": 1788632825079221000,
-    "duration_ms": 50.164,
+    "start_time_unix_nano": 1788644620050544000,
+    "end_time_unix_nano": 1788644620098059000,
+    "duration_ms": 47.515,
     "status": "UNSET",
     "attributes": {
       "service.name": "checkout",
-      "request.number": 24
+      "request.number": 24,
+      "http.request.method": "POST",
+      "http.route": "/checkout",
+      "dettrace.request_shape": "checkout"
     },
     "resource": {
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "be0f051b1b66b5a9e3c436571d8cbbac",
-    "span_id": "48212ddb45b89cd9",
-    "parent_span_id": "27cb6f2a8da01097",
+    "trace_id": "fb83a5f5d61e1b9b167ec42d7f154f02",
+    "span_id": "043b28e242f6c9fa",
+    "parent_span_id": "5c4aff9afd5f2808",
     "name": "auth.validate",
-    "start_time_unix_nano": 1788632825082714000,
-    "end_time_unix_nano": 1788632825089249000,
-    "duration_ms": 6.535,
+    "start_time_unix_nano": 1788644620099626000,
+    "end_time_unix_nano": 1788644620104827000,
+    "duration_ms": 5.201,
     "status": "UNSET",
     "attributes": {
       "service.name": "auth"
@@ -2690,19 +2765,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "be0f051b1b66b5a9e3c436571d8cbbac",
-    "span_id": "afffcfd2341ef40b",
-    "parent_span_id": "57c700aab7b56ea7",
+    "trace_id": "fb83a5f5d61e1b9b167ec42d7f154f02",
+    "span_id": "4b32d32783546042",
+    "parent_span_id": "fa50f22dcda6aae9",
     "name": "inventory.database",
-    "start_time_unix_nano": 1788632825092559000,
-    "end_time_unix_nano": 1788632825108275000,
-    "duration_ms": 15.716,
+    "start_time_unix_nano": 1788644620106311000,
+    "end_time_unix_nano": 1788644620119685000,
+    "duration_ms": 13.374,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory-db",
@@ -2712,19 +2787,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "be0f051b1b66b5a9e3c436571d8cbbac",
-    "span_id": "57c700aab7b56ea7",
-    "parent_span_id": "27cb6f2a8da01097",
+    "trace_id": "fb83a5f5d61e1b9b167ec42d7f154f02",
+    "span_id": "fa50f22dcda6aae9",
+    "parent_span_id": "5c4aff9afd5f2808",
     "name": "inventory.reserve",
-    "start_time_unix_nano": 1788632825092535000,
-    "end_time_unix_nano": 1788632825118504000,
-    "duration_ms": 25.969,
+    "start_time_unix_nano": 1788644620106299000,
+    "end_time_unix_nano": 1788644620133461000,
+    "duration_ms": 27.162,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory"
@@ -2733,19 +2808,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "be0f051b1b66b5a9e3c436571d8cbbac",
-    "span_id": "40497b717d106c60",
-    "parent_span_id": "27cb6f2a8da01097",
+    "trace_id": "fb83a5f5d61e1b9b167ec42d7f154f02",
+    "span_id": "083ea67afd518bff",
+    "parent_span_id": "5c4aff9afd5f2808",
     "name": "payment.authorize",
-    "start_time_unix_nano": 1788632825122422000,
-    "end_time_unix_nano": 1788632825134719000,
-    "duration_ms": 12.297,
+    "start_time_unix_nano": 1788644620137372000,
+    "end_time_unix_nano": 1788644620147680000,
+    "duration_ms": 10.308,
     "status": "UNSET",
     "attributes": {
       "service.name": "payment"
@@ -2754,41 +2829,44 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "be0f051b1b66b5a9e3c436571d8cbbac",
-    "span_id": "27cb6f2a8da01097",
+    "trace_id": "fb83a5f5d61e1b9b167ec42d7f154f02",
+    "span_id": "5c4aff9afd5f2808",
     "parent_span_id": null,
     "name": "checkout.request",
-    "start_time_unix_nano": 1788632825082684000,
-    "end_time_unix_nano": 1788632825140122000,
-    "duration_ms": 57.438,
+    "start_time_unix_nano": 1788644620099609000,
+    "end_time_unix_nano": 1788644620151297000,
+    "duration_ms": 51.688,
     "status": "UNSET",
     "attributes": {
       "service.name": "checkout",
-      "request.number": 25
+      "request.number": 25,
+      "http.request.method": "POST",
+      "http.route": "/checkout",
+      "dettrace.request_shape": "checkout"
     },
     "resource": {
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "a260772317a0df490d01280fd89a40c0",
-    "span_id": "0b49452d46d483f3",
-    "parent_span_id": "d450281c6c6f7633",
+    "trace_id": "07284a6e29bf28b76094aca512570a9f",
+    "span_id": "4251895b6fd6c631",
+    "parent_span_id": "40971a01d7c2f8ec",
     "name": "auth.validate",
-    "start_time_unix_nano": 1788632825145309000,
-    "end_time_unix_nano": 1788632825150366000,
-    "duration_ms": 5.057,
+    "start_time_unix_nano": 1788644620153163000,
+    "end_time_unix_nano": 1788644620159651000,
+    "duration_ms": 6.488,
     "status": "UNSET",
     "attributes": {
       "service.name": "auth"
@@ -2797,19 +2875,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "a260772317a0df490d01280fd89a40c0",
-    "span_id": "fad409e2a319dcb4",
-    "parent_span_id": "217d65a0c56811cd",
+    "trace_id": "07284a6e29bf28b76094aca512570a9f",
+    "span_id": "4162ad9ddc1b3d52",
+    "parent_span_id": "410a5af6a50eada2",
     "name": "inventory.database",
-    "start_time_unix_nano": 1788632825157559000,
-    "end_time_unix_nano": 1788632825171419000,
-    "duration_ms": 13.86,
+    "start_time_unix_nano": 1788644620161577000,
+    "end_time_unix_nano": 1788644620178058000,
+    "duration_ms": 16.481,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory-db",
@@ -2819,19 +2897,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "a260772317a0df490d01280fd89a40c0",
-    "span_id": "217d65a0c56811cd",
-    "parent_span_id": "d450281c6c6f7633",
+    "trace_id": "07284a6e29bf28b76094aca512570a9f",
+    "span_id": "410a5af6a50eada2",
+    "parent_span_id": "40971a01d7c2f8ec",
     "name": "inventory.reserve",
-    "start_time_unix_nano": 1788632825157521000,
-    "end_time_unix_nano": 1788632825180850000,
-    "duration_ms": 23.329,
+    "start_time_unix_nano": 1788644620161558000,
+    "end_time_unix_nano": 1788644620190184000,
+    "duration_ms": 28.626,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory"
@@ -2840,19 +2918,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "a260772317a0df490d01280fd89a40c0",
-    "span_id": "b4a69f3c8d3aed99",
-    "parent_span_id": "d450281c6c6f7633",
+    "trace_id": "07284a6e29bf28b76094aca512570a9f",
+    "span_id": "716774a05ea060eb",
+    "parent_span_id": "40971a01d7c2f8ec",
     "name": "payment.authorize",
-    "start_time_unix_nano": 1788632825188423000,
-    "end_time_unix_nano": 1788632825200114000,
-    "duration_ms": 11.691,
+    "start_time_unix_nano": 1788644620194614000,
+    "end_time_unix_nano": 1788644620206349000,
+    "duration_ms": 11.735,
     "status": "UNSET",
     "attributes": {
       "service.name": "payment"
@@ -2861,41 +2939,44 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "a260772317a0df490d01280fd89a40c0",
-    "span_id": "d450281c6c6f7633",
+    "trace_id": "07284a6e29bf28b76094aca512570a9f",
+    "span_id": "40971a01d7c2f8ec",
     "parent_span_id": null,
     "name": "checkout.request",
-    "start_time_unix_nano": 1788632825145258000,
-    "end_time_unix_nano": 1788632825202717000,
-    "duration_ms": 57.459,
+    "start_time_unix_nano": 1788644620153143000,
+    "end_time_unix_nano": 1788644620208788000,
+    "duration_ms": 55.645,
     "status": "UNSET",
     "attributes": {
       "service.name": "checkout",
-      "request.number": 26
+      "request.number": 26,
+      "http.request.method": "POST",
+      "http.route": "/checkout",
+      "dettrace.request_shape": "checkout"
     },
     "resource": {
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "f1eedba313432e611ca3c4480279b6a6",
-    "span_id": "26286bfbe767dcea",
-    "parent_span_id": "b0e6a969e21342b0",
+    "trace_id": "43a199064e1ff6c7147e39a259dc0199",
+    "span_id": "5a4f43f9091a2236",
+    "parent_span_id": "edfc2db94bbdf591",
     "name": "auth.validate",
-    "start_time_unix_nano": 1788632825204908000,
-    "end_time_unix_nano": 1788632825210713000,
-    "duration_ms": 5.805,
+    "start_time_unix_nano": 1788644620210720000,
+    "end_time_unix_nano": 1788644620216715000,
+    "duration_ms": 5.995,
     "status": "UNSET",
     "attributes": {
       "service.name": "auth"
@@ -2904,19 +2985,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "f1eedba313432e611ca3c4480279b6a6",
-    "span_id": "8d7248e2951f58d0",
-    "parent_span_id": "5e84f058d5a804eb",
+    "trace_id": "43a199064e1ff6c7147e39a259dc0199",
+    "span_id": "9a4e5d5d252c8edf",
+    "parent_span_id": "581a78b569b17e0a",
     "name": "inventory.database",
-    "start_time_unix_nano": 1788632825212877000,
-    "end_time_unix_nano": 1788632825225672000,
-    "duration_ms": 12.795,
+    "start_time_unix_nano": 1788644620219045000,
+    "end_time_unix_nano": 1788644620229700000,
+    "duration_ms": 10.655,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory-db",
@@ -2926,19 +3007,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "f1eedba313432e611ca3c4480279b6a6",
-    "span_id": "5e84f058d5a804eb",
-    "parent_span_id": "b0e6a969e21342b0",
+    "trace_id": "43a199064e1ff6c7147e39a259dc0199",
+    "span_id": "581a78b569b17e0a",
+    "parent_span_id": "edfc2db94bbdf591",
     "name": "inventory.reserve",
-    "start_time_unix_nano": 1788632825212860000,
-    "end_time_unix_nano": 1788632825233236000,
-    "duration_ms": 20.376,
+    "start_time_unix_nano": 1788644620219013000,
+    "end_time_unix_nano": 1788644620237372000,
+    "duration_ms": 18.359,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory"
@@ -2947,19 +3028,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "f1eedba313432e611ca3c4480279b6a6",
-    "span_id": "5d59cd2a4eea04e7",
-    "parent_span_id": "b0e6a969e21342b0",
+    "trace_id": "43a199064e1ff6c7147e39a259dc0199",
+    "span_id": "31fcb334d18502ed",
+    "parent_span_id": "edfc2db94bbdf591",
     "name": "payment.authorize",
-    "start_time_unix_nano": 1788632825236147000,
-    "end_time_unix_nano": 1788632825249543000,
-    "duration_ms": 13.396,
+    "start_time_unix_nano": 1788644620240521000,
+    "end_time_unix_nano": 1788644620252849000,
+    "duration_ms": 12.328,
     "status": "UNSET",
     "attributes": {
       "service.name": "payment"
@@ -2968,41 +3049,44 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "f1eedba313432e611ca3c4480279b6a6",
-    "span_id": "b0e6a969e21342b0",
+    "trace_id": "43a199064e1ff6c7147e39a259dc0199",
+    "span_id": "edfc2db94bbdf591",
     "parent_span_id": null,
     "name": "checkout.request",
-    "start_time_unix_nano": 1788632825204886000,
-    "end_time_unix_nano": 1788632825252566000,
-    "duration_ms": 47.68,
+    "start_time_unix_nano": 1788644620210698000,
+    "end_time_unix_nano": 1788644620255008000,
+    "duration_ms": 44.31,
     "status": "UNSET",
     "attributes": {
       "service.name": "checkout",
-      "request.number": 27
+      "request.number": 27,
+      "http.request.method": "POST",
+      "http.route": "/checkout",
+      "dettrace.request_shape": "checkout"
     },
     "resource": {
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "0a368ce7dc570131f8e1daa7cbceabde",
-    "span_id": "ae9bec3635c7936c",
-    "parent_span_id": "5b9962c6e61fecc0",
+    "trace_id": "fcbf1da5cfe92e513b67973c9d0ee827",
+    "span_id": "f765e3e3228ca4ff",
+    "parent_span_id": "feb6cdf13f1eb5f1",
     "name": "auth.validate",
-    "start_time_unix_nano": 1788632825255538000,
-    "end_time_unix_nano": 1788632825261186000,
-    "duration_ms": 5.648,
+    "start_time_unix_nano": 1788644620257337000,
+    "end_time_unix_nano": 1788644620264642000,
+    "duration_ms": 7.305,
     "status": "UNSET",
     "attributes": {
       "service.name": "auth"
@@ -3011,19 +3095,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "0a368ce7dc570131f8e1daa7cbceabde",
-    "span_id": "8f5486b7c7b5b2bc",
-    "parent_span_id": "5a8aaeca1a50aec3",
+    "trace_id": "fcbf1da5cfe92e513b67973c9d0ee827",
+    "span_id": "d3c749f904e12c51",
+    "parent_span_id": "5f9a74501a427353",
     "name": "inventory.database",
-    "start_time_unix_nano": 1788632825264361000,
-    "end_time_unix_nano": 1788632825280705000,
-    "duration_ms": 16.344,
+    "start_time_unix_nano": 1788644620266673000,
+    "end_time_unix_nano": 1788644620279776000,
+    "duration_ms": 13.103,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory-db",
@@ -3033,19 +3117,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "0a368ce7dc570131f8e1daa7cbceabde",
-    "span_id": "5a8aaeca1a50aec3",
-    "parent_span_id": "5b9962c6e61fecc0",
+    "trace_id": "fcbf1da5cfe92e513b67973c9d0ee827",
+    "span_id": "5f9a74501a427353",
+    "parent_span_id": "feb6cdf13f1eb5f1",
     "name": "inventory.reserve",
-    "start_time_unix_nano": 1788632825264337000,
-    "end_time_unix_nano": 1788632825291530000,
-    "duration_ms": 27.193,
+    "start_time_unix_nano": 1788644620266655000,
+    "end_time_unix_nano": 1788644620287554000,
+    "duration_ms": 20.899,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory"
@@ -3054,19 +3138,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "0a368ce7dc570131f8e1daa7cbceabde",
-    "span_id": "bfddc3d99ee3ac2a",
-    "parent_span_id": "5b9962c6e61fecc0",
+    "trace_id": "fcbf1da5cfe92e513b67973c9d0ee827",
+    "span_id": "a9653301d37347a0",
+    "parent_span_id": "feb6cdf13f1eb5f1",
     "name": "payment.authorize",
-    "start_time_unix_nano": 1788632825295442000,
-    "end_time_unix_nano": 1788632825304542000,
-    "duration_ms": 9.1,
+    "start_time_unix_nano": 1788644620290700000,
+    "end_time_unix_nano": 1788644620299621000,
+    "duration_ms": 8.921,
     "status": "UNSET",
     "attributes": {
       "service.name": "payment"
@@ -3075,41 +3159,44 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "0a368ce7dc570131f8e1daa7cbceabde",
-    "span_id": "5b9962c6e61fecc0",
+    "trace_id": "fcbf1da5cfe92e513b67973c9d0ee827",
+    "span_id": "feb6cdf13f1eb5f1",
     "parent_span_id": null,
     "name": "checkout.request",
-    "start_time_unix_nano": 1788632825255508000,
-    "end_time_unix_nano": 1788632825308736000,
-    "duration_ms": 53.228,
+    "start_time_unix_nano": 1788644620257315000,
+    "end_time_unix_nano": 1788644620301707000,
+    "duration_ms": 44.392,
     "status": "UNSET",
     "attributes": {
       "service.name": "checkout",
-      "request.number": 28
+      "request.number": 28,
+      "http.request.method": "POST",
+      "http.route": "/checkout",
+      "dettrace.request_shape": "checkout"
     },
     "resource": {
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "2999b735dd56cc943c9ad14cee0caeb5",
-    "span_id": "2d534dd0cf8ebc5a",
-    "parent_span_id": "ccc56569f9e8a369",
+    "trace_id": "65d675149e5cf20683e2bde23212cf14",
+    "span_id": "039589320e0f85f7",
+    "parent_span_id": "70a756d5e0fae420",
     "name": "auth.validate",
-    "start_time_unix_nano": 1788632825312981000,
-    "end_time_unix_nano": 1788632825319480000,
-    "duration_ms": 6.499,
+    "start_time_unix_nano": 1788644620304631000,
+    "end_time_unix_nano": 1788644620310494000,
+    "duration_ms": 5.863,
     "status": "UNSET",
     "attributes": {
       "service.name": "auth"
@@ -3118,19 +3205,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "2999b735dd56cc943c9ad14cee0caeb5",
-    "span_id": "ecab3301bc8f7d29",
-    "parent_span_id": "2dea94930658663a",
+    "trace_id": "65d675149e5cf20683e2bde23212cf14",
+    "span_id": "14da4d40923486bd",
+    "parent_span_id": "f7aee3b221286d2b",
     "name": "inventory.database",
-    "start_time_unix_nano": 1788632825323630000,
-    "end_time_unix_nano": 1788632825335758000,
-    "duration_ms": 12.128,
+    "start_time_unix_nano": 1788644620314515000,
+    "end_time_unix_nano": 1788644620328842000,
+    "duration_ms": 14.327,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory-db",
@@ -3140,19 +3227,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "2999b735dd56cc943c9ad14cee0caeb5",
-    "span_id": "2dea94930658663a",
-    "parent_span_id": "ccc56569f9e8a369",
+    "trace_id": "65d675149e5cf20683e2bde23212cf14",
+    "span_id": "f7aee3b221286d2b",
+    "parent_span_id": "70a756d5e0fae420",
     "name": "inventory.reserve",
-    "start_time_unix_nano": 1788632825323603000,
-    "end_time_unix_nano": 1788632825349483000,
-    "duration_ms": 25.88,
+    "start_time_unix_nano": 1788644620314496000,
+    "end_time_unix_nano": 1788644620338278000,
+    "duration_ms": 23.782,
     "status": "UNSET",
     "attributes": {
       "service.name": "inventory"
@@ -3161,19 +3248,19 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "2999b735dd56cc943c9ad14cee0caeb5",
-    "span_id": "ab7f089acd5f4822",
-    "parent_span_id": "ccc56569f9e8a369",
+    "trace_id": "65d675149e5cf20683e2bde23212cf14",
+    "span_id": "65a05663a3f34ff4",
+    "parent_span_id": "70a756d5e0fae420",
     "name": "payment.authorize",
-    "start_time_unix_nano": 1788632825354554000,
-    "end_time_unix_nano": 1788632825365456000,
-    "duration_ms": 10.902,
+    "start_time_unix_nano": 1788644620344371000,
+    "end_time_unix_nano": 1788644620356041000,
+    "duration_ms": 11.67,
     "status": "UNSET",
     "attributes": {
       "service.name": "payment"
@@ -3182,29 +3269,492 @@
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }
   },
   {
-    "trace_id": "2999b735dd56cc943c9ad14cee0caeb5",
-    "span_id": "ccc56569f9e8a369",
+    "trace_id": "65d675149e5cf20683e2bde23212cf14",
+    "span_id": "70a756d5e0fae420",
     "parent_span_id": null,
     "name": "checkout.request",
-    "start_time_unix_nano": 1788632825312945000,
-    "end_time_unix_nano": 1788632825370948000,
-    "duration_ms": 58.003,
+    "start_time_unix_nano": 1788644620304606000,
+    "end_time_unix_nano": 1788644620359862000,
+    "duration_ms": 55.256,
     "status": "UNSET",
     "attributes": {
       "service.name": "checkout",
-      "request.number": 29
+      "request.number": 29,
+      "http.request.method": "POST",
+      "http.route": "/checkout",
+      "dettrace.request_shape": "checkout"
     },
     "resource": {
       "telemetry.sdk.language": "python",
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.44.0",
-      "service.instance.id": "115cfdbe-2e8d-4942-82e5-c7ee946ede62",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
+      "service.name": "checkout-demo",
+      "deployment.environment": "dettrace-demo"
+    }
+  },
+  {
+    "trace_id": "a4fc53922291122acaede289cfc35548",
+    "span_id": "95ebf25090d8cbf5",
+    "parent_span_id": "6cad2a34851e5979",
+    "name": "health.check",
+    "start_time_unix_nano": 1788644620362939000,
+    "end_time_unix_nano": 1788644620364474000,
+    "duration_ms": 1.535,
+    "status": "UNSET",
+    "attributes": {
+      "service.name": "checkout"
+    },
+    "resource": {
+      "telemetry.sdk.language": "python",
+      "telemetry.sdk.name": "opentelemetry",
+      "telemetry.sdk.version": "1.44.0",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
+      "service.name": "checkout-demo",
+      "deployment.environment": "dettrace-demo"
+    }
+  },
+  {
+    "trace_id": "a4fc53922291122acaede289cfc35548",
+    "span_id": "6cad2a34851e5979",
+    "parent_span_id": null,
+    "name": "health.request",
+    "start_time_unix_nano": 1788644620362917000,
+    "end_time_unix_nano": 1788644620366484000,
+    "duration_ms": 3.567,
+    "status": "UNSET",
+    "attributes": {
+      "service.name": "checkout",
+      "request.number": 0,
+      "http.request.method": "GET",
+      "http.route": "/health",
+      "dettrace.request_shape": "health"
+    },
+    "resource": {
+      "telemetry.sdk.language": "python",
+      "telemetry.sdk.name": "opentelemetry",
+      "telemetry.sdk.version": "1.44.0",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
+      "service.name": "checkout-demo",
+      "deployment.environment": "dettrace-demo"
+    }
+  },
+  {
+    "trace_id": "4df252dd5a20f2f9a8a7c178858b8cc4",
+    "span_id": "fda0e8edd41a327b",
+    "parent_span_id": "b29b29e3ad0e4eab",
+    "name": "health.check",
+    "start_time_unix_nano": 1788644620370089000,
+    "end_time_unix_nano": 1788644620371859000,
+    "duration_ms": 1.77,
+    "status": "UNSET",
+    "attributes": {
+      "service.name": "checkout"
+    },
+    "resource": {
+      "telemetry.sdk.language": "python",
+      "telemetry.sdk.name": "opentelemetry",
+      "telemetry.sdk.version": "1.44.0",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
+      "service.name": "checkout-demo",
+      "deployment.environment": "dettrace-demo"
+    }
+  },
+  {
+    "trace_id": "4df252dd5a20f2f9a8a7c178858b8cc4",
+    "span_id": "b29b29e3ad0e4eab",
+    "parent_span_id": null,
+    "name": "health.request",
+    "start_time_unix_nano": 1788644620370037000,
+    "end_time_unix_nano": 1788644620375839000,
+    "duration_ms": 5.802,
+    "status": "UNSET",
+    "attributes": {
+      "service.name": "checkout",
+      "request.number": 1,
+      "http.request.method": "GET",
+      "http.route": "/health",
+      "dettrace.request_shape": "health"
+    },
+    "resource": {
+      "telemetry.sdk.language": "python",
+      "telemetry.sdk.name": "opentelemetry",
+      "telemetry.sdk.version": "1.44.0",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
+      "service.name": "checkout-demo",
+      "deployment.environment": "dettrace-demo"
+    }
+  },
+  {
+    "trace_id": "8cf2e6b53a32b48307042efac78c821d",
+    "span_id": "ab73ce8076c3417b",
+    "parent_span_id": "3ad99b82ac77692c",
+    "name": "health.check",
+    "start_time_unix_nano": 1788644620379614000,
+    "end_time_unix_nano": 1788644620381275000,
+    "duration_ms": 1.661,
+    "status": "UNSET",
+    "attributes": {
+      "service.name": "checkout"
+    },
+    "resource": {
+      "telemetry.sdk.language": "python",
+      "telemetry.sdk.name": "opentelemetry",
+      "telemetry.sdk.version": "1.44.0",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
+      "service.name": "checkout-demo",
+      "deployment.environment": "dettrace-demo"
+    }
+  },
+  {
+    "trace_id": "8cf2e6b53a32b48307042efac78c821d",
+    "span_id": "3ad99b82ac77692c",
+    "parent_span_id": null,
+    "name": "health.request",
+    "start_time_unix_nano": 1788644620379589000,
+    "end_time_unix_nano": 1788644620383347000,
+    "duration_ms": 3.758,
+    "status": "UNSET",
+    "attributes": {
+      "service.name": "checkout",
+      "request.number": 2,
+      "http.request.method": "GET",
+      "http.route": "/health",
+      "dettrace.request_shape": "health"
+    },
+    "resource": {
+      "telemetry.sdk.language": "python",
+      "telemetry.sdk.name": "opentelemetry",
+      "telemetry.sdk.version": "1.44.0",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
+      "service.name": "checkout-demo",
+      "deployment.environment": "dettrace-demo"
+    }
+  },
+  {
+    "trace_id": "e2aaf4181b4611d45001744b0947e37f",
+    "span_id": "ebeccb85682914a3",
+    "parent_span_id": "6b9953a65b157d3f",
+    "name": "health.check",
+    "start_time_unix_nano": 1788644620385654000,
+    "end_time_unix_nano": 1788644620387874000,
+    "duration_ms": 2.22,
+    "status": "UNSET",
+    "attributes": {
+      "service.name": "checkout"
+    },
+    "resource": {
+      "telemetry.sdk.language": "python",
+      "telemetry.sdk.name": "opentelemetry",
+      "telemetry.sdk.version": "1.44.0",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
+      "service.name": "checkout-demo",
+      "deployment.environment": "dettrace-demo"
+    }
+  },
+  {
+    "trace_id": "e2aaf4181b4611d45001744b0947e37f",
+    "span_id": "6b9953a65b157d3f",
+    "parent_span_id": null,
+    "name": "health.request",
+    "start_time_unix_nano": 1788644620385633000,
+    "end_time_unix_nano": 1788644620391164000,
+    "duration_ms": 5.531,
+    "status": "UNSET",
+    "attributes": {
+      "service.name": "checkout",
+      "request.number": 3,
+      "http.request.method": "GET",
+      "http.route": "/health",
+      "dettrace.request_shape": "health"
+    },
+    "resource": {
+      "telemetry.sdk.language": "python",
+      "telemetry.sdk.name": "opentelemetry",
+      "telemetry.sdk.version": "1.44.0",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
+      "service.name": "checkout-demo",
+      "deployment.environment": "dettrace-demo"
+    }
+  },
+  {
+    "trace_id": "39ec0700eca88d88efabf168d97ad2cb",
+    "span_id": "c676df7d48a5ffe8",
+    "parent_span_id": "aba49f1f3786f3b0",
+    "name": "health.check",
+    "start_time_unix_nano": 1788644620396577000,
+    "end_time_unix_nano": 1788644620398693000,
+    "duration_ms": 2.116,
+    "status": "UNSET",
+    "attributes": {
+      "service.name": "checkout"
+    },
+    "resource": {
+      "telemetry.sdk.language": "python",
+      "telemetry.sdk.name": "opentelemetry",
+      "telemetry.sdk.version": "1.44.0",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
+      "service.name": "checkout-demo",
+      "deployment.environment": "dettrace-demo"
+    }
+  },
+  {
+    "trace_id": "39ec0700eca88d88efabf168d97ad2cb",
+    "span_id": "aba49f1f3786f3b0",
+    "parent_span_id": null,
+    "name": "health.request",
+    "start_time_unix_nano": 1788644620396528000,
+    "end_time_unix_nano": 1788644620418482000,
+    "duration_ms": 21.954,
+    "status": "UNSET",
+    "attributes": {
+      "service.name": "checkout",
+      "request.number": 4,
+      "http.request.method": "GET",
+      "http.route": "/health",
+      "dettrace.request_shape": "health"
+    },
+    "resource": {
+      "telemetry.sdk.language": "python",
+      "telemetry.sdk.name": "opentelemetry",
+      "telemetry.sdk.version": "1.44.0",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
+      "service.name": "checkout-demo",
+      "deployment.environment": "dettrace-demo"
+    }
+  },
+  {
+    "trace_id": "8d5aa6a78320cb1fec8c960f38f7bed3",
+    "span_id": "3ae668cce8a15ae1",
+    "parent_span_id": "ff7ab7bac5415f6c",
+    "name": "health.check",
+    "start_time_unix_nano": 1788644620423600000,
+    "end_time_unix_nano": 1788644620426203000,
+    "duration_ms": 2.603,
+    "status": "UNSET",
+    "attributes": {
+      "service.name": "checkout"
+    },
+    "resource": {
+      "telemetry.sdk.language": "python",
+      "telemetry.sdk.name": "opentelemetry",
+      "telemetry.sdk.version": "1.44.0",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
+      "service.name": "checkout-demo",
+      "deployment.environment": "dettrace-demo"
+    }
+  },
+  {
+    "trace_id": "8d5aa6a78320cb1fec8c960f38f7bed3",
+    "span_id": "ff7ab7bac5415f6c",
+    "parent_span_id": null,
+    "name": "health.request",
+    "start_time_unix_nano": 1788644620423539000,
+    "end_time_unix_nano": 1788644620459845000,
+    "duration_ms": 36.306,
+    "status": "UNSET",
+    "attributes": {
+      "service.name": "checkout",
+      "request.number": 5,
+      "http.request.method": "GET",
+      "http.route": "/health",
+      "dettrace.request_shape": "health"
+    },
+    "resource": {
+      "telemetry.sdk.language": "python",
+      "telemetry.sdk.name": "opentelemetry",
+      "telemetry.sdk.version": "1.44.0",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
+      "service.name": "checkout-demo",
+      "deployment.environment": "dettrace-demo"
+    }
+  },
+  {
+    "trace_id": "9f146082939dfd295ed6b9b95d9f253e",
+    "span_id": "d1b96d8204910379",
+    "parent_span_id": "7027bef383c8fd3d",
+    "name": "health.check",
+    "start_time_unix_nano": 1788644620475471000,
+    "end_time_unix_nano": 1788644620477674000,
+    "duration_ms": 2.203,
+    "status": "UNSET",
+    "attributes": {
+      "service.name": "checkout"
+    },
+    "resource": {
+      "telemetry.sdk.language": "python",
+      "telemetry.sdk.name": "opentelemetry",
+      "telemetry.sdk.version": "1.44.0",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
+      "service.name": "checkout-demo",
+      "deployment.environment": "dettrace-demo"
+    }
+  },
+  {
+    "trace_id": "9f146082939dfd295ed6b9b95d9f253e",
+    "span_id": "7027bef383c8fd3d",
+    "parent_span_id": null,
+    "name": "health.request",
+    "start_time_unix_nano": 1788644620475409000,
+    "end_time_unix_nano": 1788644620480737000,
+    "duration_ms": 5.328,
+    "status": "UNSET",
+    "attributes": {
+      "service.name": "checkout",
+      "request.number": 6,
+      "http.request.method": "GET",
+      "http.route": "/health",
+      "dettrace.request_shape": "health"
+    },
+    "resource": {
+      "telemetry.sdk.language": "python",
+      "telemetry.sdk.name": "opentelemetry",
+      "telemetry.sdk.version": "1.44.0",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
+      "service.name": "checkout-demo",
+      "deployment.environment": "dettrace-demo"
+    }
+  },
+  {
+    "trace_id": "ba79ad980e6da5869abfb6c1c1d8e9ae",
+    "span_id": "13a5cdedfadb2c4b",
+    "parent_span_id": "ccabc431cc8e3f7b",
+    "name": "health.check",
+    "start_time_unix_nano": 1788644620490101000,
+    "end_time_unix_nano": 1788644620492642000,
+    "duration_ms": 2.541,
+    "status": "UNSET",
+    "attributes": {
+      "service.name": "checkout"
+    },
+    "resource": {
+      "telemetry.sdk.language": "python",
+      "telemetry.sdk.name": "opentelemetry",
+      "telemetry.sdk.version": "1.44.0",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
+      "service.name": "checkout-demo",
+      "deployment.environment": "dettrace-demo"
+    }
+  },
+  {
+    "trace_id": "ba79ad980e6da5869abfb6c1c1d8e9ae",
+    "span_id": "ccabc431cc8e3f7b",
+    "parent_span_id": null,
+    "name": "health.request",
+    "start_time_unix_nano": 1788644620490037000,
+    "end_time_unix_nano": 1788644620495871000,
+    "duration_ms": 5.834,
+    "status": "UNSET",
+    "attributes": {
+      "service.name": "checkout",
+      "request.number": 7,
+      "http.request.method": "GET",
+      "http.route": "/health",
+      "dettrace.request_shape": "health"
+    },
+    "resource": {
+      "telemetry.sdk.language": "python",
+      "telemetry.sdk.name": "opentelemetry",
+      "telemetry.sdk.version": "1.44.0",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
+      "service.name": "checkout-demo",
+      "deployment.environment": "dettrace-demo"
+    }
+  },
+  {
+    "trace_id": "a2a42fcabb90c132d62247398f1c2643",
+    "span_id": "03402342475375cd",
+    "parent_span_id": "7491289c141e7f79",
+    "name": "health.check",
+    "start_time_unix_nano": 1788644620498774000,
+    "end_time_unix_nano": 1788644620500680000,
+    "duration_ms": 1.906,
+    "status": "UNSET",
+    "attributes": {
+      "service.name": "checkout"
+    },
+    "resource": {
+      "telemetry.sdk.language": "python",
+      "telemetry.sdk.name": "opentelemetry",
+      "telemetry.sdk.version": "1.44.0",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
+      "service.name": "checkout-demo",
+      "deployment.environment": "dettrace-demo"
+    }
+  },
+  {
+    "trace_id": "a2a42fcabb90c132d62247398f1c2643",
+    "span_id": "7491289c141e7f79",
+    "parent_span_id": null,
+    "name": "health.request",
+    "start_time_unix_nano": 1788644620498745000,
+    "end_time_unix_nano": 1788644620503305000,
+    "duration_ms": 4.56,
+    "status": "UNSET",
+    "attributes": {
+      "service.name": "checkout",
+      "request.number": 8,
+      "http.request.method": "GET",
+      "http.route": "/health",
+      "dettrace.request_shape": "health"
+    },
+    "resource": {
+      "telemetry.sdk.language": "python",
+      "telemetry.sdk.name": "opentelemetry",
+      "telemetry.sdk.version": "1.44.0",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
+      "service.name": "checkout-demo",
+      "deployment.environment": "dettrace-demo"
+    }
+  },
+  {
+    "trace_id": "1afe808b01ca5aff8c3d21ff62238e46",
+    "span_id": "4ea8a46ac7961724",
+    "parent_span_id": "361d48c04d534535",
+    "name": "health.check",
+    "start_time_unix_nano": 1788644620505470000,
+    "end_time_unix_nano": 1788644620507055000,
+    "duration_ms": 1.585,
+    "status": "UNSET",
+    "attributes": {
+      "service.name": "checkout"
+    },
+    "resource": {
+      "telemetry.sdk.language": "python",
+      "telemetry.sdk.name": "opentelemetry",
+      "telemetry.sdk.version": "1.44.0",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
+      "service.name": "checkout-demo",
+      "deployment.environment": "dettrace-demo"
+    }
+  },
+  {
+    "trace_id": "1afe808b01ca5aff8c3d21ff62238e46",
+    "span_id": "361d48c04d534535",
+    "parent_span_id": null,
+    "name": "health.request",
+    "start_time_unix_nano": 1788644620505451000,
+    "end_time_unix_nano": 1788644620509292000,
+    "duration_ms": 3.841,
+    "status": "UNSET",
+    "attributes": {
+      "service.name": "checkout",
+      "request.number": 9,
+      "http.request.method": "GET",
+      "http.route": "/health",
+      "dettrace.request_shape": "health"
+    },
+    "resource": {
+      "telemetry.sdk.language": "python",
+      "telemetry.sdk.name": "opentelemetry",
+      "telemetry.sdk.version": "1.44.0",
+      "service.instance.id": "50c0230a-23a5-4da7-be83-38f084eeae86",
       "service.name": "checkout-demo",
       "deployment.environment": "dettrace-demo"
     }

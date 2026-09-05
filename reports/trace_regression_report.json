@@ -1,121 +1,197 @@
 {
-  "baseline_trace_count": 30,
-  "candidate_trace_count": 30,
-  "threshold_pct": 50.0,
-  "added_spans": [
+  "schema_version": 2,
+  "baseline_trace_count": 40,
+  "candidate_trace_count": 40,
+  "matched_shape_count": 2,
+  "baseline_only_shapes": [],
+  "candidate_only_shapes": [],
+  "cohorts": [
     {
-      "service": "redis",
-      "span": "redis.lookup",
-      "parent": "inventory.reserve"
-    }
-  ],
-  "removed_spans": [],
-  "regressions": [
-    {
-      "semantic_key": [
-        "checkout",
-        "checkout.request",
-        "ROOT"
+      "baseline_trace_count": 30,
+      "candidate_trace_count": 30,
+      "latency_threshold_pct": 50.0,
+      "error_threshold_percentage_points": 5.0,
+      "added_spans": [
+        {
+          "service": "redis",
+          "span": "redis.lookup",
+          "parent": "inventory.reserve"
+        }
       ],
-      "service": "checkout",
-      "span": "checkout.request",
-      "parent": "ROOT",
-      "baseline_p95_ms": 57.7582,
-      "candidate_p95_ms": 166.48784999999998,
-      "delta_ms": 108.72964999999998,
-      "delta_pct": 188.24972038602306
-    },
-    {
-      "semantic_key": [
-        "inventory",
-        "inventory.reserve",
-        "checkout.request"
+      "removed_spans": [],
+      "regressions": [
+        {
+          "semantic_key": [
+            "checkout",
+            "checkout.request",
+            "ROOT"
+          ],
+          "service": "checkout",
+          "span": "checkout.request",
+          "parent": "ROOT",
+          "baseline_p95_ms": 61.123099999999994,
+          "candidate_p95_ms": 172.0586,
+          "delta_ms": 110.93550000000002,
+          "delta_pct": 181.495212121113
+        },
+        {
+          "semantic_key": [
+            "inventory",
+            "inventory.reserve",
+            "checkout.request"
+          ],
+          "service": "inventory",
+          "span": "inventory.reserve",
+          "parent": "checkout.request",
+          "baseline_p95_ms": 28.150799999999997,
+          "candidate_p95_ms": 137.28125,
+          "delta_ms": 109.13045,
+          "delta_pct": 387.6637608877901
+        }
       ],
-      "service": "inventory",
-      "span": "inventory.reserve",
-      "parent": "checkout.request",
-      "baseline_p95_ms": 27.900299999999998,
-      "candidate_p95_ms": 135.52299999999997,
-      "delta_ms": 107.62269999999997,
-      "delta_pct": 385.74029669931855
-    }
-  ],
-  "primary_localized_regression": {
-    "semantic_key": [
-      "inventory",
-      "inventory.reserve",
-      "checkout.request"
-    ],
-    "service": "inventory",
-    "span": "inventory.reserve",
-    "parent": "checkout.request",
-    "baseline_p95_ms": 27.900299999999998,
-    "candidate_p95_ms": 135.52299999999997,
-    "delta_ms": 107.62269999999997,
-    "delta_pct": 385.74029669931855
-  },
-  "end_to_end_regression": {
-    "semantic_key": [
-      "checkout",
-      "checkout.request",
-      "ROOT"
-    ],
-    "service": "checkout",
-    "span": "checkout.request",
-    "parent": "ROOT",
-    "baseline_p95_ms": 57.7582,
-    "candidate_p95_ms": 166.48784999999998,
-    "delta_ms": 108.72964999999998,
-    "delta_pct": 188.24972038602306
-  },
-  "critical_path": {
-    "method": "interval-derived parent/child critical-path contribution analysis",
-    "contribution_semantics": "Per-span p95 contribution deltas are computed independently and are not additive decompositions of the end-to-end p95 delta.",
-    "baseline_end_to_end_p95_ms": 57.7582,
-    "candidate_end_to_end_p95_ms": 166.48784999999998,
-    "end_to_end_delta_ms": 108.72964999999998,
-    "contributors": [
-      {
+      "primary_localized_regression": {
+        "semantic_key": [
+          "inventory",
+          "inventory.reserve",
+          "checkout.request"
+        ],
         "service": "inventory",
         "span": "inventory.reserve",
         "parent": "checkout.request",
-        "baseline_p95_contribution_ms": 12.905099999999994,
-        "candidate_p95_contribution_ms": 75.0165,
-        "delta_ms": 62.1114,
-        "delta_pct": 481.29344212753125,
-        "is_new_on_path": false
+        "baseline_p95_ms": 28.150799999999997,
+        "candidate_p95_ms": 137.28125,
+        "delta_ms": 109.13045,
+        "delta_pct": 387.6637608877901
       },
-      {
-        "service": "redis",
-        "span": "redis.lookup",
-        "parent": "inventory.reserve",
-        "baseline_p95_contribution_ms": 0.0,
-        "candidate_p95_contribution_ms": 45.54815,
-        "delta_ms": 45.54815,
-        "delta_pct": null,
-        "is_new_on_path": true
-      },
-      {
+      "end_to_end_regression": {
+        "semantic_key": [
+          "checkout",
+          "checkout.request",
+          "ROOT"
+        ],
         "service": "checkout",
         "span": "checkout.request",
         "parent": "ROOT",
-        "baseline_p95_contribution_ms": 13.783749999999994,
-        "candidate_p95_contribution_ms": 18.17345,
-        "delta_ms": 4.389700000000005,
-        "delta_pct": 31.846921193434348,
-        "is_new_on_path": false
+        "baseline_p95_ms": 61.123099999999994,
+        "candidate_p95_ms": 172.0586,
+        "delta_ms": 110.93550000000002,
+        "delta_pct": 181.495212121113
+      },
+      "error_regressions": [
+        {
+          "service": "checkout",
+          "span": "checkout.request",
+          "parent": "ROOT",
+          "baseline_count": 30,
+          "candidate_count": 30,
+          "baseline_errors": 0,
+          "candidate_errors": 6,
+          "baseline_error_rate": 0.0,
+          "candidate_error_rate": 0.2,
+          "delta_percentage_points": 20.0
+        },
+        {
+          "service": "inventory",
+          "span": "inventory.reserve",
+          "parent": "checkout.request",
+          "baseline_count": 30,
+          "candidate_count": 30,
+          "baseline_errors": 0,
+          "candidate_errors": 6,
+          "baseline_error_rate": 0.0,
+          "candidate_error_rate": 0.2,
+          "delta_percentage_points": 20.0
+        }
+      ],
+      "critical_path": {
+        "method": "interval-derived parent/child critical-path contribution analysis",
+        "contribution_semantics": "Per-span p95 contribution deltas are computed independently and are not additive decompositions of the end-to-end p95 delta.",
+        "baseline_end_to_end_p95_ms": 61.123099999999994,
+        "candidate_end_to_end_p95_ms": 172.0586,
+        "end_to_end_delta_ms": 110.93550000000002,
+        "contributors": [
+          {
+            "service": "inventory",
+            "span": "inventory.reserve",
+            "parent": "checkout.request",
+            "baseline_p95_contribution_ms": 13.410899999999998,
+            "candidate_p95_contribution_ms": 78.9709,
+            "delta_ms": 65.56,
+            "delta_pct": 488.8560797560195,
+            "is_new_on_path": false
+          },
+          {
+            "service": "redis",
+            "span": "redis.lookup",
+            "parent": "inventory.reserve",
+            "baseline_p95_contribution_ms": 0.0,
+            "candidate_p95_contribution_ms": 44.41074999999999,
+            "delta_ms": 44.41074999999999,
+            "delta_pct": null,
+            "is_new_on_path": true
+          },
+          {
+            "service": "checkout",
+            "span": "checkout.request",
+            "parent": "ROOT",
+            "baseline_p95_contribution_ms": 18.00165,
+            "candidate_p95_contribution_ms": 19.593249999999998,
+            "delta_ms": 1.5915999999999961,
+            "delta_pct": 8.841411759477582,
+            "is_new_on_path": false
+          }
+        ],
+        "primary_critical_path_regression": {
+          "service": "inventory",
+          "span": "inventory.reserve",
+          "parent": "checkout.request",
+          "baseline_p95_contribution_ms": 13.410899999999998,
+          "candidate_p95_contribution_ms": 78.9709,
+          "delta_ms": 65.56,
+          "delta_pct": 488.8560797560195,
+          "is_new_on_path": false
+        }
+      },
+      "decision": "FAIL",
+      "shape": {
+        "fingerprint": "checkout|checkout.request|POST|/checkout|checkout",
+        "service": "checkout",
+        "root_span": "checkout.request",
+        "method": "POST",
+        "route": "/checkout",
+        "explicit_shape": "checkout"
       }
-    ],
-    "primary_critical_path_regression": {
-      "service": "inventory",
-      "span": "inventory.reserve",
-      "parent": "checkout.request",
-      "baseline_p95_contribution_ms": 12.905099999999994,
-      "candidate_p95_contribution_ms": 75.0165,
-      "delta_ms": 62.1114,
-      "delta_pct": 481.29344212753125,
-      "is_new_on_path": false
+    },
+    {
+      "baseline_trace_count": 10,
+      "candidate_trace_count": 10,
+      "latency_threshold_pct": 50.0,
+      "error_threshold_percentage_points": 5.0,
+      "added_spans": [],
+      "removed_spans": [],
+      "regressions": [],
+      "primary_localized_regression": null,
+      "end_to_end_regression": null,
+      "error_regressions": [],
+      "critical_path": {
+        "method": "interval-derived parent/child critical-path contribution analysis",
+        "contribution_semantics": "Per-span p95 contribution deltas are computed independently and are not additive decompositions of the end-to-end p95 delta.",
+        "baseline_end_to_end_p95_ms": 29.847599999999986,
+        "candidate_end_to_end_p95_ms": 7.353349999999999,
+        "end_to_end_delta_ms": -22.494249999999987,
+        "contributors": [],
+        "primary_critical_path_regression": null
+      },
+      "decision": "PASS",
+      "shape": {
+        "fingerprint": "checkout|health.request|GET|/health|health",
+        "service": "checkout",
+        "root_span": "health.request",
+        "method": "GET",
+        "route": "/health",
+        "explicit_shape": "health"
+      }
     }
-  },
+  ],
   "decision": "FAIL"
 }

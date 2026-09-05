@@ -58,6 +58,95 @@ Per-span contribution statistics are computed independently across traces. Their
 - `trace_regression/cli.py` — CI regression gate
 - `reports/trace_regression_report.json` — machine-readable proof artifact
 
+## Request-Shape and Error Regression Analysis
+
+DetTrace groups traces by semantic request shape before comparing baseline and candidate executions.
+
+A request-shape fingerprint currently incorporates:
+
+- root service
+- root span operation
+- HTTP method when present
+- HTTP route when present
+- optional `dettrace.request_shape`
+
+This prevents latency and error distributions from unrelated request types from being mixed together.
+
+The regression gate also evaluates OpenTelemetry span status independently for each matched request cohort. Error changes are expressed in **percentage points**, so a baseline of `0%` and candidate of `20%` is reported as `+20 percentage points` rather than as an undefined relative percentage increase.
+
+### Verified multi-request demo
+
+The current captured workload contains two request shapes:
+
+    POST /checkout
+    baseline traces:  30
+    candidate traces: 30
+    decision: FAIL
+
+    GET /health
+    baseline traces:  10
+    candidate traces: 10
+    decision: PASS
+
+For `POST /checkout`, the current proof artifact reports:
+
+    p95 latency:
+    61.12 ms -> 172.06 ms
+    +110.94 ms
+    +181.5%
+
+    error rate:
+    checkout.request
+    0/30 -> 6/30
+    0.0% -> 20.0%
+
+    inventory.reserve
+    0/30 -> 6/30
+    0.0% -> 20.0%
+
+    new dependency:
+    inventory.reserve -> redis.lookup
+
+    primary critical-path contributor:
+    inventory.reserve
+    +65.56 ms p95 contribution delta
+
+    new critical-path contributor:
+    redis.lookup
+    +44.41 ms
+
+The unaffected `GET /health` cohort remains `PASS`, demonstrating that DetTrace evaluates matched request classes independently rather than combining all traces into a single latency or error distribution.
+
+### Run the captured demo
+
+    .venv/bin/python demo_checkout/run_demo.py \
+      --mode baseline \
+      --requests 30 \
+      --health-requests 10 \
+      --output artifacts/traces/baseline/checkout.json
+
+    .venv/bin/python demo_checkout/run_demo.py \
+      --mode candidate \
+      --requests 30 \
+      --health-requests 10 \
+      --output artifacts/traces/candidate/checkout.json
+
+    .venv/bin/python -m trace_regression.cli \
+      --baseline artifacts/traces/baseline/checkout.json \
+      --candidate artifacts/traces/candidate/checkout.json \
+      --regression-threshold-pct 50 \
+      --error-threshold-pp 5
+
+### Phase 3 analyzer components
+
+- `trace_regression/cohorts.py` — request-shape classification and cohort grouping
+- `trace_regression/errors.py` — per-span OpenTelemetry error-rate comparison
+- `trace_regression/analyzer.py` — cohort-level latency, structure, error, and critical-path analysis
+- `trace_regression/cli.py` — multi-cohort CI regression gate
+- `tests/trace_regression/test_cohorts_and_errors.py` — cohort isolation and error-regression tests
+
+---
+
 ## Legacy Replay Research
 
 Earlier deterministic replay, protocol, sensor-stream, concurrency, incident-forensics, and replay-performance experiments remain below as historical research artifacts. They are supporting experiments rather than the active product direction.

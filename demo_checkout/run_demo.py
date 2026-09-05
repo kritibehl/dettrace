@@ -3,131 +3,360 @@
 from __future__ import annotations
 
 import argparse
-import os
 import random
 import time
 from pathlib import Path
 
 from opentelemetry import trace
-from opentelemetry.sdk.resources import Resource
-from opentelemetry.sdk.trace import TracerProvider
-from opentelemetry.sdk.trace.export import SimpleSpanProcessor
+from opentelemetry.sdk.resources import (
+    Resource,
+)
+from opentelemetry.sdk.trace import (
+    TracerProvider,
+)
+from opentelemetry.sdk.trace.export import (
+    SimpleSpanProcessor,
+)
+from opentelemetry.trace import (
+    Status,
+    StatusCode,
+)
 
-from file_span_exporter import JsonFileSpanExporter
+from file_span_exporter import (
+    JsonFileSpanExporter,
+)
 
 
-def sleep_ms(value: float):
-    time.sleep(value / 1000.0)
+def sleep_ms(
+    value: float,
+):
+    time.sleep(
+        value / 1000.0
+    )
 
 
-def configure_tracing(output: str):
+def configure_tracing(
+    output: str,
+):
     resource = Resource.create(
         {
-            "service.name": "checkout-demo",
-            "deployment.environment": "dettrace-demo",
+            "service.name":
+                "checkout-demo",
+            "deployment.environment":
+                "dettrace-demo",
         }
     )
 
-    provider = TracerProvider(resource=resource)
-    provider.add_span_processor(
-        SimpleSpanProcessor(JsonFileSpanExporter(output))
+    provider = TracerProvider(
+        resource=resource
     )
 
-    trace.set_tracer_provider(provider)
-    return trace.get_tracer("dettrace.checkout.demo")
+    provider.add_span_processor(
+        SimpleSpanProcessor(
+            JsonFileSpanExporter(
+                output
+            )
+        )
+    )
+
+    trace.set_tracer_provider(
+        provider
+    )
+
+    return trace.get_tracer(
+        "dettrace.checkout.demo"
+    )
 
 
-def run_request(tracer, mode: str, request_number: int):
+def run_checkout_request(
+    tracer,
+    mode: str,
+    request_number: int,
+):
+    core_rng = random.Random(
+        42 + request_number
+    )
+
+    candidate_rng = random.Random(
+        10000 + request_number
+    )
+
+    candidate_error = (
+        mode == "candidate"
+        and request_number % 5 == 0
+    )
+
     with tracer.start_as_current_span(
         "checkout.request",
         attributes={
-            "service.name": "checkout",
-            "request.number": request_number,
+            "service.name":
+                "checkout",
+            "request.number":
+                request_number,
+            "http.request.method":
+                "POST",
+            "http.route":
+                "/checkout",
+            "dettrace.request_shape":
+                "checkout",
         },
-    ):
+    ) as checkout_span:
+
         with tracer.start_as_current_span(
             "auth.validate",
-            attributes={"service.name": "auth"},
+            attributes={
+                "service.name":
+                    "auth",
+            },
         ):
-            sleep_ms(4 + random.uniform(0, 2))
+            sleep_ms(
+                4
+                + core_rng.uniform(
+                    0,
+                    2,
+                )
+            )
 
         with tracer.start_as_current_span(
             "inventory.reserve",
-            attributes={"service.name": "inventory"},
-        ):
+            attributes={
+                "service.name":
+                    "inventory",
+            },
+        ) as inventory_span:
+
             with tracer.start_as_current_span(
                 "inventory.database",
                 attributes={
-                    "service.name": "inventory-db",
-                    "db.system": "postgresql",
+                    "service.name":
+                        "inventory-db",
+                    "db.system":
+                        "postgresql",
                 },
             ):
-                sleep_ms(10 + random.uniform(0, 4))
+                sleep_ms(
+                    10
+                    + core_rng.uniform(
+                        0,
+                        4,
+                    )
+                )
 
             if mode == "candidate":
                 with tracer.start_as_current_span(
                     "redis.lookup",
                     attributes={
-                        "service.name": "redis",
-                        "db.system": "redis",
+                        "service.name":
+                            "redis",
+                        "db.system":
+                            "redis",
                     },
                 ):
-                    sleep_ms(35 + random.uniform(0, 6))
+                    sleep_ms(
+                        35
+                        + candidate_rng.uniform(
+                            0,
+                            6,
+                        )
+                    )
 
-                sleep_ms(55 + random.uniform(0, 10))
+                sleep_ms(
+                    55
+                    + candidate_rng.uniform(
+                        0,
+                        10,
+                    )
+                )
+
             else:
-                sleep_ms(4 + random.uniform(0, 3))
+                sleep_ms(
+                    4
+                    + core_rng.uniform(
+                        0,
+                        3,
+                    )
+                )
+
+            if candidate_error:
+                inventory_span.set_attribute(
+                    "error.type",
+                    "synthetic_inventory_failure",
+                )
+
+                inventory_span.set_status(
+                    Status(
+                        status_code=(
+                            StatusCode.ERROR
+                        ),
+                        description=(
+                            "synthetic candidate "
+                            "inventory regression"
+                        ),
+                    )
+                )
 
         with tracer.start_as_current_span(
             "payment.authorize",
-            attributes={"service.name": "payment"},
+            attributes={
+                "service.name":
+                    "payment",
+            },
         ):
-            sleep_ms(8 + random.uniform(0, 3))
+            sleep_ms(
+                8
+                + core_rng.uniform(
+                    0,
+                    3,
+                )
+            )
+
+        if candidate_error:
+            checkout_span.set_attribute(
+                "error.type",
+                "synthetic_checkout_failure",
+            )
+
+            checkout_span.set_status(
+                Status(
+                    status_code=(
+                        StatusCode.ERROR
+                    ),
+                    description=(
+                        "synthetic candidate "
+                        "checkout regression"
+                    ),
+                )
+            )
+
+
+def run_health_request(
+    tracer,
+    request_number: int,
+):
+    rng = random.Random(
+        20000 + request_number
+    )
+
+    with tracer.start_as_current_span(
+        "health.request",
+        attributes={
+            "service.name":
+                "checkout",
+            "request.number":
+                request_number,
+            "http.request.method":
+                "GET",
+            "http.route":
+                "/health",
+            "dettrace.request_shape":
+                "health",
+        },
+    ):
+        with tracer.start_as_current_span(
+            "health.check",
+            attributes={
+                "service.name":
+                    "checkout",
+            },
+        ):
+            sleep_ms(
+                1
+                + rng.uniform(
+                    0,
+                    1,
+                )
+            )
 
 
 def main():
     parser = argparse.ArgumentParser()
+
     parser.add_argument(
         "--mode",
-        choices=["baseline", "candidate"],
+        choices=[
+            "baseline",
+            "candidate",
+        ],
         required=True,
     )
+
     parser.add_argument(
         "--output",
         required=True,
     )
+
     parser.add_argument(
         "--requests",
         type=int,
         default=30,
     )
+
+    parser.add_argument(
+        "--health-requests",
+        type=int,
+        default=10,
+    )
+
     args = parser.parse_args()
 
-    output = Path(args.output)
-    output.parent.mkdir(parents=True, exist_ok=True)
+    output = Path(
+        args.output
+    )
+
+    output.parent.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
 
     if output.exists():
         output.unlink()
 
-    random.seed(42)
+    tracer = configure_tracing(
+        str(output)
+    )
 
-    tracer = configure_tracing(str(output))
+    for request_number in range(
+        args.requests
+    ):
+        run_checkout_request(
+            tracer,
+            args.mode,
+            request_number,
+        )
 
-    for request_number in range(args.requests):
-        run_request(tracer, args.mode, request_number)
+    for request_number in range(
+        args.health_requests
+    ):
+        run_health_request(
+            tracer,
+            request_number,
+        )
 
-    provider = trace.get_tracer_provider()
+    provider = (
+        trace.get_tracer_provider()
+    )
 
-    if hasattr(provider, "force_flush"):
+    if hasattr(
+        provider,
+        "force_flush",
+    ):
         provider.force_flush()
 
-    if hasattr(provider, "shutdown"):
+    if hasattr(
+        provider,
+        "shutdown",
+    ):
         provider.shutdown()
 
     print(
-        f"captured mode={args.mode} "
-        f"requests={args.requests} "
-        f"output={output}"
+        f"captured mode="
+        f"{args.mode} "
+        f"checkout_requests="
+        f"{args.requests} "
+        f"health_requests="
+        f"{args.health_requests} "
+        f"output="
+        f"{output}"
     )
 
 

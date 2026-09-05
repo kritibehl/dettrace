@@ -7,87 +7,391 @@ import json
 import sys
 from pathlib import Path
 
-from trace_regression.compare import compare_traces
-from trace_regression.critical_path import (
-    compare_critical_paths,
+from trace_regression.analyzer import (
+    analyze_cohort,
+    choose_primary_localized_regression,
+    find_end_to_end_regression,
+)
+from trace_regression.cohorts import (
+    group_traces_by_shape,
 )
 from trace_regression.normalize import (
     group_by_trace,
-    normalize_trace,
 )
 
 
-def load_raw_traces(path):
+def load_raw_traces(
+    path,
+):
     spans = json.loads(
         Path(path).read_text()
     )
 
-    grouped = group_by_trace(spans)
+    grouped = group_by_trace(
+        spans
+    )
 
-    return list(grouped.values())
-
-
-def normalize_traces(raw_traces):
-    return [
-        normalize_trace(trace_spans)
-        for trace_spans in raw_traces
-    ]
-
-
-def tuple_to_dict(value):
-    return {
-        "service": value[0],
-        "span": value[1],
-        "parent": value[2],
-    }
-
-
-def choose_primary_localized_regression(
-    regressions,
-):
-    localized = [
-        regression
-        for regression in regressions
-        if regression["parent"] != "ROOT"
-    ]
-
-    candidates = localized or regressions
-
-    if not candidates:
-        return None
-
-    return max(
-        candidates,
-        key=lambda item: (
-            item["delta_pct"],
-            item["delta_ms"],
-        ),
+    return list(
+        grouped.values()
     )
 
 
-def find_end_to_end_regression(
-    regressions,
+def analyze_shapes(
+    baseline_raw,
+    candidate_raw,
+    latency_threshold_pct,
+    error_threshold_pp,
 ):
-    roots = [
-        regression
-        for regression in regressions
-        if regression["parent"] == "ROOT"
+    baseline_shapes = (
+        group_traces_by_shape(
+            baseline_raw
+        )
+    )
+
+    candidate_shapes = (
+        group_traces_by_shape(
+            candidate_raw
+        )
+    )
+
+    baseline_keys = set(
+        baseline_shapes
+    )
+
+    candidate_keys = set(
+        candidate_shapes
+    )
+
+    matched = sorted(
+        baseline_keys
+        & candidate_keys
+    )
+
+    baseline_only = sorted(
+        baseline_keys
+        - candidate_keys
+    )
+
+    candidate_only = sorted(
+        candidate_keys
+        - baseline_keys
+    )
+
+    cohorts = []
+
+    for fingerprint in matched:
+        baseline_group = (
+            baseline_shapes[
+                fingerprint
+            ]
+        )
+
+        candidate_group = (
+            candidate_shapes[
+                fingerprint
+            ]
+        )
+
+        analysis = analyze_cohort(
+            baseline_group[
+                "traces"
+            ],
+            candidate_group[
+                "traces"
+            ],
+            regression_threshold_pct=(
+                latency_threshold_pct
+            ),
+            error_threshold_pp=(
+                error_threshold_pp
+            ),
+        )
+
+        analysis[
+            "shape"
+        ] = baseline_group[
+            "shape"
+        ]
+
+        cohorts.append(
+            analysis
+        )
+
+    overall_decision = (
+        "FAIL"
+        if any(
+            cohort[
+                "decision"
+            ] == "FAIL"
+            for cohort in cohorts
+        )
+        else "PASS"
+    )
+
+    return {
+        "schema_version":
+            2,
+        "baseline_trace_count":
+            len(
+                baseline_raw
+            ),
+        "candidate_trace_count":
+            len(
+                candidate_raw
+            ),
+        "matched_shape_count":
+            len(
+                matched
+            ),
+        "baseline_only_shapes": [
+            baseline_shapes[key][
+                "shape"
+            ]
+            for key in baseline_only
+        ],
+        "candidate_only_shapes": [
+            candidate_shapes[key][
+                "shape"
+            ]
+            for key in candidate_only
+        ],
+        "cohorts":
+            cohorts,
+        "decision":
+            overall_decision,
+    }
+
+
+def print_cohort(
+    cohort,
+):
+    shape = cohort[
+        "shape"
     ]
 
-    if not roots:
-        return None
+    print()
+    print("=" * 64)
 
-    return max(
-        roots,
-        key=lambda item: item["delta_ms"],
+    print(
+        "REQUEST SHAPE"
+    )
+
+    print(
+        f"  service: "
+        f"{shape['service']}"
+    )
+
+    print(
+        f"  root:    "
+        f"{shape['root_span']}"
+    )
+
+    print(
+        f"  method:  "
+        f"{shape['method']}"
+    )
+
+    print(
+        f"  route:   "
+        f"{shape['route']}"
+    )
+
+    print(
+        f"  baseline traces:  "
+        f"{cohort['baseline_trace_count']}"
+    )
+
+    print(
+        f"  candidate traces: "
+        f"{cohort['candidate_trace_count']}"
+    )
+
+    if cohort[
+        "added_spans"
+    ]:
+        print()
+        print(
+            "STRUCTURAL CHANGES"
+        )
+
+        for item in cohort[
+            "added_spans"
+        ]:
+            print(
+                f"  {item['parent']} "
+                f"-> {item['span']} "
+                f"[service="
+                f"{item['service']}]"
+            )
+
+    end_to_end = cohort[
+        "end_to_end_regression"
+    ]
+
+    if end_to_end:
+        print()
+        print(
+            "END-TO-END LATENCY REGRESSION"
+        )
+
+        print(
+            f"  p95: "
+            f"{end_to_end['baseline_p95_ms']:.2f}"
+            f" -> "
+            f"{end_to_end['candidate_p95_ms']:.2f}"
+            f" ms"
+        )
+
+        print(
+            f"  delta: "
+            f"+{end_to_end['delta_ms']:.2f}"
+            f" ms"
+        )
+
+        print(
+            f"  change: "
+            f"+{end_to_end['delta_pct']:.1f}%"
+        )
+
+    primary = cohort[
+        "primary_localized_regression"
+    ]
+
+    if primary:
+        print()
+        print(
+            "PRIMARY LOCALIZED REGRESSION"
+        )
+
+        print(
+            f"  service: "
+            f"{primary['service']}"
+        )
+
+        print(
+            f"  span:    "
+            f"{primary['span']}"
+        )
+
+        print(
+            f"  p95: "
+            f"{primary['baseline_p95_ms']:.2f}"
+            f" -> "
+            f"{primary['candidate_p95_ms']:.2f}"
+            f" ms"
+        )
+
+    error_regressions = cohort[
+        "error_regressions"
+    ]
+
+    if error_regressions:
+        print()
+        print(
+            "ERROR-RATE REGRESSIONS"
+        )
+
+        for item in error_regressions:
+            print(
+                f"  "
+                f"{item['service']}."
+                f"{item['span']}"
+            )
+
+            print(
+                f"    "
+                f"{item['baseline_errors']}/"
+                f"{item['baseline_count']} "
+                f"("
+                f"{item['baseline_error_rate'] * 100:.1f}%"
+                f")"
+                f" -> "
+                f"{item['candidate_errors']}/"
+                f"{item['candidate_count']} "
+                f"("
+                f"{item['candidate_error_rate'] * 100:.1f}%"
+                f")"
+            )
+
+            print(
+                f"    delta: "
+                f"+"
+                f"{item['delta_percentage_points']:.1f}"
+                f" percentage points"
+            )
+
+    cp = cohort[
+        "critical_path"
+    ]
+
+    cp_primary = cp[
+        "primary_critical_path_regression"
+    ]
+
+    if cp_primary:
+        print()
+        print(
+            "PRIMARY CRITICAL-PATH CONTRIBUTOR"
+        )
+
+        print(
+            f"  service: "
+            f"{cp_primary['service']}"
+        )
+
+        print(
+            f"  span:    "
+            f"{cp_primary['span']}"
+        )
+
+        print(
+            f"  contribution delta: "
+            f"+{cp_primary['delta_ms']:.2f}"
+            f" ms p95"
+        )
+
+    new_path = [
+        item
+        for item in cp[
+            "contributors"
+        ]
+        if item[
+            "is_new_on_path"
+        ]
+    ]
+
+    if new_path:
+        print()
+        print(
+            "NEW CRITICAL-PATH CONTRIBUTORS"
+        )
+
+        for item in new_path:
+            print(
+                f"  "
+                f"{item['parent']} "
+                f"-> "
+                f"{item['span']} "
+                f"[service="
+                f"{item['service']}] "
+                f"+{item['delta_ms']:.2f}"
+                f" ms"
+            )
+
+    print()
+    print(
+        f"COHORT DECISION: "
+        f"{cohort['decision']}"
     )
 
 
 def main():
     parser = argparse.ArgumentParser(
         description=(
-            "DetTrace OpenTelemetry "
-            "trace regression gate"
+            "DetTrace "
+            "request-shape-aware "
+            "OpenTelemetry trace "
+            "regression gate"
         )
     )
 
@@ -108,6 +412,12 @@ def main():
     )
 
     parser.add_argument(
+        "--error-threshold-pp",
+        type=float,
+        default=5.0,
+    )
+
+    parser.add_argument(
         "--output",
         default=(
             "reports/"
@@ -117,89 +427,32 @@ def main():
 
     args = parser.parse_args()
 
-    baseline_raw = load_raw_traces(
-        args.baseline
+    baseline_raw = (
+        load_raw_traces(
+            args.baseline
+        )
     )
 
-    candidate_raw = load_raw_traces(
-        args.candidate
+    candidate_raw = (
+        load_raw_traces(
+            args.candidate
+        )
     )
 
-    baseline = normalize_traces(
-        baseline_raw
-    )
-
-    candidate = normalize_traces(
-        candidate_raw
-    )
-
-    comparison = compare_traces(
-        baseline,
-        candidate,
-        regression_threshold_pct=(
-            args.regression_threshold_pct
-        ),
-    )
-
-    critical_path = compare_critical_paths(
+    report = analyze_shapes(
         baseline_raw,
         candidate_raw,
-    )
-
-    regressions = comparison[
-        "regressions"
-    ]
-
-    primary = (
-        choose_primary_localized_regression(
-            regressions
-        )
-    )
-
-    end_to_end = (
-        find_end_to_end_regression(
-            regressions
-        )
-    )
-
-    report = {
-        "baseline_trace_count":
-            len(baseline),
-        "candidate_trace_count":
-            len(candidate),
-        "threshold_pct":
-            args.regression_threshold_pct,
-        "added_spans": [
-            tuple_to_dict(item)
-            for item in comparison[
-                "added_spans"
-            ]
-        ],
-        "removed_spans": [
-            tuple_to_dict(item)
-            for item in comparison[
-                "removed_spans"
-            ]
-        ],
-        "regressions":
-            regressions,
-        "primary_localized_regression":
-            primary,
-        "end_to_end_regression":
-            end_to_end,
-        "critical_path":
-            critical_path,
-        "decision": (
-            "FAIL"
-            if (
-                regressions
-                or comparison["added_spans"]
-            )
-            else "PASS"
+        latency_threshold_pct=(
+            args.regression_threshold_pct
         ),
-    }
+        error_threshold_pp=(
+            args.error_threshold_pp
+        ),
+    )
 
-    output = Path(args.output)
+    output = Path(
+        args.output
+    )
 
     output.parent.mkdir(
         parents=True,
@@ -217,202 +470,94 @@ def main():
     print(
         "DETTRACE TRACE REGRESSION GATE"
     )
-    print("=" * 40)
+
+    print(
+        "=" * 64
+    )
 
     print(
         f"baseline traces:  "
-        f"{len(baseline)}"
+        f"{report['baseline_trace_count']}"
     )
 
     print(
         f"candidate traces: "
-        f"{len(candidate)}"
+        f"{report['candidate_trace_count']}"
     )
 
-    if report["added_spans"]:
-        print()
-        print("STRUCTURAL CHANGES")
+    print(
+        f"matched request shapes: "
+        f"{report['matched_shape_count']}"
+    )
 
-        for item in report[
-            "added_spans"
+    for cohort in report[
+        "cohorts"
+    ]:
+        print_cohort(
+            cohort
+        )
+
+    if report[
+        "baseline_only_shapes"
+    ]:
+        print()
+        print(
+            "BASELINE-ONLY REQUEST SHAPES"
+        )
+
+        for shape in report[
+            "baseline_only_shapes"
         ]:
             print(
-                f"  {item['parent']} "
-                f"-> {item['span']} "
-                f"[service="
-                f"{item['service']}]"
+                " ",
+                shape[
+                    "fingerprint"
+                ],
             )
 
-    if end_to_end:
-        print()
-        print("END-TO-END REGRESSION")
-
-        print(
-            f"  span:      "
-            f"{end_to_end['span']}"
-        )
-
-        print(
-            f"  baseline:  "
-            f"{end_to_end['baseline_p95_ms']:.2f} "
-            f"ms p95"
-        )
-
-        print(
-            f"  candidate: "
-            f"{end_to_end['candidate_p95_ms']:.2f} "
-            f"ms p95"
-        )
-
-        print(
-            f"  delta:     "
-            f"+{end_to_end['delta_ms']:.2f} ms"
-        )
-
-        print(
-            f"  change:    "
-            f"+{end_to_end['delta_pct']:.1f}%"
-        )
-
-    if primary:
+    if report[
+        "candidate_only_shapes"
+    ]:
         print()
         print(
-            "PRIMARY LOCALIZED REGRESSION"
+            "CANDIDATE-ONLY REQUEST SHAPES"
         )
 
-        print(
-            f"  service:   "
-            f"{primary['service']}"
-        )
-
-        print(
-            f"  span:      "
-            f"{primary['span']}"
-        )
-
-        print(
-            f"  parent:    "
-            f"{primary['parent']}"
-        )
-
-        print(
-            f"  baseline:  "
-            f"{primary['baseline_p95_ms']:.2f} "
-            f"ms p95"
-        )
-
-        print(
-            f"  candidate: "
-            f"{primary['candidate_p95_ms']:.2f} "
-            f"ms p95"
-        )
-
-        print(
-            f"  delta:     "
-            f"+{primary['delta_ms']:.2f} ms"
-        )
-
-        print(
-            f"  change:    "
-            f"+{primary['delta_pct']:.1f}%"
-        )
-
-    cp_primary = critical_path[
-        "primary_critical_path_regression"
-    ]
-
-    print()
-    print("CRITICAL-PATH ANALYSIS")
-
-    print(
-        f"  baseline end-to-end p95:  "
-        f"{critical_path['baseline_end_to_end_p95_ms']:.2f} ms"
-    )
-
-    print(
-        f"  candidate end-to-end p95: "
-        f"{critical_path['candidate_end_to_end_p95_ms']:.2f} ms"
-    )
-
-    print(
-        f"  end-to-end delta:          "
-        f"+{critical_path['end_to_end_delta_ms']:.2f} ms"
-    )
-
-    if cp_primary:
-        print()
-        print(
-            "PRIMARY CRITICAL-PATH CONTRIBUTOR"
-        )
-
-        print(
-            f"  service:   "
-            f"{cp_primary['service']}"
-        )
-
-        print(
-            f"  span:      "
-            f"{cp_primary['span']}"
-        )
-
-        print(
-            f"  parent:    "
-            f"{cp_primary['parent']}"
-        )
-
-        print(
-            f"  baseline contribution: "
-            f"{cp_primary['baseline_p95_contribution_ms']:.2f} ms"
-        )
-
-        print(
-            f"  candidate contribution: "
-            f"{cp_primary['candidate_p95_contribution_ms']:.2f} ms"
-        )
-
-        print(
-            f"  contribution delta:    "
-            f"+{cp_primary['delta_ms']:.2f} ms"
-        )
-
-    new_path_spans = [
-        item
-        for item in critical_path[
-            "contributors"
-        ]
-        if item["is_new_on_path"]
-    ]
-
-    if new_path_spans:
-        print()
-        print(
-            "NEW CRITICAL-PATH CONTRIBUTORS"
-        )
-
-        for item in new_path_spans:
+        for shape in report[
+            "candidate_only_shapes"
+        ]:
             print(
-                f"  {item['parent']} "
-                f"-> {item['span']} "
-                f"[service={item['service']}] "
-                f"+{item['delta_ms']:.2f} ms"
+                " ",
+                shape[
+                    "fingerprint"
+                ],
             )
 
     print()
+    print(
+        "=" * 64
+    )
+
     print(
         f"CI DECISION: "
         f"{report['decision']}"
     )
 
     print(
-        f"report: {output}"
+        f"report: "
+        f"{output}"
     )
 
     return (
         1
-        if report["decision"] == "FAIL"
+        if report[
+            "decision"
+        ] == "FAIL"
         else 0
     )
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(
+        main()
+    )
