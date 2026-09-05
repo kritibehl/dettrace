@@ -68,5 +68,54 @@
     "delta_ms": 108.72964999999998,
     "delta_pct": 188.24972038602306
   },
+  "critical_path": {
+    "method": "interval-derived parent/child critical-path contribution analysis",
+    "contribution_semantics": "Per-span p95 contribution deltas are computed independently and are not additive decompositions of the end-to-end p95 delta.",
+    "baseline_end_to_end_p95_ms": 57.7582,
+    "candidate_end_to_end_p95_ms": 166.48784999999998,
+    "end_to_end_delta_ms": 108.72964999999998,
+    "contributors": [
+      {
+        "service": "inventory",
+        "span": "inventory.reserve",
+        "parent": "checkout.request",
+        "baseline_p95_contribution_ms": 12.905099999999994,
+        "candidate_p95_contribution_ms": 75.0165,
+        "delta_ms": 62.1114,
+        "delta_pct": 481.29344212753125,
+        "is_new_on_path": false
+      },
+      {
+        "service": "redis",
+        "span": "redis.lookup",
+        "parent": "inventory.reserve",
+        "baseline_p95_contribution_ms": 0.0,
+        "candidate_p95_contribution_ms": 45.54815,
+        "delta_ms": 45.54815,
+        "delta_pct": null,
+        "is_new_on_path": true
+      },
+      {
+        "service": "checkout",
+        "span": "checkout.request",
+        "parent": "ROOT",
+        "baseline_p95_contribution_ms": 13.783749999999994,
+        "candidate_p95_contribution_ms": 18.17345,
+        "delta_ms": 4.389700000000005,
+        "delta_pct": 31.846921193434348,
+        "is_new_on_path": false
+      }
+    ],
+    "primary_critical_path_regression": {
+      "service": "inventory",
+      "span": "inventory.reserve",
+      "parent": "checkout.request",
+      "baseline_p95_contribution_ms": 12.905099999999994,
+      "candidate_p95_contribution_ms": 75.0165,
+      "delta_ms": 62.1114,
+      "delta_pct": 481.29344212753125,
+      "is_new_on_path": false
+    }
+  },
   "decision": "FAIL"
 }
