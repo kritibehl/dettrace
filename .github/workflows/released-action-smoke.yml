@@ -1,0 +1,59 @@
+name: DetTrace Released Action Smoke
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  released-action-contract:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout consumer repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Released action PASS control
+        id: pass_control
+        uses: kritibehl/dettrace@v1
+        with:
+          baseline: artifacts/otlp/baseline.otlp.jsonl
+          candidate: artifacts/otlp/baseline.otlp.jsonl
+          report-path: reports/released/pass-control.json
+
+      - name: Released action regression control
+        id: regression_control
+        uses: kritibehl/dettrace@v1
+        with:
+          baseline: artifacts/otlp/baseline.otlp.jsonl
+          candidate: artifacts/otlp/candidate.otlp.jsonl
+          report-path: reports/released/regression-control.json
+          install-dependencies: "false"
+          fail-on-regression: "false"
+
+      - name: Validate released action outputs
+        env:
+          PASS_DECISION: ${{ steps.pass_control.outputs.decision }}
+          PASS_EXIT: ${{ steps.pass_control.outputs.exit-code }}
+          FAIL_DECISION: ${{ steps.regression_control.outputs.decision }}
+          FAIL_EXIT: ${{ steps.regression_control.outputs.exit-code }}
+        run: |
+          test "$PASS_DECISION" = "PASS"
+          test "$PASS_EXIT" = "0"
+          test "$FAIL_DECISION" = "FAIL"
+          test "$FAIL_EXIT" = "1"
+
+          echo "Released DetTrace action contract: PASS"
+
+      - name: Upload released-action reports
+        uses: actions/upload-artifact@v7
+        with:
+          name: dettrace-released-action-reports
+          path: reports/released/
+          if-no-files-found: error

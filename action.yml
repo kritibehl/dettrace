@@ -7,6 +7,10 @@ description: >
 
 author: Kriti Behl
 
+branding:
+  icon: activity
+  color: blue
+
 inputs:
   baseline:
     description: Baseline trace JSON or OTLP JSONL path
@@ -38,6 +42,11 @@ inputs:
 
   install-dependencies:
     description: Install DetTrace Python dependencies
+    required: false
+    default: "true"
+
+  fail-on-regression:
+    description: Fail the action when DetTrace reports a regression
     required: false
     default: "true"
 
@@ -126,10 +135,25 @@ runs:
       shell: bash
       env:
         STATUS: ${{ steps.gate.outputs.exit_code }}
+        DECISION: ${{ steps.gate.outputs.decision }}
+        FAIL_ON_REGRESSION: ${{ inputs.fail-on-regression }}
       run: |
-        if [ "$STATUS" -ne 0 ]; then
-          echo "DetTrace regression gate failed with exit code $STATUS"
-          exit "$STATUS"
+        if [ "$FAIL_ON_REGRESSION" != "true" ] && \
+           [ "$FAIL_ON_REGRESSION" != "false" ]; then
+          echo "fail-on-regression must be true or false"
+          exit 2
         fi
 
-        echo "DetTrace regression gate passed"
+        if [ "$STATUS" -eq 0 ]; then
+          echo "DetTrace regression gate passed"
+          exit 0
+        fi
+
+        if [ "$DECISION" = "FAIL" ] && \
+           [ "$FAIL_ON_REGRESSION" = "false" ]; then
+          echo "DetTrace detected a regression; enforcement disabled"
+          exit 0
+        fi
+
+        echo "DetTrace regression gate failed with exit code $STATUS"
+        exit "$STATUS"

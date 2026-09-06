@@ -52,7 +52,6 @@ jobs:
 
       - name: Known regression control
         id: regression
-        continue-on-error: true
         uses: ./
         with:
           baseline: artifacts/otlp/baseline.otlp.jsonl
@@ -62,15 +61,22 @@ jobs:
           report-path: reports/ci/regression-control.json
           python: python
           install-dependencies: "false"
+          fail-on-regression: "false"
 
       - name: Validate expected regression
-        if: ${{ always() }}
         env:
-          REGRESSION_OUTCOME: ${{ steps.regression.outcome }}
+          REGRESSION_DECISION: ${{ steps.regression.outputs.decision }}
+          REGRESSION_EXIT_CODE: ${{ steps.regression.outputs.exit-code }}
         run: |
-          if [ "$REGRESSION_OUTCOME" != "failure" ]; then
-            echo "Expected DetTrace regression control to fail"
-            echo "actual outcome: $REGRESSION_OUTCOME"
+          if [ "$REGRESSION_DECISION" != "FAIL" ]; then
+            echo "Expected decision FAIL"
+            echo "actual decision: $REGRESSION_DECISION"
+            exit 1
+          fi
+
+          if [ "$REGRESSION_EXIT_CODE" != "1" ]; then
+            echo "Expected DetTrace exit code 1"
+            echo "actual exit code: $REGRESSION_EXIT_CODE"
             exit 1
           fi
 
