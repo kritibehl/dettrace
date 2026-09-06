@@ -1,0 +1,187 @@
+{
+  "schema_version": 2,
+  "baseline_trace_count": 40,
+  "candidate_trace_count": 40,
+  "matched_shape_count": 2,
+  "baseline_only_shapes": [],
+  "candidate_only_shapes": [],
+  "cohorts": [
+    {
+      "baseline_trace_count": 30,
+      "candidate_trace_count": 30,
+      "latency_threshold_pct": 50.0,
+      "error_threshold_percentage_points": 5.0,
+      "added_spans": [
+        {
+          "service": "redis",
+          "span": "redis.lookup",
+          "parent": "inventory.reserve"
+        }
+      ],
+      "removed_spans": [],
+      "regressions": [
+        {
+          "semantic_key": [
+            "inventory",
+            "inventory.reserve",
+            "checkout.request"
+          ],
+          "service": "inventory",
+          "span": "inventory.reserve",
+          "parent": "checkout.request",
+          "baseline_p95_ms": 24.526049999999998,
+          "candidate_p95_ms": 122.98140000000001,
+          "delta_ms": 98.45535000000001,
+          "delta_pct": 401.4317429834809
+        },
+        {
+          "semantic_key": [
+            "checkout",
+            "checkout.request",
+            "ROOT"
+          ],
+          "service": "checkout",
+          "span": "checkout.request",
+          "parent": "ROOT",
+          "baseline_p95_ms": 43.0355,
+          "candidate_p95_ms": 141.29525,
+          "delta_ms": 98.25975000000001,
+          "delta_pct": 228.32254766413777
+        }
+      ],
+      "primary_localized_regression": {
+        "semantic_key": [
+          "inventory",
+          "inventory.reserve",
+          "checkout.request"
+        ],
+        "service": "inventory",
+        "span": "inventory.reserve",
+        "parent": "checkout.request",
+        "baseline_p95_ms": 24.526049999999998,
+        "candidate_p95_ms": 122.98140000000001,
+        "delta_ms": 98.45535000000001,
+        "delta_pct": 401.4317429834809
+      },
+      "end_to_end_regression": {
+        "semantic_key": [
+          "checkout",
+          "checkout.request",
+          "ROOT"
+        ],
+        "service": "checkout",
+        "span": "checkout.request",
+        "parent": "ROOT",
+        "baseline_p95_ms": 43.0355,
+        "candidate_p95_ms": 141.29525,
+        "delta_ms": 98.25975000000001,
+        "delta_pct": 228.32254766413777
+      },
+      "error_regressions": [
+        {
+          "service": "checkout",
+          "span": "checkout.request",
+          "parent": "ROOT",
+          "baseline_count": 30,
+          "candidate_count": 30,
+          "baseline_errors": 0,
+          "candidate_errors": 6,
+          "baseline_error_rate": 0.0,
+          "candidate_error_rate": 0.2,
+          "delta_percentage_points": 20.0
+        },
+        {
+          "service": "inventory",
+          "span": "inventory.reserve",
+          "parent": "checkout.request",
+          "baseline_count": 30,
+          "candidate_count": 30,
+          "baseline_errors": 0,
+          "candidate_errors": 6,
+          "baseline_error_rate": 0.0,
+          "candidate_error_rate": 0.2,
+          "delta_percentage_points": 20.0
+        }
+      ],
+      "critical_path": {
+        "method": "interval-derived parent/child critical-path contribution analysis",
+        "contribution_semantics": "Per-span p95 contribution deltas are computed independently and are not additive decompositions of the end-to-end p95 delta.",
+        "baseline_end_to_end_p95_ms": 43.0355,
+        "candidate_end_to_end_p95_ms": 141.29525,
+        "end_to_end_delta_ms": 98.25975000000001,
+        "contributors": [
+          {
+            "service": "inventory",
+            "span": "inventory.reserve",
+            "parent": "checkout.request",
+            "baseline_p95_contribution_ms": 8.72005,
+            "candidate_p95_contribution_ms": 67.9366,
+            "delta_ms": 59.21655,
+            "delta_pct": 679.0849823108812,
+            "is_new_on_path": false
+          },
+          {
+            "service": "redis",
+            "span": "redis.lookup",
+            "parent": "inventory.reserve",
+            "baseline_p95_contribution_ms": 0.0,
+            "candidate_p95_contribution_ms": 44.238949999999996,
+            "delta_ms": 44.238949999999996,
+            "delta_pct": null,
+            "is_new_on_path": true
+          }
+        ],
+        "primary_critical_path_regression": {
+          "service": "inventory",
+          "span": "inventory.reserve",
+          "parent": "checkout.request",
+          "baseline_p95_contribution_ms": 8.72005,
+          "candidate_p95_contribution_ms": 67.9366,
+          "delta_ms": 59.21655,
+          "delta_pct": 679.0849823108812,
+          "is_new_on_path": false
+        }
+      },
+      "decision": "FAIL",
+      "shape": {
+        "fingerprint": "checkout|checkout.request|POST|/checkout|checkout",
+        "service": "checkout",
+        "root_span": "checkout.request",
+        "method": "POST",
+        "route": "/checkout",
+        "explicit_shape": "checkout"
+      }
+    },
+    {
+      "baseline_trace_count": 10,
+      "candidate_trace_count": 10,
+      "latency_threshold_pct": 50.0,
+      "error_threshold_percentage_points": 5.0,
+      "added_spans": [],
+      "removed_spans": [],
+      "regressions": [],
+      "primary_localized_regression": null,
+      "end_to_end_regression": null,
+      "error_regressions": [],
+      "critical_path": {
+        "method": "interval-derived parent/child critical-path contribution analysis",
+        "contribution_semantics": "Per-span p95 contribution deltas are computed independently and are not additive decompositions of the end-to-end p95 delta.",
+        "baseline_end_to_end_p95_ms": 2.57885,
+        "candidate_end_to_end_p95_ms": 2.4605,
+        "end_to_end_delta_ms": -0.11834999999999996,
+        "contributors": [],
+        "primary_critical_path_regression": null
+      },
+      "decision": "PASS",
+      "shape": {
+        "fingerprint": "checkout|health.request|GET|/health|health",
+        "service": "checkout",
+        "root_span": "health.request",
+        "method": "GET",
+        "route": "/health",
+        "explicit_shape": "health"
+      }
+    }
+  ],
+  "decision": "FAIL"
+}

@@ -8,13 +8,10 @@ import time
 from pathlib import Path
 
 from opentelemetry import trace
-from opentelemetry.sdk.resources import (
-    Resource,
-)
-from opentelemetry.sdk.trace import (
-    TracerProvider,
-)
+from opentelemetry.sdk.resources import Resource
+from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import (
+    BatchSpanProcessor,
     SimpleSpanProcessor,
 )
 from opentelemetry.trace import (
@@ -36,7 +33,10 @@ def sleep_ms(
 
 
 def configure_tracing(
-    output: str,
+    mode: str,
+    exporter: str,
+    output: str | None,
+    otlp_endpoint: str,
 ):
     resource = Resource.create(
         {
@@ -44,6 +44,8 @@ def configure_tracing(
                 "checkout-demo",
             "deployment.environment":
                 "dettrace-demo",
+            "dettrace.mode":
+                mode,
         }
     )
 
@@ -51,20 +53,52 @@ def configure_tracing(
         resource=resource
     )
 
-    provider.add_span_processor(
-        SimpleSpanProcessor(
-            JsonFileSpanExporter(
-                output
+    if exporter == "file":
+        if not output:
+            raise ValueError(
+                "--output is required "
+                "when --exporter=file"
+            )
+
+        provider.add_span_processor(
+            SimpleSpanProcessor(
+                JsonFileSpanExporter(
+                    output
+                )
             )
         )
-    )
+
+    elif exporter == "otlp":
+        from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import (
+            OTLPSpanExporter,
+        )
+
+        provider.add_span_processor(
+            BatchSpanProcessor(
+                OTLPSpanExporter(
+                    endpoint=(
+                        otlp_endpoint
+                    ),
+                    insecure=True,
+                )
+            )
+        )
+
+    else:
+        raise ValueError(
+            "unsupported exporter: "
+            f"{exporter}"
+        )
 
     trace.set_tracer_provider(
         provider
     )
 
-    return trace.get_tracer(
-        "dettrace.checkout.demo"
+    return (
+        trace.get_tracer(
+            "dettrace.checkout.demo"
+        ),
+        provider,
     )
 
 
@@ -281,8 +315,21 @@ def main():
     )
 
     parser.add_argument(
+        "--exporter",
+        choices=[
+            "file",
+            "otlp",
+        ],
+        default="file",
+    )
+
+    parser.add_argument(
         "--output",
-        required=True,
+    )
+
+    parser.add_argument(
+        "--otlp-endpoint",
+        default="localhost:4317",
     )
 
     parser.add_argument(
@@ -299,20 +346,40 @@ def main():
 
     args = parser.parse_args()
 
-    output = Path(
-        args.output
-    )
+    if (
+        args.exporter == "file"
+        and not args.output
+    ):
+        parser.error(
+            "--output is required "
+            "for --exporter=file"
+        )
 
-    output.parent.mkdir(
-        parents=True,
-        exist_ok=True,
-    )
+    if args.output:
+        output = Path(
+            args.output
+        )
 
-    if output.exists():
-        output.unlink()
+        output.parent.mkdir(
+            parents=True,
+            exist_ok=True,
+        )
 
-    tracer = configure_tracing(
-        str(output)
+        if (
+            args.exporter == "file"
+            and output.exists()
+        ):
+            output.unlink()
+
+    tracer, provider = (
+        configure_tracing(
+            mode=args.mode,
+            exporter=args.exporter,
+            output=args.output,
+            otlp_endpoint=(
+                args.otlp_endpoint
+            ),
+        )
     )
 
     for request_number in range(
@@ -332,31 +399,27 @@ def main():
             request_number,
         )
 
-    provider = (
-        trace.get_tracer_provider()
+    provider.force_flush()
+
+    provider.shutdown()
+
+    destination = (
+        args.output
+        if args.exporter == "file"
+        else args.otlp_endpoint
     )
-
-    if hasattr(
-        provider,
-        "force_flush",
-    ):
-        provider.force_flush()
-
-    if hasattr(
-        provider,
-        "shutdown",
-    ):
-        provider.shutdown()
 
     print(
         f"captured mode="
         f"{args.mode} "
+        f"exporter="
+        f"{args.exporter} "
         f"checkout_requests="
         f"{args.requests} "
         f"health_requests="
         f"{args.health_requests} "
-        f"output="
-        f"{output}"
+        f"destination="
+        f"{destination}"
     )
 
 

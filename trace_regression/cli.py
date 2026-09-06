@@ -7,6 +7,8 @@ import json
 import sys
 from pathlib import Path
 
+from trace_regression.ingest import load_span_file
+
 from trace_regression.analyzer import (
     analyze_cohort,
     choose_primary_localized_regression,
@@ -23,8 +25,8 @@ from trace_regression.normalize import (
 def load_raw_traces(
     path,
 ):
-    spans = json.loads(
-        Path(path).read_text()
+    spans = load_span_file(
+        path
     )
 
     grouped = group_by_trace(
