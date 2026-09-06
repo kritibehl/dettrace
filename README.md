@@ -147,6 +147,98 @@ The unaffected `GET /health` cohort remains `PASS`, demonstrating that DetTrace 
 
 ---
 
+## Use DetTrace in GitHub Actions
+
+DetTrace is available as a reusable composite GitHub Action. A repository can provide baseline and candidate OpenTelemetry trace artifacts and use DetTrace as a CI regression gate.
+
+```yaml
+name: Trace Regression
+
+on:
+  pull_request:
+
+jobs:
+  dettrace:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Run DetTrace
+        id: dettrace
+        uses: kritibehl/dettrace@v1
+        with:
+          baseline: artifacts/baseline.otlp.jsonl
+          candidate: artifacts/candidate.otlp.jsonl
+          regression-threshold-pct: "50"
+          error-threshold-pp: "5"
+          report-path: reports/dettrace.json
+```
+
+By default, the action fails the job when DetTrace returns a regression decision.
+
+For report-only operation:
+
+```yaml
+      - name: Analyze without enforcing
+        id: dettrace
+        uses: kritibehl/dettrace@v1
+        with:
+          baseline: artifacts/baseline.otlp.jsonl
+          candidate: artifacts/candidate.otlp.jsonl
+          report-path: reports/dettrace.json
+          fail-on-regression: "false"
+
+      - name: Inspect DetTrace outputs
+        run: |
+          echo "decision=${{ steps.dettrace.outputs.decision }}"
+          echo "exit-code=${{ steps.dettrace.outputs.exit-code }}"
+          echo "report=${{ steps.dettrace.outputs.report-path }}"
+```
+
+### Action inputs
+
+| Input | Required | Default | Description |
+|---|:---:|---:|---|
+| `baseline` | yes | — | Baseline DetTrace JSON or OTLP JSON/JSONL |
+| `candidate` | yes | — | Candidate DetTrace JSON or OTLP JSON/JSONL |
+| `regression-threshold-pct` | no | `50` | Latency regression threshold in percent |
+| `error-threshold-pp` | no | `5` | Error-rate threshold in percentage points |
+| `report-path` | no | `dettrace-report.json` | Generated JSON report |
+| `python` | no | `python` | Python executable used by the action |
+| `install-dependencies` | no | `true` | Install DetTrace trace-regression dependencies |
+| `fail-on-regression` | no | `true` | Fail CI when the DetTrace decision is `FAIL` |
+
+### Action outputs
+
+| Output | Description |
+|---|---|
+| `decision` | DetTrace `PASS` or `FAIL` decision |
+| `exit-code` | Raw DetTrace CLI exit code |
+| `report-path` | Path to the generated JSON report |
+
+The action also writes a GitHub Job Summary containing request-shape decisions and localized regression information.
+
+DetTrace's own CI verifies both sides of the action contract:
+
+```text
+baseline vs baseline
+    -> PASS
+    -> exit code 0
+
+baseline vs known regression
+    -> DetTrace decision FAIL
+    -> raw exit code 1
+    -> /checkout FAIL
+    -> /health PASS
+```
+
+---
+
 ## Standard OTLP / OpenTelemetry Collector Ingestion
 
 DetTrace can consume trace data captured through a standard OpenTelemetry pipeline rather than depending only on its repository-local JSON span exporter.
