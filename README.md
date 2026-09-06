@@ -147,6 +147,150 @@ The unaffected `GET /health` cohort remains `PASS`, demonstrating that DetTrace 
 
 ---
 
+## Standard OTLP / OpenTelemetry Collector Ingestion
+
+DetTrace can consume trace data captured through a standard OpenTelemetry pipeline rather than depending only on its repository-local JSON span exporter.
+
+The verified integration path is:
+
+```text
+instrumented application
+        |
+        | OTLP/gRPC
+        v
+OpenTelemetry Collector
+        |
+        | OTLP JSON
+        v
+DetTrace ingestion adapter
+        |
+        v
+request-shape matching
+        |
+        +-- latency regression
+        +-- error-rate regression
+        +-- structural regression
+        +-- critical-path contribution analysis
+        |
+        v
+per-cohort CI PASS / FAIL
+The demo application exports OpenTelemetry spans through the Python OTLP/gRPC exporter to an OpenTelemetry Collector. The Collector groups output by the dettrace.mode resource attribute and writes standard OTLP JSONL artifacts for baseline and candidate executions.
+
+DetTrace's trace_regression/ingest.py adapter accepts:
+
+existing DetTrace internal JSON span arrays
+OTLP JSON containing resourceSpans
+Collector-produced OTLP JSONL
+
+The existing JSON path remains backward compatible.
+
+Verified Collector integration
+
+The current standard OTLP integration proof captured:
+
+baseline:
+170 spans
+40 traces
+
+candidate:
+200 spans
+40 traces
+
+Both inputs were separated into:
+
+POST /checkout
+baseline traces:  30
+candidate traces: 30
+
+GET /health
+baseline traces:  10
+candidate traces: 10
+
+For POST /checkout, the Collector-derived proof artifact reports:
+
+end-to-end p95:
+43.04 ms -> 141.30 ms
++98.26 ms
++228.3%
+
+inventory.reserve p95:
+24.53 ms -> 122.98 ms
+
+checkout.request errors:
+0/30 -> 6/30
+0.0% -> 20.0%
+
+inventory.reserve errors:
+0/30 -> 6/30
+0.0% -> 20.0%
+
+new dependency:
+inventory.reserve -> redis.lookup
+
+primary critical-path contributor:
+inventory.reserve
++59.22 ms p95 contribution delta
+
+new critical-path contributor:
+redis.lookup
++44.24 ms
+
+The POST /checkout cohort fails while the unaffected GET /health cohort passes.
+
+Run through OpenTelemetry Collector
+
+Start the Collector:
+
+docker run -d \
+  --name dettrace-otelcol \
+  -p 4317:4317 \
+  -p 4318:4318 \
+  -v "$PWD/otel/collector-config.yaml:/etc/otelcol-contrib/config.yaml:ro" \
+  -v "$PWD/artifacts/otlp:/data:rw" \
+  otel/opentelemetry-collector-contrib:0.160.0 \
+  --config=/etc/otelcol-contrib/config.yaml
+
+Capture baseline:
+
+.venv/bin/python demo_checkout/run_demo.py \
+  --mode baseline \
+  --exporter otlp \
+  --otlp-endpoint localhost:4317 \
+  --requests 30 \
+  --health-requests 10
+
+Capture candidate:
+
+.venv/bin/python demo_checkout/run_demo.py \
+  --mode candidate \
+  --exporter otlp \
+  --otlp-endpoint localhost:4317 \
+  --requests 30 \
+  --health-requests 10
+
+Analyze Collector output directly:
+
+.venv/bin/python -m trace_regression.cli \
+  --baseline artifacts/otlp/baseline.otlp.jsonl \
+  --candidate artifacts/otlp/candidate.otlp.jsonl \
+  --regression-threshold-pct 50 \
+  --error-threshold-pp 5 \
+  --output reports/trace_regression_otlp_report.json
+Phase 4 components
+trace_regression/ingest.py — OTLP JSON/JSONL to DetTrace span adaptation
+otel/collector-config.yaml — OTLP gRPC/HTTP Collector receiver and file exporter
+demo_checkout/run_demo.py — file or OTLP export modes
+trace_regression/cli.py — transparent internal-JSON or OTLP loading
+tests/trace_regression/test_ingest.py — OTLP decoding and compatibility coverage
+artifacts/otlp/ — Collector-generated baseline and candidate proof artifacts
+reports/trace_regression_otlp_report.json — verified Collector-path gate result
+Scope
+
+The current integration uses the OpenTelemetry Collector as the standard telemetry transport and persists Collector output as OTLP JSON before analysis.
+
+DetTrace does not yet implement a live OTLP receiver itself, trace-backend querying, or arbitrary asynchronous distributed-DAG causal attribution.
+
+
 ## Legacy Replay Research
 
 Earlier deterministic replay, protocol, sensor-stream, concurrency, incident-forensics, and replay-performance experiments remain below as historical research artifacts. They are supporting experiments rather than the active product direction.
