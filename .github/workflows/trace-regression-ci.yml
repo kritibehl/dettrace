@@ -1,0 +1,130 @@
+name: DetTrace Trace Regression CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  trace-regression-contract:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements-trace-regression.txt
+
+      - name: Install dependencies
+        run: |
+          python -m pip install \
+            -r requirements-trace-regression.txt
+
+      - name: Run trace-regression tests
+        run: |
+          python -m pytest \
+            tests/trace_regression -q
+
+      - name: Prepare CI reports
+        run: |
+          mkdir -p reports/ci
+
+      - name: PASS control
+        uses: ./
+        with:
+          baseline: artifacts/otlp/baseline.otlp.jsonl
+          candidate: artifacts/otlp/baseline.otlp.jsonl
+          regression-threshold-pct: "50"
+          error-threshold-pp: "5"
+          report-path: reports/ci/pass-control.json
+          python: python
+          install-dependencies: "false"
+
+      - name: Known regression control
+        id: regression
+        continue-on-error: true
+        uses: ./
+        with:
+          baseline: artifacts/otlp/baseline.otlp.jsonl
+          candidate: artifacts/otlp/candidate.otlp.jsonl
+          regression-threshold-pct: "50"
+          error-threshold-pp: "5"
+          report-path: reports/ci/regression-control.json
+          python: python
+          install-dependencies: "false"
+
+      - name: Validate expected regression
+        if: ${{ always() }}
+        env:
+          REGRESSION_OUTCOME: ${{ steps.regression.outcome }}
+        run: |
+          if [ "$REGRESSION_OUTCOME" != "failure" ]; then
+            echo "Expected DetTrace regression control to fail"
+            echo "actual outcome: $REGRESSION_OUTCOME"
+            exit 1
+          fi
+
+          python - <<'PY'
+          import json
+
+          path = "reports/ci/regression-control.json"
+
+          report = json.load(
+              open(path)
+          )
+
+          assert report["decision"] == "FAIL"
+          assert report["baseline_trace_count"] == 40
+          assert report["candidate_trace_count"] == 40
+          assert report["matched_shape_count"] == 2
+
+          cohorts = {
+              cohort["shape"]["route"]: cohort
+              for cohort in report["cohorts"]
+          }
+
+          checkout = cohorts["/checkout"]
+          health = cohorts["/health"]
+
+          assert checkout["decision"] == "FAIL"
+          assert health["decision"] == "PASS"
+
+          assert any(
+              item["service"] == "redis"
+              and item["span"] == "redis.lookup"
+              for item in checkout["added_spans"]
+          )
+
+          assert any(
+              item["span"] == "checkout.request"
+              and abs(
+                  item["candidate_error_rate"]
+                  - 0.2
+              ) < 1e-12
+              for item in checkout[
+                  "error_regressions"
+              ]
+          )
+
+          print(
+              "DetTrace CI contract validation: PASS"
+          )
+          PY
+
+      - name: Upload DetTrace reports
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: dettrace-ci-reports
+          path: reports/ci/
+          if-no-files-found: error

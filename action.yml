@@ -1,0 +1,135 @@
+name: DetTrace Trace Regression Gate
+
+description: >
+  Compare baseline and candidate OpenTelemetry traces
+  and fail CI on latency, error-rate, structural, or
+  critical-path contribution regressions.
+
+author: Kriti Behl
+
+inputs:
+  baseline:
+    description: Baseline trace JSON or OTLP JSONL path
+    required: true
+
+  candidate:
+    description: Candidate trace JSON or OTLP JSONL path
+    required: true
+
+  regression-threshold-pct:
+    description: Latency regression threshold percentage
+    required: false
+    default: "50"
+
+  error-threshold-pp:
+    description: Error-rate regression threshold in percentage points
+    required: false
+    default: "5"
+
+  report-path:
+    description: JSON report output path
+    required: false
+    default: "dettrace-report.json"
+
+  python:
+    description: Python executable
+    required: false
+    default: "python"
+
+  install-dependencies:
+    description: Install DetTrace Python dependencies
+    required: false
+    default: "true"
+
+outputs:
+  decision:
+    description: DetTrace PASS or FAIL decision
+    value: ${{ steps.gate.outputs.decision }}
+
+  exit-code:
+    description: DetTrace CLI exit code
+    value: ${{ steps.gate.outputs.exit_code }}
+
+  report-path:
+    description: Generated report path
+    value: ${{ inputs.report-path }}
+
+runs:
+  using: composite
+
+  steps:
+    - name: Install DetTrace dependencies
+      if: ${{ inputs.install-dependencies == 'true' }}
+      shell: bash
+      env:
+        PYTHON_BIN: ${{ inputs.python }}
+      run: |
+        "$PYTHON_BIN" -m pip install \
+          -r "$GITHUB_ACTION_PATH/requirements-trace-regression.txt"
+
+    - name: Run DetTrace regression gate
+      id: gate
+      shell: bash
+      env:
+        PYTHON_BIN: ${{ inputs.python }}
+        BASELINE: ${{ inputs.baseline }}
+        CANDIDATE: ${{ inputs.candidate }}
+        REGRESSION_THRESHOLD: ${{ inputs.regression-threshold-pct }}
+        ERROR_THRESHOLD: ${{ inputs.error-threshold-pp }}
+        REPORT: ${{ inputs.report-path }}
+      run: |
+        set +e
+
+        mkdir -p "$(dirname "$REPORT")"
+
+        PYTHONPATH="$GITHUB_ACTION_PATH${PYTHONPATH:+:$PYTHONPATH}" \
+          "$PYTHON_BIN" -m trace_regression.cli \
+          --baseline "$BASELINE" \
+          --candidate "$CANDIDATE" \
+          --regression-threshold-pct "$REGRESSION_THRESHOLD" \
+          --error-threshold-pp "$ERROR_THRESHOLD" \
+          --output "$REPORT"
+
+        STATUS=$?
+
+        echo "exit_code=$STATUS" >> "$GITHUB_OUTPUT"
+
+        if [ -f "$REPORT" ]; then
+          DECISION=$(
+            "$PYTHON_BIN" -c \
+              'import json,sys; print(json.load(open(sys.argv[1]))["decision"])' \
+              "$REPORT"
+          )
+        else
+          DECISION="ERROR"
+        fi
+
+        echo "decision=$DECISION" >> "$GITHUB_OUTPUT"
+
+        exit 0
+
+    - name: Write DetTrace job summary
+      if: ${{ always() }}
+      shell: bash
+      env:
+        PYTHON_BIN: ${{ inputs.python }}
+        REPORT: ${{ inputs.report-path }}
+      run: |
+        if [ -f "$REPORT" ] && [ -n "${GITHUB_STEP_SUMMARY:-}" ]; then
+          PYTHONPATH="$GITHUB_ACTION_PATH${PYTHONPATH:+:$PYTHONPATH}" \
+            "$PYTHON_BIN" -m trace_regression.github_summary \
+            --report "$REPORT" \
+            >> "$GITHUB_STEP_SUMMARY"
+        fi
+
+    - name: Enforce DetTrace decision
+      shell: bash
+      env:
+        STATUS: ${{ steps.gate.outputs.exit_code }}
+      run: |
+        if [ "$STATUS" -ne 0 ]; then
+          echo "DetTrace regression gate failed with exit code $STATUS"
+          exit "$STATUS"
+        fi
+
+        echo "DetTrace regression gate passed"
