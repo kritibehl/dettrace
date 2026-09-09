@@ -1,0 +1,820 @@
+{
+  "schema_version": 3,
+  "baseline_trace_count": 612,
+  "candidate_trace_count": 581,
+  "matched_shape_count": 8,
+  "baseline_only_shapes": [],
+  "candidate_only_shapes": [],
+  "cohorts": [
+    {
+      "baseline_trace_count": 8,
+      "candidate_trace_count": 5,
+      "latency_threshold_pct": 20.0,
+      "error_threshold_percentage_points": 5.0,
+      "added_spans": [],
+      "removed_spans": [],
+      "regressions": [],
+      "primary_localized_regression": null,
+      "end_to_end_regression": null,
+      "error_regressions": [],
+      "critical_path": {
+        "method": "interval-derived parent/child critical-path contribution analysis",
+        "contribution_semantics": "Per-span p95 contribution deltas are computed independently and are not additive decompositions of the end-to-end p95 delta.",
+        "baseline_end_to_end_p95_ms": 38.0707046,
+        "candidate_end_to_end_p95_ms": 24.8179166,
+        "end_to_end_delta_ms": -13.252787999999999,
+        "contributors": [],
+        "primary_critical_path_regression": null
+      },
+      "decision": "INCONCLUSIVE",
+      "shape": {
+        "fingerprint": "ad|GET /metrics|GET|/metrics|-",
+        "service": "ad",
+        "root_span": "GET /metrics",
+        "method": "GET",
+        "route": "/metrics",
+        "explicit_shape": null
+      },
+      "quality": {
+        "decision": "INCONCLUSIVE",
+        "reason": "insufficient_baseline_samples",
+        "baseline_samples": 8,
+        "candidate_samples": 5,
+        "required_samples": 30,
+        "sample_ratio": 0.625,
+        "baseline_invalid_fraction": 0.0,
+        "candidate_invalid_fraction": 0.0
+      },
+      "raw_decision": "PASS"
+    },
+    {
+      "baseline_trace_count": 3,
+      "candidate_trace_count": 2,
+      "latency_threshold_pct": 20.0,
+      "error_threshold_percentage_points": 5.0,
+      "added_spans": [],
+      "removed_spans": [],
+      "regressions": [
+        {
+          "semantic_key": [
+            "flagd",
+            "flagd.evaluation.v2.Service/ResolveBoolean",
+            "POST"
+          ],
+          "service": "flagd",
+          "span": "flagd.evaluation.v2.Service/ResolveBoolean",
+          "parent": "POST",
+          "baseline_p95_ms": 1.3322081,
+          "candidate_p95_ms": 2.5062832999999998,
+          "delta_ms": 1.1740751999999999,
+          "delta_pct": 88.13001512301268
+        }
+      ],
+      "primary_localized_regression": {
+        "semantic_key": [
+          "flagd",
+          "flagd.evaluation.v2.Service/ResolveBoolean",
+          "POST"
+        ],
+        "service": "flagd",
+        "span": "flagd.evaluation.v2.Service/ResolveBoolean",
+        "parent": "POST",
+        "baseline_p95_ms": 1.3322081,
+        "candidate_p95_ms": 2.5062832999999998,
+        "delta_ms": 1.1740751999999999,
+        "delta_pct": 88.13001512301268
+      },
+      "end_to_end_regression": null,
+      "error_regressions": [],
+      "critical_path": {
+        "method": "interval-derived parent/child critical-path contribution analysis",
+        "contribution_semantics": "Per-span p95 contribution deltas are computed independently and are not additive decompositions of the end-to-end p95 delta.",
+        "baseline_end_to_end_p95_ms": 16.28745,
+        "candidate_end_to_end_p95_ms": 5.54515,
+        "end_to_end_delta_ms": -10.7423,
+        "contributors": [
+          {
+            "service": "flagd",
+            "span": "flagd.evaluation.v2.Service/ResolveBoolean",
+            "parent": "POST",
+            "baseline_p95_contribution_ms": 0.18813269999999996,
+            "candidate_p95_contribution_ms": 1.2692457999999998,
+            "delta_ms": 1.0811130999999998,
+            "delta_pct": 574.6545390567403,
+            "is_new_on_path": false
+          }
+        ],
+        "primary_critical_path_regression": {
+          "service": "flagd",
+          "span": "flagd.evaluation.v2.Service/ResolveBoolean",
+          "parent": "POST",
+          "baseline_p95_contribution_ms": 0.18813269999999996,
+          "candidate_p95_contribution_ms": 1.2692457999999998,
+          "delta_ms": 1.0811130999999998,
+          "delta_pct": 574.6545390567403,
+          "is_new_on_path": false
+        }
+      },
+      "decision": "INCONCLUSIVE",
+      "shape": {
+        "fingerprint": "cart|flagd.evaluation.v2.Service/ResolveBoolean|-|-|-",
+        "service": "cart",
+        "root_span": "flagd.evaluation.v2.Service/ResolveBoolean",
+        "method": null,
+        "route": null,
+        "explicit_shape": null
+      },
+      "quality": {
+        "decision": "INCONCLUSIVE",
+        "reason": "insufficient_baseline_samples",
+        "baseline_samples": 3,
+        "candidate_samples": 2,
+        "required_samples": 30,
+        "sample_ratio": 0.6666666666666666,
+        "baseline_invalid_fraction": 0.0,
+        "candidate_invalid_fraction": 0.0
+      },
+      "raw_decision": "FAIL"
+    },
+    {
+      "baseline_trace_count": 80,
+      "candidate_trace_count": 80,
+      "latency_threshold_pct": 20.0,
+      "error_threshold_percentage_points": 5.0,
+      "added_spans": [],
+      "removed_spans": [],
+      "regressions": [],
+      "primary_localized_regression": null,
+      "end_to_end_regression": null,
+      "error_regressions": [],
+      "critical_path": {
+        "method": "interval-derived parent/child critical-path contribution analysis",
+        "contribution_semantics": "Per-span p95 contribution deltas are computed independently and are not additive decompositions of the end-to-end p95 delta.",
+        "baseline_end_to_end_p95_ms": 3.17545805,
+        "candidate_end_to_end_p95_ms": 1.5797312499999998,
+        "end_to_end_delta_ms": -1.5957268000000002,
+        "contributors": [],
+        "primary_critical_path_regression": null
+      },
+      "decision": "PASS",
+      "shape": {
+        "fingerprint": "flagd|flagd.evaluation.v1.Service/ResolveInt|-|-|-",
+        "service": "flagd",
+        "root_span": "flagd.evaluation.v1.Service/ResolveInt",
+        "method": null,
+        "route": null,
+        "explicit_shape": null
+      },
+      "quality": {
+        "decision": "READY",
+        "reason": "sufficient_samples",
+        "baseline_samples": 80,
+        "candidate_samples": 80,
+        "required_samples": 30,
+        "sample_ratio": 1.0,
+        "baseline_invalid_fraction": 0.0,
+        "candidate_invalid_fraction": 0.0
+      }
+    },
+    {
+      "baseline_trace_count": 272,
+      "candidate_trace_count": 280,
+      "latency_threshold_pct": 20.0,
+      "error_threshold_percentage_points": 5.0,
+      "added_spans": [],
+      "removed_spans": [],
+      "regressions": [],
+      "primary_localized_regression": null,
+      "end_to_end_regression": null,
+      "error_regressions": [],
+      "critical_path": {
+        "method": "interval-derived parent/child critical-path contribution analysis",
+        "contribution_semantics": "Per-span p95 contribution deltas are computed independently and are not additive decompositions of the end-to-end p95 delta.",
+        "baseline_end_to_end_p95_ms": 1.95962295,
+        "candidate_end_to_end_p95_ms": 1.28150625,
+        "end_to_end_delta_ms": -0.6781166999999999,
+        "contributors": [],
+        "primary_critical_path_regression": null
+      },
+      "decision": "PASS",
+      "shape": {
+        "fingerprint": "flagd|flagd.evaluation.v2.Service/ResolveBoolean|-|-|-",
+        "service": "flagd",
+        "root_span": "flagd.evaluation.v2.Service/ResolveBoolean",
+        "method": null,
+        "route": null,
+        "explicit_shape": null
+      },
+      "quality": {
+        "decision": "READY",
+        "reason": "sufficient_samples",
+        "baseline_samples": 272,
+        "candidate_samples": 280,
+        "required_samples": 30,
+        "sample_ratio": 0.9714285714285714,
+        "baseline_invalid_fraction": 0.0,
+        "candidate_invalid_fraction": 0.0
+      }
+    },
+    {
+      "baseline_trace_count": 123,
+      "candidate_trace_count": 122,
+      "latency_threshold_pct": 20.0,
+      "error_threshold_percentage_points": 5.0,
+      "added_spans": [
+        {
+          "service": "product-catalog",
+          "span": "oteldemo.ProductCatalogService/GetProduct",
+          "parent": "ROOT"
+        },
+        {
+          "service": "recommendation",
+          "span": "oteldemo.RecommendationService/ListRecommendations",
+          "parent": "ROOT"
+        }
+      ],
+      "removed_spans": [
+        {
+          "service": "frontend",
+          "span": "GET /",
+          "parent": "GET /"
+        },
+        {
+          "service": "frontend",
+          "span": "GET /",
+          "parent": "router frontend egress"
+        },
+        {
+          "service": "frontend",
+          "span": "GET /api/products/[productId]/index",
+          "parent": "GET /api/products/[productId]/index"
+        },
+        {
+          "service": "frontend",
+          "span": "GET /api/products/[productId]/index",
+          "parent": "router frontend egress"
+        },
+        {
+          "service": "frontend",
+          "span": "GET /api/recommendations",
+          "parent": "GET /api/recommendations"
+        },
+        {
+          "service": "frontend",
+          "span": "GET /api/recommendations",
+          "parent": "router frontend egress"
+        },
+        {
+          "service": "frontend",
+          "span": "executing api route (pages) /api/products/[productId]/index",
+          "parent": "GET /api/products/[productId]/index"
+        },
+        {
+          "service": "frontend",
+          "span": "executing api route (pages) /api/recommendations",
+          "parent": "GET /api/recommendations"
+        },
+        {
+          "service": "frontend",
+          "span": "oteldemo.ProductCatalogService/GetProduct",
+          "parent": "executing api route (pages) /api/products/[productId]/index"
+        },
+        {
+          "service": "frontend",
+          "span": "oteldemo.ProductCatalogService/GetProduct",
+          "parent": "executing api route (pages) /api/recommendations"
+        },
+        {
+          "service": "frontend",
+          "span": "oteldemo.RecommendationService/ListRecommendations",
+          "parent": "executing api route (pages) /api/recommendations"
+        },
+        {
+          "service": "frontend",
+          "span": "render route (pages) /",
+          "parent": "GET /"
+        },
+        {
+          "service": "frontend",
+          "span": "resolve page components",
+          "parent": "GET /"
+        },
+        {
+          "service": "product-catalog",
+          "span": "oteldemo.ProductCatalogService/GetProduct",
+          "parent": "oteldemo.ProductCatalogService/GetProduct"
+        },
+        {
+          "service": "recommendation",
+          "span": "oteldemo.RecommendationService/ListRecommendations",
+          "parent": "oteldemo.RecommendationService/ListRecommendations"
+        }
+      ],
+      "regressions": [],
+      "primary_localized_regression": null,
+      "end_to_end_regression": null,
+      "error_regressions": [],
+      "critical_path": {
+        "method": "interval-derived parent/child critical-path contribution analysis",
+        "contribution_semantics": "Per-span p95 contribution deltas are computed independently and are not additive decompositions of the end-to-end p95 delta.",
+        "baseline_end_to_end_p95_ms": 1265.2121999999995,
+        "candidate_end_to_end_p95_ms": 101.10964999999999,
+        "end_to_end_delta_ms": -1164.1025499999996,
+        "contributors": [],
+        "primary_critical_path_regression": null
+      },
+      "decision": "FAIL",
+      "shape": {
+        "fingerprint": "frontend-proxy|GET|GET|-|-",
+        "service": "frontend-proxy",
+        "root_span": "GET",
+        "method": "GET",
+        "route": null,
+        "explicit_shape": null
+      },
+      "quality": {
+        "decision": "READY",
+        "reason": "sufficient_samples",
+        "baseline_samples": 123,
+        "candidate_samples": 122,
+        "required_samples": 30,
+        "sample_ratio": 0.991869918699187,
+        "baseline_invalid_fraction": 0.0,
+        "candidate_invalid_fraction": 0.0
+      }
+    },
+    {
+      "baseline_trace_count": 80,
+      "candidate_trace_count": 80,
+      "latency_threshold_pct": 20.0,
+      "error_threshold_percentage_points": 5.0,
+      "added_spans": [
+        {
+          "service": "cart",
+          "span": "POST /oteldemo.CartService/AddItem",
+          "parent": "ROOT"
+        },
+        {
+          "service": "cart",
+          "span": "POST /oteldemo.CartService/GetCart",
+          "parent": "ROOT"
+        },
+        {
+          "service": "checkout",
+          "span": "oteldemo.CheckoutService/PlaceOrder",
+          "parent": "ROOT"
+        },
+        {
+          "service": "product-catalog",
+          "span": "oteldemo.ProductCatalogService/GetProduct",
+          "parent": "ROOT"
+        }
+      ],
+      "removed_spans": [
+        {
+          "service": "cart",
+          "span": "POST /oteldemo.CartService/AddItem",
+          "parent": "oteldemo.CartService/AddItem"
+        },
+        {
+          "service": "checkout",
+          "span": "oteldemo.CheckoutService/PlaceOrder",
+          "parent": "oteldemo.CheckoutService/PlaceOrder"
+        },
+        {
+          "service": "currency",
+          "span": "oteldemo.CurrencyService/Convert",
+          "parent": "oteldemo.CurrencyService/Convert"
+        },
+        {
+          "service": "frontend",
+          "span": "POST /api/cart",
+          "parent": "POST /api/cart"
+        },
+        {
+          "service": "frontend",
+          "span": "POST /api/cart",
+          "parent": "router frontend egress"
+        },
+        {
+          "service": "frontend",
+          "span": "POST /api/checkout",
+          "parent": "POST /api/checkout"
+        },
+        {
+          "service": "frontend",
+          "span": "POST /api/checkout",
+          "parent": "router frontend egress"
+        },
+        {
+          "service": "frontend",
+          "span": "executing api route (pages) /api/cart",
+          "parent": "POST /api/cart"
+        },
+        {
+          "service": "frontend",
+          "span": "executing api route (pages) /api/checkout",
+          "parent": "POST /api/checkout"
+        },
+        {
+          "service": "frontend",
+          "span": "oteldemo.CartService/AddItem",
+          "parent": "executing api route (pages) /api/cart"
+        },
+        {
+          "service": "frontend",
+          "span": "oteldemo.CartService/GetCart",
+          "parent": "executing api route (pages) /api/cart"
+        },
+        {
+          "service": "frontend",
+          "span": "oteldemo.CheckoutService/PlaceOrder",
+          "parent": "executing api route (pages) /api/checkout"
+        },
+        {
+          "service": "frontend",
+          "span": "oteldemo.ProductCatalogService/GetProduct",
+          "parent": "executing api route (pages) /api/checkout"
+        },
+        {
+          "service": "payment",
+          "span": "charge",
+          "parent": "oteldemo.PaymentService/Charge"
+        },
+        {
+          "service": "payment",
+          "span": "oteldemo.PaymentService/Charge",
+          "parent": "oteldemo.PaymentService/Charge"
+        }
+      ],
+      "regressions": [
+        {
+          "semantic_key": [
+            "shipping",
+            "POST /ship-order",
+            "POST"
+          ],
+          "service": "shipping",
+          "span": "POST /ship-order",
+          "parent": "POST",
+          "baseline_p95_ms": 23.99600835,
+          "candidate_p95_ms": 1015.2268336999999,
+          "delta_ms": 991.2308253499999,
+          "delta_pct": 4130.815471023954
+        },
+        {
+          "semantic_key": [
+            "checkout",
+            "POST",
+            "oteldemo.CheckoutService/PlaceOrder"
+          ],
+          "service": "checkout",
+          "span": "POST",
+          "parent": "oteldemo.CheckoutService/PlaceOrder",
+          "baseline_p95_ms": 151.17560864999996,
+          "candidate_p95_ms": 1018.8795861,
+          "delta_ms": 867.70397745,
+          "delta_pct": 573.970884059014
+        },
+        {
+          "semantic_key": [
+            "cart",
+            "POST",
+            "flagd.evaluation.v2.Service/ResolveFloat"
+          ],
+          "service": "cart",
+          "span": "POST",
+          "parent": "flagd.evaluation.v2.Service/ResolveFloat",
+          "baseline_p95_ms": 13.92857999999999,
+          "candidate_p95_ms": 27.822759999999892,
+          "delta_ms": 13.894179999999903,
+          "delta_pct": 99.75302579300914
+        },
+        {
+          "semantic_key": [
+            "cart",
+            "flagd.evaluation.v2.Service/ResolveFloat",
+            "POST /oteldemo.CartService/EmptyCart"
+          ],
+          "service": "cart",
+          "span": "flagd.evaluation.v2.Service/ResolveFloat",
+          "parent": "POST /oteldemo.CartService/EmptyCart",
+          "baseline_p95_ms": 16.258669999999988,
+          "candidate_p95_ms": 29.390619999999885,
+          "delta_ms": 13.131949999999897,
+          "delta_pct": 80.76890668178828
+        },
+        {
+          "semantic_key": [
+            "cart",
+            "POST /oteldemo.CartService/EmptyCart",
+            "oteldemo.CartService/EmptyCart"
+          ],
+          "service": "cart",
+          "span": "POST /oteldemo.CartService/EmptyCart",
+          "parent": "oteldemo.CartService/EmptyCart",
+          "baseline_p95_ms": 31.676559999999995,
+          "candidate_p95_ms": 42.00775499999983,
+          "delta_ms": 10.331194999999838,
+          "delta_pct": 32.61463681662352
+        },
+        {
+          "semantic_key": [
+            "flagd",
+            "flagd.evaluation.v2.Service/ResolveFloat",
+            "POST"
+          ],
+          "service": "flagd",
+          "span": "flagd.evaluation.v2.Service/ResolveFloat",
+          "parent": "POST",
+          "baseline_p95_ms": 0.9111211499999995,
+          "candidate_p95_ms": 4.418504149999996,
+          "delta_ms": 3.5073829999999964,
+          "delta_pct": 384.95242921317305
+        },
+        {
+          "semantic_key": [
+            "flagd",
+            "resolveFloat",
+            "flagd.evaluation.v2.Service/ResolveFloat"
+          ],
+          "service": "flagd",
+          "span": "resolveFloat",
+          "parent": "flagd.evaluation.v2.Service/ResolveFloat",
+          "baseline_p95_ms": 0.5354669499999998,
+          "candidate_p95_ms": 3.308685399999997,
+          "delta_ms": 2.7732184499999972,
+          "delta_pct": 517.9065580051204
+        },
+        {
+          "semantic_key": [
+            "cart",
+            "valkey-cart:6379",
+            "POST /oteldemo.CartService/EmptyCart"
+          ],
+          "service": "cart",
+          "span": "valkey-cart:6379",
+          "parent": "POST /oteldemo.CartService/EmptyCart",
+          "baseline_p95_ms": 1.3939550000000005,
+          "candidate_p95_ms": 2.563654999999998,
+          "delta_ms": 1.1696999999999975,
+          "delta_pct": 83.91232141640133
+        },
+        {
+          "semantic_key": [
+            "flagd",
+            "resolveFloat",
+            "resolveFloat"
+          ],
+          "service": "flagd",
+          "span": "resolveFloat",
+          "parent": "resolveFloat",
+          "baseline_p95_ms": 0.11004099999999996,
+          "candidate_p95_ms": 0.7072707999999991,
+          "delta_ms": 0.5972297999999991,
+          "delta_pct": 542.7338900955092
+        }
+      ],
+      "primary_localized_regression": {
+        "semantic_key": [
+          "shipping",
+          "POST /ship-order",
+          "POST"
+        ],
+        "service": "shipping",
+        "span": "POST /ship-order",
+        "parent": "POST",
+        "baseline_p95_ms": 23.99600835,
+        "candidate_p95_ms": 1015.2268336999999,
+        "delta_ms": 991.2308253499999,
+        "delta_pct": 4130.815471023954
+      },
+      "end_to_end_regression": null,
+      "error_regressions": [],
+      "critical_path": {
+        "method": "interval-derived parent/child critical-path contribution analysis",
+        "contribution_semantics": "Per-span p95 contribution deltas are computed independently and are not additive decompositions of the end-to-end p95 delta.",
+        "baseline_end_to_end_p95_ms": 1200.9672999999996,
+        "candidate_end_to_end_p95_ms": 1320.18015,
+        "end_to_end_delta_ms": 119.21285000000034,
+        "contributors": [
+          {
+            "service": "frontend-proxy",
+            "span": "router frontend egress",
+            "parent": "POST",
+            "baseline_p95_contribution_ms": 1036.1420500000002,
+            "candidate_p95_contribution_ms": 1319.6531,
+            "delta_ms": 283.51104999999984,
+            "delta_pct": 27.362179732016457,
+            "is_new_on_path": false
+          }
+        ],
+        "primary_critical_path_regression": {
+          "service": "frontend-proxy",
+          "span": "router frontend egress",
+          "parent": "POST",
+          "baseline_p95_contribution_ms": 1036.1420500000002,
+          "candidate_p95_contribution_ms": 1319.6531,
+          "delta_ms": 283.51104999999984,
+          "delta_pct": 27.362179732016457,
+          "is_new_on_path": false
+        }
+      },
+      "decision": "FAIL",
+      "shape": {
+        "fingerprint": "frontend-proxy|POST|POST|-|-",
+        "service": "frontend-proxy",
+        "root_span": "POST",
+        "method": "POST",
+        "route": null,
+        "explicit_shape": null
+      },
+      "quality": {
+        "decision": "READY",
+        "reason": "sufficient_samples",
+        "baseline_samples": 80,
+        "candidate_samples": 80,
+        "required_samples": 30,
+        "sample_ratio": 1.0,
+        "baseline_invalid_fraction": 0.0,
+        "candidate_invalid_fraction": 0.0
+      }
+    },
+    {
+      "baseline_trace_count": 27,
+      "candidate_trace_count": 9,
+      "latency_threshold_pct": 20.0,
+      "error_threshold_percentage_points": 5.0,
+      "added_spans": [],
+      "removed_spans": [],
+      "regressions": [],
+      "primary_localized_regression": null,
+      "end_to_end_regression": null,
+      "error_regressions": [],
+      "critical_path": {
+        "method": "interval-derived parent/child critical-path contribution analysis",
+        "contribution_semantics": "Per-span p95 contribution deltas are computed independently and are not additive decompositions of the end-to-end p95 delta.",
+        "baseline_end_to_end_p95_ms": 0.0,
+        "candidate_end_to_end_p95_ms": 0.0,
+        "end_to_end_delta_ms": 0.0,
+        "contributors": [],
+        "primary_critical_path_regression": null
+      },
+      "decision": "INCONCLUSIVE",
+      "shape": {
+        "fingerprint": "image-provider|GET /status|GET|/status|-",
+        "service": "image-provider",
+        "root_span": "GET /status",
+        "method": "GET",
+        "route": "/status",
+        "explicit_shape": null
+      },
+      "quality": {
+        "decision": "INCONCLUSIVE",
+        "reason": "insufficient_baseline_samples",
+        "baseline_samples": 27,
+        "candidate_samples": 9,
+        "required_samples": 30,
+        "sample_ratio": 0.3333333333333333,
+        "baseline_invalid_fraction": 0.0,
+        "candidate_invalid_fraction": 0.0
+      },
+      "raw_decision": "PASS"
+    },
+    {
+      "baseline_trace_count": 19,
+      "candidate_trace_count": 3,
+      "latency_threshold_pct": 20.0,
+      "error_threshold_percentage_points": 5.0,
+      "added_spans": [],
+      "removed_spans": [],
+      "regressions": [],
+      "primary_localized_regression": null,
+      "end_to_end_regression": null,
+      "error_regressions": [],
+      "critical_path": {
+        "method": "interval-derived parent/child critical-path contribution analysis",
+        "contribution_semantics": "Per-span p95 contribution deltas are computed independently and are not additive decompositions of the end-to-end p95 delta.",
+        "baseline_end_to_end_p95_ms": 0.0,
+        "candidate_end_to_end_p95_ms": 0.0,
+        "end_to_end_delta_ms": 0.0,
+        "contributors": [],
+        "primary_critical_path_regression": null
+      },
+      "decision": "INCONCLUSIVE",
+      "shape": {
+        "fingerprint": "telemetry-docs|GET|GET|-|-",
+        "service": "telemetry-docs",
+        "root_span": "GET",
+        "method": "GET",
+        "route": null,
+        "explicit_shape": null
+      },
+      "quality": {
+        "decision": "INCONCLUSIVE",
+        "reason": "insufficient_baseline_samples",
+        "baseline_samples": 19,
+        "candidate_samples": 3,
+        "required_samples": 30,
+        "sample_ratio": 0.15789473684210525,
+        "baseline_invalid_fraction": 0.0,
+        "candidate_invalid_fraction": 0.0
+      },
+      "raw_decision": "PASS"
+    }
+  ],
+  "decision": "FAIL",
+  "canonical": {
+    "baseline_canonical_traces": 612,
+    "candidate_canonical_traces": 581,
+    "baseline_orphan_parent_traces": 0,
+    "candidate_orphan_parent_traces": 160,
+    "cohorts": [
+      {
+        "request_shape": "GET",
+        "quality": {
+          "decision": "READY",
+          "reason": "sufficient_samples",
+          "baseline_samples": 142,
+          "candidate_samples": 125,
+          "required_samples": 30,
+          "sample_ratio": 0.8802816901408451,
+          "baseline_invalid_fraction": 0.0,
+          "candidate_invalid_fraction": 0.0
+        },
+        "multiplicity_regressions": []
+      },
+      {
+        "request_shape": "GET /metrics",
+        "quality": {
+          "decision": "INCONCLUSIVE",
+          "reason": "insufficient_baseline_samples",
+          "baseline_samples": 8,
+          "candidate_samples": 5,
+          "required_samples": 30,
+          "sample_ratio": 0.625,
+          "baseline_invalid_fraction": 0.0,
+          "candidate_invalid_fraction": 0.0
+        },
+        "multiplicity_regressions": []
+      },
+      {
+        "request_shape": "GET /status",
+        "quality": {
+          "decision": "INCONCLUSIVE",
+          "reason": "insufficient_baseline_samples",
+          "baseline_samples": 27,
+          "candidate_samples": 9,
+          "required_samples": 30,
+          "sample_ratio": 0.3333333333333333,
+          "baseline_invalid_fraction": 0.0,
+          "candidate_invalid_fraction": 0.0
+        },
+        "multiplicity_regressions": []
+      },
+      {
+        "request_shape": "POST",
+        "quality": {
+          "decision": "READY",
+          "reason": "sufficient_samples",
+          "baseline_samples": 80,
+          "candidate_samples": 80,
+          "required_samples": 30,
+          "sample_ratio": 1.0,
+          "baseline_invalid_fraction": 0.0,
+          "candidate_invalid_fraction": 0.0
+        },
+        "multiplicity_regressions": []
+      },
+      {
+        "request_shape": "flagd.evaluation.v1.Service/ResolveInt",
+        "quality": {
+          "decision": "READY",
+          "reason": "sufficient_samples",
+          "baseline_samples": 80,
+          "candidate_samples": 80,
+          "required_samples": 30,
+          "sample_ratio": 1.0,
+          "baseline_invalid_fraction": 0.0,
+          "candidate_invalid_fraction": 0.0
+        },
+        "multiplicity_regressions": []
+      },
+      {
+        "request_shape": "flagd.evaluation.v2.Service/ResolveBoolean",
+        "quality": {
+          "decision": "READY",
+          "reason": "sufficient_samples",
+          "baseline_samples": 275,
+          "candidate_samples": 282,
+          "required_samples": 30,
+          "sample_ratio": 0.975177304964539,
+          "baseline_invalid_fraction": 0.0,
+          "candidate_invalid_fraction": 0.0
+        },
+        "multiplicity_regressions": []
+      }
+    ],
+    "multiplicity_regressions": []
+  }
+}

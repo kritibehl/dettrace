@@ -8,6 +8,12 @@ import sys
 from pathlib import Path
 
 from trace_regression.ingest import load_span_file
+from trace_regression.canonical_compare import (
+    compare_canonical_multiplicity,
+)
+from trace_regression.quality import (
+    assess_comparison_quality,
+)
 
 from trace_regression.analyzer import (
     analyze_cohort,
@@ -115,6 +121,37 @@ def analyze_shapes(
             "shape"
         ]
 
+        quality = assess_comparison_quality(
+            len(
+                baseline_group[
+                    "traces"
+                ]
+            ),
+            len(
+                candidate_group[
+                    "traces"
+                ]
+            ),
+        )
+
+        analysis[
+            "quality"
+        ] = quality.to_dict()
+
+        if (
+            quality.decision
+            != "READY"
+        ):
+            analysis[
+                "raw_decision"
+            ] = analysis[
+                "decision"
+            ]
+
+            analysis[
+                "decision"
+            ] = "INCONCLUSIVE"
+
         cohorts.append(
             analysis
         )
@@ -132,7 +169,7 @@ def analyze_shapes(
 
     return {
         "schema_version":
-            2,
+            3,
         "baseline_trace_count":
             len(
                 baseline_raw
@@ -452,6 +489,54 @@ def main():
         ),
     )
 
+    baseline_spans = load_span_file(
+        args.baseline
+    )
+
+    candidate_spans = load_span_file(
+        args.candidate
+    )
+
+    canonical = (
+        compare_canonical_multiplicity(
+            baseline_spans,
+            candidate_spans,
+        )
+    )
+
+    report[
+        "canonical"
+    ] = canonical
+
+    if canonical[
+        "multiplicity_regressions"
+    ]:
+        report[
+            "decision"
+        ] = "FAIL"
+
+    ready_cohorts = [
+        cohort
+        for cohort in report[
+            "cohorts"
+        ]
+        if cohort[
+            "quality"
+        ][
+            "decision"
+        ] == "READY"
+    ]
+
+    if (
+        not ready_cohorts
+        and not canonical[
+            "multiplicity_regressions"
+        ]
+    ):
+        report[
+            "decision"
+        ] = "INCONCLUSIVE"
+
     output = Path(
         args.output
     )
@@ -550,13 +635,17 @@ def main():
         f"{output}"
     )
 
-    return (
-        1
-        if report[
-            "decision"
-        ] == "FAIL"
-        else 0
-    )
+    if report[
+        "decision"
+    ] == "FAIL":
+        return 1
+
+    if report[
+        "decision"
+    ] == "INCONCLUSIVE":
+        return 2
+
+    return 0
 
 
 if __name__ == "__main__":

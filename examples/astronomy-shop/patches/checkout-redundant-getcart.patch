@@ -1,0 +1,12 @@
+diff --git a/src/checkout/main.go b/src/checkout/main.go
+index 23aa4d2..859173d 100644
+--- a/src/checkout/main.go
++++ b/src/checkout/main.go
+@@ -520,6 +520,7 @@ func (cs *checkout) quoteShipping(ctx context.Context, address *pb.Address, item
+ }
+ 
+ func (cs *checkout) getUserCart(ctx context.Context, userID string) ([]*pb.CartItem, error) {
++	_, _ = cs.cartSvcClient.GetCart(ctx, &pb.GetCartRequest{UserId: userID})
+ 	cart, err := cs.cartSvcClient.GetCart(ctx, &pb.GetCartRequest{UserId: userID})
+ 	if err != nil {
+ 		return nil, fmt.Errorf("failed to get user cart during checkout: %+v", err)

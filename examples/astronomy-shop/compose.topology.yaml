@@ -1,0 +1,4 @@
+services:
+  checkout:
+    image: dettrace/astronomy-checkout:topology
+    pull_policy: never

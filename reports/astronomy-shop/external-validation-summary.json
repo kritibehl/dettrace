@@ -1,0 +1,294 @@
+{
+  "schema_version": 1,
+  "external_system": "OpenTelemetry Astronomy Shop",
+  "experiments": {
+    "latency": {
+      "decision": "FAIL",
+      "baseline_trace_count": 612,
+      "candidate_trace_count": 581,
+      "canonical_multiplicity_regressions": [],
+      "failing_cohorts": [
+        {
+          "shape": {
+            "fingerprint": "frontend-proxy|GET|GET|-|-",
+            "service": "frontend-proxy",
+            "root_span": "GET",
+            "method": "GET",
+            "route": null,
+            "explicit_shape": null
+          },
+          "decision": "FAIL",
+          "primary_localized_regression": null,
+          "error_regressions": [],
+          "critical_path": {
+            "method": "interval-derived parent/child critical-path contribution analysis",
+            "contribution_semantics": "Per-span p95 contribution deltas are computed independently and are not additive decompositions of the end-to-end p95 delta.",
+            "baseline_end_to_end_p95_ms": 1265.2121999999995,
+            "candidate_end_to_end_p95_ms": 101.10964999999999,
+            "end_to_end_delta_ms": -1164.1025499999996,
+            "contributors": [],
+            "primary_critical_path_regression": null
+          }
+        },
+        {
+          "shape": {
+            "fingerprint": "frontend-proxy|POST|POST|-|-",
+            "service": "frontend-proxy",
+            "root_span": "POST",
+            "method": "POST",
+            "route": null,
+            "explicit_shape": null
+          },
+          "decision": "FAIL",
+          "primary_localized_regression": {
+            "semantic_key": [
+              "shipping",
+              "POST /ship-order",
+              "POST"
+            ],
+            "service": "shipping",
+            "span": "POST /ship-order",
+            "parent": "POST",
+            "baseline_p95_ms": 23.99600835,
+            "candidate_p95_ms": 1015.2268336999999,
+            "delta_ms": 991.2308253499999,
+            "delta_pct": 4130.815471023954
+          },
+          "error_regressions": [],
+          "critical_path": {
+            "method": "interval-derived parent/child critical-path contribution analysis",
+            "contribution_semantics": "Per-span p95 contribution deltas are computed independently and are not additive decompositions of the end-to-end p95 delta.",
+            "baseline_end_to_end_p95_ms": 1200.9672999999996,
+            "candidate_end_to_end_p95_ms": 1320.18015,
+            "end_to_end_delta_ms": 119.21285000000034,
+            "contributors": [
+              {
+                "service": "frontend-proxy",
+                "span": "router frontend egress",
+                "parent": "POST",
+                "baseline_p95_contribution_ms": 1036.1420500000002,
+                "candidate_p95_contribution_ms": 1319.6531,
+                "delta_ms": 283.51104999999984,
+                "delta_pct": 27.362179732016457,
+                "is_new_on_path": false
+              }
+            ],
+            "primary_critical_path_regression": {
+              "service": "frontend-proxy",
+              "span": "router frontend egress",
+              "parent": "POST",
+              "baseline_p95_contribution_ms": 1036.1420500000002,
+              "candidate_p95_contribution_ms": 1319.6531,
+              "delta_ms": 283.51104999999984,
+              "delta_pct": 27.362179732016457,
+              "is_new_on_path": false
+            }
+          }
+        }
+      ]
+    },
+    "topology": {
+      "decision": "FAIL",
+      "baseline_trace_count": 612,
+      "candidate_trace_count": 566,
+      "canonical_multiplicity_regressions": [
+        {
+          "request_shape": "POST",
+          "parent": {
+            "service": "cart",
+            "operation": "POST /oteldemo.CartService/GetCart",
+            "kind": "UNSPECIFIED",
+            "protocol": "http",
+            "target": "cart"
+          },
+          "child": {
+            "service": "cart",
+            "operation": "valkey-cart:6379",
+            "kind": "UNSPECIFIED",
+            "protocol": "db",
+            "target": "valkey-cart"
+          },
+          "baseline_p95_count": 1,
+          "candidate_p95_count": 2,
+          "delta": 1
+        },
+        {
+          "request_shape": "POST",
+          "parent": {
+            "service": "checkout",
+            "operation": "oteldemo.CartService/GetCart",
+            "kind": "UNSPECIFIED",
+            "protocol": "rpc",
+            "target": ""
+          },
+          "child": {
+            "service": "cart",
+            "operation": "POST /oteldemo.CartService/GetCart",
+            "kind": "UNSPECIFIED",
+            "protocol": "http",
+            "target": "cart"
+          },
+          "baseline_p95_count": 1,
+          "candidate_p95_count": 2,
+          "delta": 1
+        },
+        {
+          "request_shape": "POST",
+          "parent": {
+            "service": "checkout",
+            "operation": "prepareOrderItemsAndShippingQuoteFromCart",
+            "kind": "UNSPECIFIED",
+            "protocol": "internal",
+            "target": ""
+          },
+          "child": {
+            "service": "checkout",
+            "operation": "oteldemo.CartService/GetCart",
+            "kind": "UNSPECIFIED",
+            "protocol": "rpc",
+            "target": ""
+          },
+          "baseline_p95_count": 1,
+          "candidate_p95_count": 2,
+          "delta": 1
+        }
+      ],
+      "failing_cohorts": [
+        {
+          "shape": {
+            "fingerprint": "frontend-proxy|GET|GET|-|-",
+            "service": "frontend-proxy",
+            "root_span": "GET",
+            "method": "GET",
+            "route": null,
+            "explicit_shape": null
+          },
+          "decision": "FAIL",
+          "primary_localized_regression": null,
+          "error_regressions": [],
+          "critical_path": {
+            "method": "interval-derived parent/child critical-path contribution analysis",
+            "contribution_semantics": "Per-span p95 contribution deltas are computed independently and are not additive decompositions of the end-to-end p95 delta.",
+            "baseline_end_to_end_p95_ms": 1265.2121999999995,
+            "candidate_end_to_end_p95_ms": 161.6006999999999,
+            "end_to_end_delta_ms": -1103.6114999999995,
+            "contributors": [],
+            "primary_critical_path_regression": null
+          }
+        },
+        {
+          "shape": {
+            "fingerprint": "frontend-proxy|POST|POST|-|-",
+            "service": "frontend-proxy",
+            "root_span": "POST",
+            "method": "POST",
+            "route": null,
+            "explicit_shape": null
+          },
+          "decision": "FAIL",
+          "primary_localized_regression": {
+            "semantic_key": [
+              "shipping",
+              "POST",
+              "POST /get-quote"
+            ],
+            "service": "shipping",
+            "span": "POST",
+            "parent": "POST /get-quote",
+            "baseline_p95_ms": 90.29579194999995,
+            "candidate_p95_ms": 787.6671131499998,
+            "delta_ms": 697.3713211999998,
+            "delta_pct": 772.318738381695
+          },
+          "error_regressions": [],
+          "critical_path": {
+            "method": "interval-derived parent/child critical-path contribution analysis",
+            "contribution_semantics": "Per-span p95 contribution deltas are computed independently and are not additive decompositions of the end-to-end p95 delta.",
+            "baseline_end_to_end_p95_ms": 1200.9672999999996,
+            "candidate_end_to_end_p95_ms": 907.2260499999998,
+            "end_to_end_delta_ms": -293.7412499999998,
+            "contributors": [],
+            "primary_critical_path_regression": null
+          }
+        }
+      ]
+    },
+    "request_error": {
+      "decision": "FAIL",
+      "baseline_trace_count": 612,
+      "candidate_trace_count": 522,
+      "canonical_multiplicity_regressions": [],
+      "failing_cohorts": [
+        {
+          "shape": {
+            "fingerprint": "frontend-proxy|GET|GET|-|-",
+            "service": "frontend-proxy",
+            "root_span": "GET",
+            "method": "GET",
+            "route": null,
+            "explicit_shape": null
+          },
+          "decision": "FAIL",
+          "primary_localized_regression": null,
+          "error_regressions": [],
+          "critical_path": {
+            "method": "interval-derived parent/child critical-path contribution analysis",
+            "contribution_semantics": "Per-span p95 contribution deltas are computed independently and are not additive decompositions of the end-to-end p95 delta.",
+            "baseline_end_to_end_p95_ms": 1265.2121999999995,
+            "candidate_end_to_end_p95_ms": 62.38174999999987,
+            "end_to_end_delta_ms": -1202.8304499999997,
+            "contributors": [],
+            "primary_critical_path_regression": null
+          }
+        },
+        {
+          "shape": {
+            "fingerprint": "frontend-proxy|POST|POST|-|-",
+            "service": "frontend-proxy",
+            "root_span": "POST",
+            "method": "POST",
+            "route": null,
+            "explicit_shape": null
+          },
+          "decision": "FAIL",
+          "primary_localized_regression": null,
+          "error_regressions": [
+            {
+              "service": "checkout",
+              "span": "oteldemo.PaymentService/Charge",
+              "parent": "oteldemo.CheckoutService/PlaceOrder",
+              "baseline_count": 40,
+              "candidate_count": 40,
+              "baseline_errors": 0,
+              "candidate_errors": 14,
+              "baseline_error_rate": 0.0,
+              "candidate_error_rate": 0.35,
+              "delta_percentage_points": 35.0
+            },
+            {
+              "service": "frontend-proxy",
+              "span": "router frontend egress",
+              "parent": "POST",
+              "baseline_count": 80,
+              "candidate_count": 80,
+              "baseline_errors": 0,
+              "candidate_errors": 14,
+              "baseline_error_rate": 0.0,
+              "candidate_error_rate": 0.175,
+              "delta_percentage_points": 17.5
+            }
+          ],
+          "critical_path": {
+            "method": "interval-derived parent/child critical-path contribution analysis",
+            "contribution_semantics": "Per-span p95 contribution deltas are computed independently and are not additive decompositions of the end-to-end p95 delta.",
+            "baseline_end_to_end_p95_ms": 1200.9672999999996,
+            "candidate_end_to_end_p95_ms": 109.43709999999989,
+            "end_to_end_delta_ms": -1091.5301999999997,
+            "contributors": [],
+            "primary_critical_path_regression": null
+          }
+        }
+      ]
+    }
+  }
+}

@@ -151,6 +151,122 @@ if [ "$WORKLOAD_STATUS" -ne 0 ]; then
   exit "$WORKLOAD_STATUS"
 fi
 
+echo
+echo "===== WORKLOAD SEMANTICS ====="
+
+.venv/bin/python - \
+  "$SCENARIO" \
+  "$WORKLOAD" \
+  "$ITERATIONS" \
+<<'PYQUALITY'
+import json
+import sys
+from pathlib import Path
+
+scenario = sys.argv[1]
+path = Path(sys.argv[2])
+expected = int(sys.argv[3])
+
+data = json.loads(
+    path.read_text()
+)
+
+required = (
+    "home",
+    "product",
+    "recommendations",
+    "cart",
+    "checkout",
+)
+
+for name in required:
+    value = data["summary"][name]
+
+    count = value["count"]
+    errors = value["errors"]
+    successes = value["successes"]
+
+    print(
+        f"{name:16s}"
+        f" count={count}"
+        f" success={successes}"
+        f" errors={errors}"
+    )
+
+    if count != expected:
+        raise SystemExit(
+            f"{name}: expected {expected} samples, "
+            f"found {count}"
+        )
+
+    if scenario != "request-error":
+        if errors != 0:
+            raise SystemExit(
+                f"{name}: unexpected errors={errors}"
+            )
+    else:
+        if name != "checkout" and errors != 0:
+            raise SystemExit(
+                f"{name}: request-specific scenario "
+                f"leaked errors={errors}"
+            )
+
+if scenario == "request-error":
+    checkout_errors = data[
+        "summary"
+    ][
+        "checkout"
+    ][
+        "errors"
+    ]
+
+    if checkout_errors == 0:
+        raise SystemExit(
+            "request-error scenario produced "
+            "zero checkout errors"
+        )
+
+print(
+    "WORKLOAD SEMANTICS: PASS"
+)
+PYQUALITY
+
+if [ $? -ne 0 ]; then
+  echo "SCENARIO VALIDATION: FAIL"
+  docker stop otel-collector >/dev/null 2>&1 || true
+  exit 1
+fi
+
+echo
+echo "===== POST-WORKLOAD HEALTH ====="
+
+for c in \
+  currency \
+  payment \
+  email \
+  product-catalog \
+  checkout \
+  frontend \
+  frontend-proxy
+do
+  HEALTH=$(
+    docker inspect "$c" \
+      --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}{{.State.Status}}{{end}}' \
+      2>/dev/null
+  )
+
+  echo "$c=$HEALTH"
+
+  if [ "$HEALTH" != "healthy" ] \
+    && [ "$HEALTH" != "running" ]; then
+    echo "POST-WORKLOAD HEALTH: FAIL"
+    docker stop otel-collector >/dev/null 2>&1 || true
+    exit 1
+  fi
+done
+
+echo "POST-WORKLOAD HEALTH: PASS"
+
 sleep 5
 
 docker stop otel-collector

@@ -2800,3 +2800,18 @@ Artifacts:
 - `reports/replay_performance_report.md`
 
 Safe scope: synthetic deterministic replay performance testing. This does not claim production runtime profiling, kernel tracing, hardware benchmarking, or profiler integration.
+
+## External Astronomy Shop Validation
+
+DetTrace has been validated against the OpenTelemetry Astronomy Shop using standard Collector-produced OTLP JSONL.
+
+The controlled external experiments cover:
+
+- a successful-request latency regression localized to `shipping / POST /ship-order`
+- a canonical topology regression with `GetCart` edge multiplicity `1 -> 2`
+- a payment-failure experiment producing request-path error regression evidence
+- comparison-quality gating that marks undersampled cohorts `INCONCLUSIVE`
+
+The latency experiment preserved functional success while `POST /ship-order` p95 moved from `24.00 ms` to `1015.23 ms`.
+
+See `docs/ASTRONOMY_SHOP_VALIDATION.md` and `reports/astronomy-shop/`.
