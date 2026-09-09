@@ -1,0 +1,4 @@
+services:
+  flagd:
+    volumes:
+      - ${DETTRACE_SCENARIO_FLAGD_DIR}:/etc/flagd

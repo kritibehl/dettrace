@@ -1,0 +1,15 @@
+exporters:
+  file/dettrace:
+    path: /dettrace/capture.otlp.jsonl
+    format: json
+    append: true
+    flush_interval: 1s
+    create_directory: true
+
+service:
+  pipelines:
+    traces:
+      exporters:
+        - debug
+        - span_metrics
+        - file/dettrace

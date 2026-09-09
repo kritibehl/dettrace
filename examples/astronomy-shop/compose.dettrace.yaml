@@ -1,0 +1,11 @@
+services:
+  otel-collector:
+    volumes:
+      - ${DETTRACE_ARTIFACT_DIR}:/dettrace
+
+  load-generator:
+    environment:
+      LOCUST_USERS: "5"
+      LOCUST_HEADLESS: "true"
+      LOCUST_AUTOSTART: "true"
+      LOCUST_BROWSER_TRAFFIC_ENABLED: "false"
