@@ -1,5 +1,0 @@
-AppMain
-EventLoop::run
-DeviceSession::poll
-SerialTransport::disconnect
-DeviceState::markDegraded
