@@ -103,7 +103,11 @@ jobs:
           health = cohorts["/health"]
 
           assert checkout["decision"] == "FAIL"
-          assert health["decision"] == "PASS"
+          # /health has 10 samples per side and the quality gate requires 30,
+          # so it must be INCONCLUSIVE (never FAIL) while its raw verdict is PASS.
+          assert health["decision"] != "FAIL"
+          assert health["raw_decision"] == "PASS"
+          assert health["quality"]["reason"] == "insufficient_baseline_samples"
 
           assert any(
               item["service"] == "redis"
