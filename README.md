@@ -14,19 +14,18 @@ A deliberately regressed checkout flow, analyzed cohort-by-cohort instead of as 
 
 ```
 POST /checkout   (30 baseline / 30 candidate traces)  →  decision: FAIL
-GET  /health     (10 baseline / 10 candidate traces)  →  decision: PASS
+GET  /health     (10 baseline / 10 candidate traces)  →  decision: INCONCLUSIVE (raw verdict PASS; below the 30-sample minimum)
 ```
 
 For `POST /checkout`:
 ```
-p95 latency:   61.12 ms → 172.06 ms   (+181.5%)
+p95 latency:   43.04 ms → 141.30 ms   (+228.3%)
 error rate:    0.0% → 20.0%           (checkout.request AND inventory.reserve)
 new dependency introduced:  inventory.reserve → redis.lookup
-primary critical-path contributor:  inventory.reserve  (+65.56ms p95 contribution)
-new critical-path contributor:      redis.lookup        (+44.41ms)
+primary critical-path contributor:  inventory.reserve  (+59.22ms p95 contribution)
 ```
 
-`GET /health` — untouched by the regression — correctly stays `PASS`. That's the actual point: DetTrace evaluates matched request cohorts independently instead of averaging all traffic into one number that would hide the checkout-specific failure.
+`GET /health` has only 10 samples per side against a 30-sample minimum, so DetTrace reports it `INCONCLUSIVE` (its raw verdict is `PASS`) instead of passing or failing it on thin data. That's the actual point: DetTrace evaluates matched request cohorts independently, and declines to over-claim on undersampled ones, instead of averaging all traffic into one number that would hide the checkout-specific failure.
 
 ---
 
@@ -41,8 +40,8 @@ Traces are grouped by request-shape fingerprint (root service, root span operati
 
 ```bash
 python3 -m trace_regression.cli \
-  --baseline artifacts/traces/baseline/checkout.json \
-  --candidate artifacts/traces/candidate/checkout.json \
+  --baseline artifacts/otlp/baseline.otlp.jsonl \
+  --candidate artifacts/otlp/candidate.otlp.jsonl \
   --regression-threshold-pct 50 \
   --error-threshold-pp 5
 ```
@@ -64,7 +63,7 @@ Reusable composite GitHub Action — point it at baseline/candidate OTLP artifac
     error-threshold-pp: "5"
 ```
 
-Also verified against the **OpenTelemetry Collector pipeline directly** (not just the repo's local JSON exporter): app → OTLP/gRPC → Collector → OTLP JSON → DetTrace. Verified run: 170 baseline / 200 candidate spans across 40 traces each, same `/checkout` FAIL / `/health` PASS split, independently reproducing the p95 and error-rate regression through the standard OTel pipeline rather than a repo-specific format.
+Also verified against the **OpenTelemetry Collector pipeline directly** (not just the repo's local JSON exporter): app → OTLP/gRPC → Collector → OTLP JSON → DetTrace. The committed Collector output in `artifacts/otlp/` has 40 traces per side; running the CLI on it reproduces `/checkout` FAIL (p95 43.04 ms → 141.30 ms, errors 0% → 20%) and `/health` INCONCLUSIVE.
 
 Also independently validated against the **OpenTelemetry Astronomy Shop** demo app using standard Collector-produced OTLP — catching a real latency regression on `shipping / POST /ship-order` (p95: 24.00ms → 1015.23ms) and a topology regression (`GetCart` edge multiplicity 1→2). See `docs/ASTRONOMY_SHOP_VALIDATION.md`.
 
