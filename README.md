@@ -71,6 +71,8 @@ Also independently validated against the **OpenTelemetry Astronomy Shop** demo a
 
 ## Architecture
 
+**Technical deep dive:** [Architecture, regression methodology, validation, and limits](docs/ARCHITECTURE_AND_VALIDATION.md).
+
 ```
 instrumented application
         │  OTLP/gRPC
