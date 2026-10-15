@@ -65,7 +65,7 @@ Reusable composite GitHub Action — point it at baseline/candidate OTLP artifac
 
 Also verified against the **OpenTelemetry Collector pipeline directly** (not just the repo's local JSON exporter): app → OTLP/gRPC → Collector → OTLP JSON → DetTrace. The committed Collector output in `artifacts/otlp/` has 40 traces per side; running the CLI on it reproduces `/checkout` FAIL (p95 43.04 ms → 141.30 ms, errors 0% → 20%) and `/health` INCONCLUSIVE.
 
-Also independently validated against the **OpenTelemetry Astronomy Shop** demo app using standard Collector-produced OTLP — catching a real latency regression on `shipping / POST /ship-order` (p95: 24.00ms → 1015.23ms) and a topology regression (`GetCart` edge multiplicity 1→2). See `docs/ASTRONOMY_SHOP_VALIDATION.md`.
+Also independently validated against the **OpenTelemetry Astronomy Shop** demo app using standard Collector-produced OTLP — detecting a deliberately injected latency regression on `shipping / POST /ship-order` (p95: 24.00ms → 1015.23ms) and a topology regression (`GetCart` edge multiplicity 1→2). See `docs/ASTRONOMY_SHOP_VALIDATION.md`.
 
 ---
 
@@ -103,9 +103,7 @@ DetTrace grew out of an earlier deterministic-replay research project, and that 
 - **Swift companion analyzer** (`dettrace-swift/`) — reads trace artifacts concurrently using async/await and actor isolation, for inspection outside the C++ core.
 - **DetTrace++** — an ingestion API / distributed-incident-forensics extension with a `/timeline`, `/search`, and OTel-span ingestion, for multi-service incident replay.
 
-The repo also carries a large volume of smaller simulated diagnostics packs (firmware/UART traces, protocol-state replay, hardware-adjacent I/O scenarios, sensor-stream validation, and similar) that are explicitly labeled in-repo as simulations, not production or hardware ownership claims. They're real code, but they're not load-bearing for this project's story — the OpenTelemetry CI-gate capability above is. If you want to walk through any of the secondary modules in an interview, know it well first; don't let the README's breadth substitute for depth you can defend out loud.
 
-**Recommended before this goes live:** the actual repo README is far larger than this file, includes several sections repeated verbatim, and buries the strong CI-gate story under a long tail of smaller demos. This version leads with what's strongest and cuts the rest to a summary — replacing the live README with something close to this, rather than adding to it, is the move that will actually help here.
 
 ---
 
