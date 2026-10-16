@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - main
+      - "feat/**"
   workflow_dispatch:
 
 permissions:
@@ -129,6 +130,36 @@ jobs:
           print(
               "DetTrace CI contract validation: PASS"
           )
+          PY
+
+      - name: Conservative bootstrap Action smoke
+        id: bootstrap
+        uses: ./
+        with:
+          baseline: artifacts/otlp/baseline.otlp.jsonl
+          candidate: artifacts/otlp/candidate.otlp.jsonl
+          latency-evidence: bootstrap
+          bootstrap-iterations: "250"
+          bootstrap-confidence: "0.95"
+          report-path: reports/ci/bootstrap-control.json
+          python: python
+          install-dependencies: "false"
+          fail-on-regression: "false"
+
+      - name: Validate bootstrap Action output
+        env:
+          BOOTSTRAP_DECISION: ${{ steps.bootstrap.outputs.decision }}
+        run: |
+          test "$BOOTSTRAP_DECISION" = "FAIL"
+          python - <<'PY'
+          import json
+          report = json.load(open("reports/ci/bootstrap-control.json"))
+          assert report["decision"] == "FAIL"
+          assert report["latency_evidence_mode"] == "bootstrap"
+          cohorts = {c["shape"]["route"]: c for c in report["cohorts"]}
+          assert cohorts["/checkout"]["latency_evidence"]["mode"] == "bootstrap"
+          assert cohorts["/health"]["decision"] == "INCONCLUSIVE"
+          print("DetTrace bootstrap Action smoke: PASS")
           PY
 
       - name: Upload DetTrace reports

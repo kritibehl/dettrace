@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import sys
 from pathlib import Path
 
@@ -25,7 +26,23 @@ from trace_regression.cohorts import (
 )
 from trace_regression.normalize import (
     group_by_trace,
+    normalize_trace,
 )
+from trace_regression.latency_evidence import (
+    assess_latency_thresholds,
+    validate_options,
+)
+
+
+def _json_safe(value):
+    """Produce standards-compliant JSON even for zero-baseline percentage changes."""
+    if isinstance(value, float) and not math.isfinite(value):
+        return None
+    if isinstance(value, dict):
+        return {key: _json_safe(item) for key, item in value.items()}
+    if isinstance(value, (tuple, list)):
+        return [_json_safe(item) for item in value]
+    return value
 
 
 def load_raw_traces(
@@ -49,7 +66,18 @@ def analyze_shapes(
     candidate_raw,
     latency_threshold_pct,
     error_threshold_pp,
+    *,
+    latency_evidence="point-estimate",
+    bootstrap_iterations=1000,
+    bootstrap_confidence=0.95,
+    bootstrap_seed=0,
+    bootstrap_min_span_traces=30,
 ):
+    if latency_evidence not in {"point-estimate", "bootstrap"}:
+        raise ValueError("unknown latency evidence mode")
+    if latency_evidence == "bootstrap":
+        validate_options(bootstrap_iterations, bootstrap_confidence, bootstrap_min_span_traces)
+
     baseline_shapes = (
         group_traces_by_shape(
             baseline_raw
@@ -121,6 +149,29 @@ def analyze_shapes(
             "shape"
         ]
 
+        if latency_evidence == "bootstrap":
+            analysis["point_estimate_decision"] = analysis["decision"]
+            evidence = assess_latency_thresholds(
+                [normalize_trace(t) for t in baseline_group["traces"]],
+                [normalize_trace(t) for t in candidate_group["traces"]],
+                analysis["regressions"],
+                threshold_pct=latency_threshold_pct,
+                iterations=bootstrap_iterations,
+                confidence=bootstrap_confidence,
+                seed=bootstrap_seed,
+                minimum_traces=bootstrap_min_span_traces,
+            )
+            analysis["latency_evidence"] = evidence
+            # Structural and error regressions remain independent FAIL signals.
+            if analysis["added_spans"] or analysis["error_regressions"]:
+                analysis["decision"] = "FAIL"
+            elif evidence["confirmed_regressions"]:
+                analysis["decision"] = "FAIL"
+            elif evidence["inconclusive_regressions"]:
+                analysis["decision"] = "INCONCLUSIVE"
+            else:
+                analysis["decision"] = "PASS"
+
         quality = assess_comparison_quality(
             len(
                 baseline_group[
@@ -156,20 +207,23 @@ def analyze_shapes(
             analysis
         )
 
-    overall_decision = (
-        "FAIL"
-        if any(
-            cohort[
-                "decision"
-            ] == "FAIL"
-            for cohort in cohorts
-        )
-        else "PASS"
-    )
+    # Default decision semantics are maintained for existing action users.
+    # Opt-in bootstrap mode treats missing/undersampled shapes and unconfirmed
+    # point-estimate threshold crossings as INCONCLUSIVE, not a clean PASS.
+    if any(cohort["decision"] == "FAIL" for cohort in cohorts):
+        overall_decision = "FAIL"
+    elif latency_evidence == "bootstrap" and (
+        not matched or baseline_only or candidate_only
+        or any(cohort["decision"] == "INCONCLUSIVE" for cohort in cohorts)
+    ):
+        overall_decision = "INCONCLUSIVE"
+    else:
+        overall_decision = "PASS"
 
     return {
         "schema_version":
             3,
+        "latency_evidence_mode": latency_evidence,
         "baseline_trace_count":
             len(
                 baseline_raw
@@ -417,6 +471,20 @@ def print_cohort(
                 f" ms"
             )
 
+    evidence = cohort.get("latency_evidence")
+    if evidence:
+        print()
+        print("BOOTSTRAP LATENCY EVIDENCE")
+        print(
+            f"  confirmed: {evidence['confirmed_regressions']}; "
+            f"inconclusive crossings: {evidence['inconclusive_regressions']}"
+        )
+        for item in evidence["assessments"]:
+            print(
+                f"  {item['semantic_key'][1]}: {item['status']} "
+                f"({item['reason']})"
+            )
+
     print()
     print(
         f"COHORT DECISION: "
@@ -457,6 +525,17 @@ def main():
     )
 
     parser.add_argument(
+        "--latency-evidence",
+        choices=("point-estimate", "bootstrap"),
+        default="point-estimate",
+        help="Opt in to conservative trace-level bootstrap p95 evidence",
+    )
+    parser.add_argument("--bootstrap-iterations", type=int, default=1000)
+    parser.add_argument("--bootstrap-confidence", type=float, default=0.95)
+    parser.add_argument("--bootstrap-seed", type=int, default=0)
+    parser.add_argument("--bootstrap-min-span-traces", type=int, default=30)
+
+    parser.add_argument(
         "--output",
         default=(
             "reports/"
@@ -465,6 +544,15 @@ def main():
     )
 
     args = parser.parse_args()
+    if args.latency_evidence == "bootstrap":
+        try:
+            validate_options(
+                args.bootstrap_iterations,
+                args.bootstrap_confidence,
+                args.bootstrap_min_span_traces,
+            )
+        except ValueError as exc:
+            parser.error(str(exc))
 
     baseline_raw = (
         load_raw_traces(
@@ -487,6 +575,11 @@ def main():
         error_threshold_pp=(
             args.error_threshold_pp
         ),
+        latency_evidence=args.latency_evidence,
+        bootstrap_iterations=args.bootstrap_iterations,
+        bootstrap_confidence=args.bootstrap_confidence,
+        bootstrap_seed=args.bootstrap_seed,
+        bootstrap_min_span_traces=args.bootstrap_min_span_traces,
     )
 
     baseline_spans = load_span_file(
@@ -548,8 +641,9 @@ def main():
 
     output.write_text(
         json.dumps(
-            report,
+            _json_safe(report),
             indent=2,
+            allow_nan=False,
         )
     )
 

@@ -30,6 +30,26 @@ inputs:
     required: false
     default: "5"
 
+  latency-evidence:
+    description: "point-estimate (default) or conservative bootstrap confirmation"
+    required: false
+    default: "point-estimate"
+
+  bootstrap-iterations:
+    description: Number of trace-level bootstrap replicates, 200 to 5000
+    required: false
+    default: "1000"
+
+  bootstrap-confidence:
+    description: Simultaneous one-sided bootstrap confidence (Bonferroni)
+    required: false
+    default: "0.95"
+
+  bootstrap-seed:
+    description: Deterministic bootstrap PRNG seed
+    required: false
+    default: "0"
+
   report-path:
     description: JSON report output path
     required: false
@@ -85,6 +105,10 @@ runs:
         CANDIDATE: ${{ inputs.candidate }}
         REGRESSION_THRESHOLD: ${{ inputs.regression-threshold-pct }}
         ERROR_THRESHOLD: ${{ inputs.error-threshold-pp }}
+        LATENCY_EVIDENCE: ${{ inputs.latency-evidence }}
+        BOOTSTRAP_ITERATIONS: ${{ inputs.bootstrap-iterations }}
+        BOOTSTRAP_CONFIDENCE: ${{ inputs.bootstrap-confidence }}
+        BOOTSTRAP_SEED: ${{ inputs.bootstrap-seed }}
         REPORT: ${{ inputs.report-path }}
       run: |
         set +e
@@ -97,6 +121,10 @@ runs:
           --candidate "$CANDIDATE" \
           --regression-threshold-pct "$REGRESSION_THRESHOLD" \
           --error-threshold-pp "$ERROR_THRESHOLD" \
+          --latency-evidence "$LATENCY_EVIDENCE" \
+          --bootstrap-iterations "$BOOTSTRAP_ITERATIONS" \
+          --bootstrap-confidence "$BOOTSTRAP_CONFIDENCE" \
+          --bootstrap-seed "$BOOTSTRAP_SEED" \
           --output "$REPORT"
 
         STATUS=$?
