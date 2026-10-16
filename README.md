@@ -96,6 +96,32 @@ per-cohort CI PASS / FAIL
 
 ---
 
+## Optional conservative latency gate
+
+The existing p95 threshold gate remains the **default**, preserving released
+Action behavior. For a stricter CI decision on latency, enable per-trace
+bootstrap confirmation:
+
+```bash
+python3 -m trace_regression.cli \
+  --baseline artifacts/otlp/baseline.otlp.jsonl \
+  --candidate artifacts/otlp/candidate.otlp.jsonl \
+  --latency-evidence bootstrap \
+  --bootstrap-iterations 1000 \
+  --bootstrap-confidence 0.95
+```
+
+This opt-in gate samples whole traces independently per side, calculates
+Bonferroni-adjusted one-sided percentile-bootstrap lower bounds for the p95
+percentage change, and confirms a point-estimate regression only if the lower
+bound exceeds the configured threshold. Unresolved crossings, insufficient
+span coverage, unmatched request cohorts, and under-sampled cohorts become
+`INCONCLUSIVE` unless a separate conclusive regression exists. Exit codes are
+0 `PASS`, 1 `FAIL`, 2 `INCONCLUSIVE`.
+
+This is **not** a statistical proof of no regression or immunity to tail
+sampling bias; see [Uncertainty protocol](docs/STATISTICAL_EVIDENCE.md).
+
 ## Also included
 
 DetTrace grew out of an earlier deterministic-replay research project, and that core capability is still in the repo and still real:

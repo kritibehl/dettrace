@@ -67,6 +67,35 @@ def render_summary(
             f"**{cohort.get('decision', 'UNKNOWN')}** |"
         )
 
+    if report.get("latency_evidence_mode") == "bootstrap":
+        lines.extend([
+            "",
+            "### Opt-in bootstrap latency evidence",
+            "",
+            "Observed crossings require an adjusted one-sided bootstrap lower "
+            "bound above the latency threshold. `INCONCLUSIVE` is not PASS.",
+        ])
+        for cohort in cohorts:
+            evidence = cohort.get("latency_evidence")
+            if not evidence:
+                continue
+            label = _shape_label(cohort)
+            lines.append(
+                f"- **{label}**: {evidence.get('confirmed_regressions', 0)} "
+                "confirmed, "
+                f"{evidence.get('inconclusive_regressions', 0)} inconclusive "
+                "point-estimate crossings"
+            )
+            for item in evidence.get("assessments", []):
+                key = item.get("semantic_key", ["-", "-"])
+                lower = item.get("lower_bound_delta_pct")
+                lower_label = "unavailable" if lower is None else f"{lower:.2f}%"
+                lines.append(
+                    f"  - `{key[1] if len(key) > 1 else key[0]}`: "
+                    f"{item.get('status', 'UNKNOWN')} "
+                    f"(lower bound {lower_label}; {item.get('reason', '-')})"
+                )
+
     failed = [
         cohort
         for cohort in cohorts
